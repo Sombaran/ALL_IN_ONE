@@ -49,9 +49,9 @@ RUN sudo dnf -y install \
   java-1.8.0-openjdk-devel.x86_64 \
   && sudo dnf clean all
 
-WORKDIR /
+WORKDIR /all_in_one
 
-COPY . /
+COPY . /all_in_one
 
 CMD ["echo" , "welcome to fedora:latest"]
 
