@@ -1,5 +1,14 @@
 FROM fedora:latest
 
+RUN sudo yum  -y install wget
+
+RUN sudo wget -O /etc/yum.repos.d/jenkins.repo \
+    https://pkg.jenkins.io/redhat-stable/jenkins.repo
+
+RUN sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+
+RUN sudo yum -y update
+
 RUN sudo dnf -y upgrade --refresh
 
 RUN sudo dnf -y install \
@@ -46,7 +55,10 @@ RUN sudo dnf -y install \
   libudev-devel \
   device-mapper-devel \
   giflib-devel \
-  java-1.8.0-openjdk-devel.x86_64 \
+  java-latest-openjdk.x86_64 \
+  wget \
+  jenkins \
+  helm \
   && sudo dnf clean all
 
 WORKDIR /all_in_one
