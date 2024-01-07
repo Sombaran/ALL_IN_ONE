@@ -1,16 +1,18 @@
+/*
+@Brief:
+abstract class interface
+concrete class implementing abstract interface methods
 
+client code is not aware of the complexity in creating the object 
+because the abstract interface does not implement how an object is created
+
+
+ main -->> client code -->> factoryMethod(object created here) --> concrete class implementing methods in abstract interface.
+@Sombaran: 
+*/
 
 #include <iostream>
 
-//abstract class interface
-
-//concrete class implementing abstract interface methods
-
-//client code is not aware of the complexity in creating the object 
-//because the abstract interface does not implement how an object is created
-
-
-// main -->> client code -->> factoryMethod(object created here) --> concrete class implementing methods in abstract interface.
 
 class Toy
 {
@@ -85,7 +87,6 @@ public:
  */
 class ConcreteToyFactoryCar : public ToyFactory
 {
-
 public:
     Toy *FactoryMethod() const override
     {
