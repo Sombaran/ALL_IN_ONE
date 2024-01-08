@@ -20,7 +20,7 @@ private:
 	}
 public:
 	Singleton (const Singleton& other) = delete;
-	Singleton operator = (const Singleton& other) = delete;
+	Singleton& operator = (const Singleton& other) = delete;
 	static Singleton* getInstance () {
 		std::lock_guard<std::mutex> gLock (mtx);
 		if (nullptr == mInstance) {
@@ -43,7 +43,6 @@ public:
 
 void printCalling () {
 	std::cout << "Hi, I am a thread ID:[" << std::this_thread::get_id() << "]" << std::endl;
-	//Singleton::getInstance(4200)->printAddress();
 	Singleton::getInstance()->printAddress();
 
 }
