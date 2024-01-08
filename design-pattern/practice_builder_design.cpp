@@ -12,6 +12,17 @@ class Plane
 
 public:
     Plane(std::string planeType) : _plane{planeType} {}
+    Plane(std::string planeType, std::string bodyType)//: this->_plane,  _body(bodyType)  {
+    {
+        this->_plane;
+        this->_body =bodyType;
+    }
+    Plane(std::string planeType, std::string bodyType, std::string engineType) 
+    {
+        this->_plane;
+        this->_body;
+        this->_engine = engineType;
+    }
     void setEngine(std::string type) { _engine = type; }
     void setBody(std::string body) { _body = body; }
     std::string getEngine() { return _engine; }
@@ -29,7 +40,7 @@ public:
     ~Plane(){ std::cout << "calling Plane destructor" << std::endl; }
 };
 
-// PlaneBuilder Abstract interface class
+// PlaneBuilder Abstract interface class or builder class
 // Means all builders should have atleast these methods
 class PlaneBuilder
 {
