@@ -16,7 +16,7 @@ private:
 	static Singleton* mInstance;
 	Singleton() 
 	{
-		std::cout << "Singleton constructor " << std::endl;
+		std::cout << "I am a Singleton constructor " << std::endl;
 	}
 public:
 	Singleton (const Singleton& other) = delete;
