@@ -2,22 +2,22 @@
 
 Software System interacting with different components
 
-> Load Balancer
-> Client
-> Server
-> DB
-> Cache
-> Web Server
-> Application Server
+1. Load Balancer
+2. Client
+3. Server
+4. DB
+5. Cache
+6. Web Server
+7. Application Server
 
 ## HLD:
-> High Level Design
-> Overview of different components in a System and how they interact with each other
+1. High Level Design
+2. Overview of different components in a System and how they interact with each other
 
 
 ## LLD:
-> Low Level Design
-> Component Level Design
-> UML Diagrams: Class Diagrams, Use Case Diagram, Activity Diagram, Sequence Diagrams
-> Design Principles and Best Practised: SOLID, KISS, DRY, YAGNIK etc
-> Design Patterns: 23 (Gang of Four)
+1. Low Level Design
+2. Component Level Design
+3. UML Diagrams: Class Diagrams, Use Case Diagram, Activity Diagram, Sequence Diagrams
+4. Design Principles and Best Practised: SOLID, KISS, DRY, YAGNIK etc
+5. Design Patterns: 23 (Gang of Four)
