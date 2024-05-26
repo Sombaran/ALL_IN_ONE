@@ -1,81 +1,23 @@
+### Basics of system design
 
-## Software architecture
-> Requirements via project manager / via Customer
-> Solution/ Design
-> HLD: Tech lead/ Architects review with cutomers, VP, CTO
-> LLD: Classes, Interfaces, Abstraction, Service Layer, Controller, --> Code
-> Unit testing, Integration testing
-> Deployment/ Release
+Software System interacting with different components
 
-### git is a source code management tool
+> Load Balancer
+> Client
+> Server
+> DB
+> Cache
+> Web Server
+> Application Server
 
-why its used --> 
-
-# 21.1 --> version control system 
-# 25.1 --> 
-
-
-``` Java 
-function shashankWorking () 
-{
+## HLD:
+> High Level Design
+> Overview of different components in a System and how they interact with each other
 
 
-}
-
-```
-``` Java
-
-function avinashPathakWorking() {
-
-
-
-}
-```
-
-
-``` java 
-function masterWorking () {
-
-
-}
-```
-
-# OOD
-
-
-** Core principles of Oops **
-> Encapsulation
-> Inheritance
-> Abstraction
-> Polymorphism
-
-
-
-
-``` C++
-
-#include <iostream>
-
-int main () {
-
-	return (0);
-}
-```
-
-
-## Applying the SOLID principle in code design leads to many important benefits that improve overall quality and maintainability.
-
-_Readability
-_Maintainability
-_Extensibility
-_Testability
-
-[S] > Single responsibility principle _SRP
-[O] > Open closed principle _OCP
-[L] > Liskov Substitution principle _LSP
-[I] > Interface Segregation principle _ISP
-[D] > Dependency Inversion principle _DIP
-
-
-
-
+## LLD:
+> Low Level Design
+> Component Level Design
+> UML Diagrams: Class Diagrams, Use Case Diagram, Activity Diagram, Sequence Diagrams
+> Design Principles and Best Practised: SOLID, KISS, DRY, YAGNIK etc
+> Design Patterns: 23 (Gang of Four)
