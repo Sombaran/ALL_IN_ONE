@@ -44,9 +44,9 @@ Need for scaling:
 * Increased Data
 
 There are 3 types of scaling:
-* _Horizontal scaling_
-* _Vertical scaling_
-* _Auto scaling_
+* Horizontal scaling
+* Vertical scaling
+* Auto scaling
 
 ```
 2.  Availability
