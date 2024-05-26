@@ -33,18 +33,35 @@ Software System interacting with different components
 
 ## Key Characteristics of a Distributed System:
 
-1.  Scalability: 
-2.  Availability: 
-3.  Consistency: 
-4.  Load Balancing: 
+1.  Scalability
+```
+Scalability is the capability of a system, process or a network to grow and manage increased demands.
+
+Need for scaling:
+* Increased Demands:
+* Increased Users
+* Increased Requests
+* Increased Data
+
+There are 3 types of scaling:
+* _Horizontal scaling_
+* _Vertical scaling_
+* _Auto scaling_
+
+```
+2.  Availability
+3.  Consistency
+4.  Load Balancing
 5.  Caching
 6.  Data Partitioning
-7.  CAP Theorem: 
+7.  CAP Theorem
 8.  Choice of DB
 9.  Reliability
 10. Efficiency
 11. Manageability
 12. Resiliency
+
+
 
 
 
