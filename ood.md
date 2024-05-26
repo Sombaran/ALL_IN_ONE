@@ -7,9 +7,38 @@
 > Unit testing, Integration testing
 > Deployment/ Release
 
+### git is a source code management tool
+
+why its used --> 
+
+# 21.1 --> version control system 
+# 25.1 --> 
+
+
+``` Java 
+function shashankWorking () 
+{
+
+
+}
+
+```
+``` Java
+
+function avinashPathakWorking() {
 
 
 
+}
+```
+
+
+``` java 
+function masterWorking () {
+
+
+}
+```
 
 # OOD
 
@@ -19,6 +48,8 @@
 > Inheritance
 > Abstraction
 > Polymorphism
+
+
 
 
 ``` C++
