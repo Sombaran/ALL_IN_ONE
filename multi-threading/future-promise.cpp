@@ -19,15 +19,21 @@
 #include <chrono>
 #include <algorithm>
 #include <future>
+
 using namespace std;
 
-#define LIMIT 1500000000
+const int LIMIT {1500000000};
 
-typedef long long int longInt;
+//typedef long long int longInt;
+using longInt = long long int;
+/*
+Use && in case of std::move to function 
+Use & in case of std::ref to function
+*/
 
-void findOdd(std::promise<longInt> &&promisObject) {
+void findOdd(std::promise<longInt>& promisObject) {
 
-	longInt value = 0;
+	static longInt value = 0;
 	while (value != LIMIT)
 		value += 1;
 	promisObject.set_value(value);
@@ -36,11 +42,11 @@ void findOdd(std::promise<longInt> &&promisObject) {
 int main() {
 
 	promise<longInt> promisObject;
-	future<longInt> futureObject = promisObject.get_future();
+	future<longInt> futureObject {promisObject.get_future()};
 
 	cout << "Thread Created!!" << endl;
-	thread t1(findOdd, std::move(promisObject));
-
+	//thread t1(findOdd, std::move(promisObject));
+	thread t1(findOdd, std::ref(promisObject));
 	cout << "Waiting For Result!!" << endl;
 
 	cout << "OddSum : " << futureObject.get() << endl;

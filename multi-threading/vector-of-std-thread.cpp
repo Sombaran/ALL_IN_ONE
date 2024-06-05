@@ -17,6 +17,7 @@ int main()
     // Add a Thread object to vector
     vecOfThreads.push_back(std::thread(func));
     // Create 3 differet thread objects
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
     std::thread th1(func);
     std::thread th2(func);
     std::thread th3(func);

@@ -47,8 +47,10 @@ void producer(int val)
 	while (val)
 	{
 		unique_lock<mutex> ulock(mtx);
-		cond.wait(ulock, []()
-				  { return deque_.size() < BUFFER; });
+		cond.wait(ulock, []() { 
+			return deque_.size() < BUFFER; 
+			}
+		);
 		deque_.push_back(val);
 		cout << "producer :" << deque_.back() << endl;
 		val--;
@@ -62,8 +64,10 @@ void consumer()
 	while (true)
 	{
 		unique_lock<mutex> ulock(mtx);
-		cond.wait(ulock, []()
-				  { return deque_.size() > 0; });
+		cond.wait(ulock, []() { 
+			return deque_.size() > 0; 
+			}
+		);
 		cout << "consumer :" << deque_.front() << endl;
 		deque_.pop_front();
 		ulock.unlock();
