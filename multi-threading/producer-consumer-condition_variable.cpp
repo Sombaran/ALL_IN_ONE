@@ -1,49 +1,46 @@
 #include <iostream>
 #include <queue>
 #include <thread>
-#include <semaphore.h>
-
-using namespace std;
+#include <mutex>
+#include <condition_variable>
 
 std::queue<int> buffer;
-sem_t emptySlots;
-sem_t fullSlots;
+std::mutex mtx;
+std::condition_variable cv;
 
 void producer() {
     for (int i = 1; i <= 5; ++i) {
-        sem_wait(&emptySlots);
+        std::lock_guard<std::mutex> lock(mtx);
         buffer.push(i);
         std::cout << "Produced: " << i << std::endl;
-        sem_post(&fullSlots);
+        cv.notify_one();
         std::this_thread::sleep_for(std::chrono::milliseconds(500));
     }
 }
 
 void consumer() {
     while (true) {
-        sem_wait(&fullSlots);
+        std::unique_lock<std::mutex> lock(mtx);
+        //std::lock_guard<std::mutex> lock(mtx);
+        cv.wait(lock, [&] { 
+            return (not(buffer.empty())); 
+            }
+        );
         int data = buffer.front();
         buffer.pop();
         std::cout << "Consumed: " << data << std::endl;
-        sem_post(&emptySlots);
+        //lock.unlock();
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     }
 }
 
 int main() {
-    sem_init(&emptySlots, 0, 5);  // Maximum 5 empty slots in the buffer
-    sem_init(&fullSlots, 0, 0);   // Initially, no full slots in the buffer
-
     std::thread producerThread(producer);
     std::thread consumerThread(consumer);
-
+    
     if (producerThread.joinable() and consumerThread.joinable()) {
     producerThread.join();
     consumerThread.join();
     }
-
-    sem_destroy(&emptySlots);
-    sem_destroy(&fullSlots);
-
     return (0);
 }

@@ -48,12 +48,11 @@ int main() {
 	//thread t1(findOdd, std::move(promisObject));
 	thread t1(findOdd, std::ref(promisObject));
 	cout << "Waiting For Result!!" << endl;
-
+	if (t1.joinable()) {
+		t1.join();
+	}
 	cout << "OddSum : " << futureObject.get() << endl;
-
 	cout << "Completed!!" << endl;
-	t1.join();
-
 	return 0;
 }
 
