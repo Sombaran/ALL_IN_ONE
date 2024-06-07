@@ -17,96 +17,37 @@
 // 		3. You cannot use the mutable specifier with names declared as static or const, or reference.
 
 #include <iostream>
-using namespace std;
 
-// Customer Class
-class Customer
-{
-	// class Variables
-	string name;
+class test{
 	mutable int bill;
-
-public:
-	// constructor
-	Customer(string s, int p)
-	{
-		name = s;
-		bill = p;
+	std::string name;
+	public:
+	test(std::string n, int b)
+	: bill (b)
+	, name (n) { 
+		std::cout << __func__ << std::endl;
 	}
-	void changeName(string p)
-	{
-		name = p;
+	void changeName(std::string p) {
+		this->name = p;
+		}
+		
+	void changeBill (int q) const {
+		this->bill = q;
 	}
-	// change the bill
-	void changeBill(int b) const
-	{
-		bill = b;
-	}
-	// to display
-	void display() const
-	{
-		cout << "Customer name is: " << name << endl;
-		cout << "Total payable amount: " << bill << endl;
+	
+	void display() const {
+		std::cout << "bill " << bill << std::endl << "name " << name << std::endl;
 	}
 };
 
-// Driver code
-int main()
-{
-
-	{
-		int d;
-		int const data = 0;
-		data = &d; // error: assignment of read-only variable 'data'
-		*data = 1; // error: assignment of read-only location '* data'
-	}
-
-	{
-		int d;
-		const int data = 0;
-		data = &d; // error: assignment of read-only variable 'data'
-		*data = 1; // error: assignment of read-only location '* data'
-	}
-
-	{
-		int d;
-		const int const data = 0;
-		data = &d; // error: assignment of read-only variable 'data'
-		*data = 1; // error: assignment of read-only location '* data'
-	}
-
-	{
-		int d;
-		const int *data = 0;
-		data = &d;
-		*data = 1; // error: assignment of read-only location '* data'
-	}
-	{
-		int d;
-		int *const data = 0;
-		data = &d; // error: assignment of read-only variable 'data'
-		*data = 1;
-	}
-	{
-		int d;
-		const int *const data = 0;
-		data = &d; // error: assignment of read-only variable 'data'
-		*data = 1; // error: assignment of read-only location '* data'
-	}
-
-	Customer const c1("Pravasi Meet", 100);
-	c1.display();
-	c1.changeBill(150);
-	c1.display();
-
-	cout << endl
-		 << "Changing data member in the const funtion using mutable keyword:" << endl
-		 << endl;
-
-	Customer c2("Pravasi Meet", 100);
-	c2.display();
-	c2.changeBill(150);
-	c2.display();
-
-	return 0;
+int main() {
+    
+    test  t1("Bur", 223072904);
+    //t1.changeName ("Gandu");
+    //t1.changeBill(22);
+    t1.display();
+    test const t2("Ur",13564200);
+    t2.changeBill(223072904);
+    t2.display();
+    return (0);
 }

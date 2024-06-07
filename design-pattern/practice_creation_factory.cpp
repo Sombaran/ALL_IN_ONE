@@ -7,7 +7,7 @@ client code is not aware of the complexity in creating the object
 because the abstract interface does not implement how an object is created
 
 
- main -->> client code -->> factoryMethod(object created here) --> concrete class implementing methods in abstract interface.
+main -->> client code -->> factoryMethod(object created here) --> concrete class implementing methods in abstract interface.
 @Sombaran: 
 */
 

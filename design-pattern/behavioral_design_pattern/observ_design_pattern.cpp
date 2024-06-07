@@ -137,7 +137,7 @@ int main() {
     bool breakLoop = true;
 
     while(breakLoop) {
-    	cout << "Type : ";
+        cout << "Type : ";
         cin >> pressedButton;
 
         switch(pressedButton){

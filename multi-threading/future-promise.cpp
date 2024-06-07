@@ -41,7 +41,7 @@ void findOdd(std::promise<longInt>& promisObject) {
 
 int main() {
 
-	promise<longInt> promisObject;
+	promise<longInt> promisObject{};
 	future<longInt> futureObject {promisObject.get_future()};
 
 	cout << "Thread Created!!" << endl;
