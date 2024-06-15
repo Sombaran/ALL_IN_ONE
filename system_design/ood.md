@@ -49,9 +49,9 @@ There are 3 types of scaling:
 	- Easier to scale dynamically by adding more machines, no downtime
 	- Costly
 	- Existing: S1 S2 S3
-	- New: 		S1 S2 S3 S4 S5 S6 S7
-	- For eg. Suppose a server capable of handling 65 K (5K internal ports) request, now at some point of time 			  server receives 500 K requests adding load to the server, so in this case extra servers are 
-			  needed.How many server needed? (500 K/ 60 K) 9 extra server are needed to meet the demand. 
+	- New: S1 S2 S3 S4 S5 S6 S7
+	- For eg. 
+	Suppose a server capable of handling 65 K (5K internal ports) request, now at some point of time server receives 500 K requests adding load to the server, so in this case extra servers are needed.How many server needed? (500 K/ 60 K) 9 extra server are needed to meet the demand. 
 - Vertical scaling
 - Auto scaling
 
