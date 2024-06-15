@@ -2,7 +2,7 @@
 @Brief: SOLID Principle
 S --> A class should have only one reason to change 
       Single responsiblity principle
-O --> A class should be open for extension but closed for modificatino. 
+O --> A class should be open for extension but closed for modification. 
       OCP-->adding new functionality without modifying the existing code.
       Open-closed principle
 L --> If B is sub-type of class A, then we should be able to replace the object 
@@ -23,6 +23,7 @@ D --> high-level modules should not depend on low-level modules
 
 //Single responsiblity principle
 class Marker {
+    public:
     std::string m_color;
     std::string m_name;
     int m_year;
@@ -34,7 +35,7 @@ class Marker {
     , m_name (name)
     , m_year (year)
     , m_price (price) {
-        std::cout << "I am parameterized constructor \n";
+        std::cout << "I am parameterized constructor for function " << __func__ << std::endl;
         std::cout << this->m_color << std::endl;
         std::cout << this->m_name << std::endl;
         std::cout << this->m_year << std::endl;
@@ -53,7 +54,7 @@ class Invoice {
     Invoice (Marker *marker, int quantity)
     : _marker (marker)
     , m_quantity (quantity) {
-        std::cout << "I am parameterized constructor \n";
+        std::cout << "I am parameterized constructor for function " << __func__ << std::endl;
     }
     /*
     ~Invoice () {
@@ -61,18 +62,19 @@ class Invoice {
     }*/
 
     int calculatePrice (const Marker& obj) {
-        //int price = ((marker.m_price) * (this->m_quantity));
-        //return price;
+        int price = ((obj.m_price) * (m_quantity));
+        return price;
 
     }
 };
 
-int main1() {
-    std::shared_ptr <Marker>Obj = std::make_shared<Marker>("Blue","Parker", 2007, 100);
-    //Marker mObj("Purple","Parker", 2008, 102);
-    //Invoice invObj;
-    //invObj.calculatePrice(mObj);
-    Marker * mObj = new Marker("Purple","Parker", 2008, 102);
+int main() {
+    //std::shared_ptr <Marker>Obj = std::make_shared<Marker>("Blue","Parker", 2007, 100);
+    Marker mObj("Purple","Parker", 2008, 10);
+    Marker *vptrObj;
+    Invoice invOb(vptrObj,1111);
+    std::cout << "Price of quantity " << invOb.calculatePrice(mObj) << std::endl;
+    //Marker * mObj = new Marker("Purple","Parker", 2008, 102);
     //Invoice inObj(mObj);
 }
 //Liskov substitution principle
