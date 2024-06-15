@@ -137,7 +137,21 @@ There are two types of consistency:
 ```
 4.  Load Balancing
 ```
+- Helps to spread the traffic (incoming requests) across a cluster of servers to improve responsiveness and availability of a system
+- LB also keeps track of the status of all resources (servers) while distributing requests (Heart beat)
+- IF a Server is Not Available, LB will stop sending request/traffic to that server
 
+Client -----  LB --------  Web Server - 1
+				| 
+				 --------  Web Server - 2
+				|
+				 --------  Web Server - 3
+
+- For eg. (NginX Plus, AWS Elastic Load Balancer (ELB), Citrix ADC (Prev: NetApp), Google Cloud Load Balancer)
+- Total Request: 100K
+	- LB:
+	- Web Server-1: 50K
+    - Web Server-2: 50K
 ```
 5.  Caching
 6.  Data Partitioning
