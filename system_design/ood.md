@@ -50,10 +50,20 @@ There are 3 types of scaling:
 	- Costly
 	- Existing: S1 S2 S3
 	- New: S1 S2 S3 S4 S5 S6 S7
-	- For eg. 
+	- For eg. (Apache Cassandra or MongoDB)
 	Suppose a server capable of handling 65 K (5K internal ports) request, now at some point of time server receives 500 K requests adding load to the server, so in this case extra servers are needed.How many server needed? (500 K/ 60 K) 9 extra server are needed to meet the demand. 
 - Vertical scaling
+	- Scale by adding more power (CPU, Storage, RAM) to an Existing Server
+	- Limited to capacity of a single server and involves downtime
+	- Cheaper
+	- For eg.(MySQL)
+	"Scheduled Maintainance: Website will be down at 1 AM - 3 AM on 25th May"
 - Auto scaling
+	- Upscaling + Downscaling
+	- Configuration
+	- Memory/CPU/RAM Usage: Crosses 80% ----> Get Another Instance
+	- Memory/CPU/RAM Usage: Reaches less than 10% ----> Turn Off That Instance
+	- For eg. (Kibana, Grafana)
 
 ```
 2.  Availability
