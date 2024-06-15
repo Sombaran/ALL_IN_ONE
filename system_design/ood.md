@@ -92,9 +92,53 @@ Availability Example:
 ```
 3.  Consistency
 ```
+Consistency is the behaviour to showcase regularity.
+There are two types of consistency:
+- Eventual consistency
+	- All Nodes would be updated at the SAME TIME even if there has to be non-availability
+	- No stale Data Possible
+- Strong consistency
+	- All Nodes will EVENTUALLY be consistent
+	- Can have Stale Data for very short time
+	- System should also be available
+- CAP theorem
+	- Consistency
+	- Availability
+	- Partition Tolerance: Distributed Systems (Fault Tolerance)
+	- Out of 3, Any Distributed System can have only 2
+	- CP or AP Systems
+	- Partition Tolerance:
+	- No Single Point of Failure
+	- Given By Distributed Systems
+	- CP system
+		- Consistency > non-availability
+		- Strong Consistency
+		- My system goes down for sometime, I am fine with it
+		- No Stale Data
+		- For eg. (Uber/Zomato/Flipkart/Amazon/Bank transaction)
+		- Use case of ATM:
+		- Transaction: 100 USD
+		- 1000 USD ----> 900 USD
+		- All ATM Must Show the updated balance
+		- If in meantime, Bank App/ ATM is not up for that user its fine
+		- No Stale Data to be Shown
+	- AP system
+		- Availability > Consistency
+		- Eventual Consistency
+		- My System MUST NOT Go Down
+		- Stale Data
+		- For eg. (Social media)
+		- Use case of Social media
+		- Homepage Service/News Feed: Always Available
+		- Priority: Instagram app should be UP and Available for All Users
+		- Eventually (TTL: 200-500 ms), you will see the updated posts
+		- Stale Data/ Old Posts: Okay
 
 ```
 4.  Load Balancing
+```
+
+```
 5.  Caching
 6.  Data Partitioning
 7.  CAP Theorem
