@@ -33,9 +33,9 @@ Software System interacting with different components
 
 ## Key Characteristics of a Distributed System:
 
-1.  scalability
+1.  Scalability
 ```
-scalability is the capability of a system, process or a network to grow and manage increased demands.
+Scalability is the capability of a system, process or a network to grow and manage increased demands.
 
 Need for scaling:
 - Increased Demands:
@@ -67,7 +67,33 @@ There are 3 types of scaling:
 
 ```
 2.  Availability
+```
+Availability is the time a system remains operational to its request.
+Usually measured in terms of 9
+Ideally: 9 9s or 11 9s
+
+90%
+99% - 2 9s
+99.99999 - 7 9s
+.........Closer to 100% Available
+Eg: Whatsapp
+
+- Single Tick: Send from your End
+- Double Tick: Received by Receiver
+- Blue/Green Tick: Read (Read Receipts On)
+
+Availability Example:
+- Send a Message: (Single Tick)
+- Opened any App: Works as expected
+- Zomato: 
+	- Homepage Service: Available
+	- Cart Service: Available
+
+```
 3.  Consistency
+```
+
+```
 4.  Load Balancing
 5.  Caching
 6.  Data Partitioning
