@@ -32,3 +32,6 @@ prog10 : producer-consumer-semaphorse.cpp
 
 prog11 : future-promise.cpp
 	g++ -o prog11 future-promise.cpp -std=c++14
+
+clean:
+	rm prog03 prog05 prog06 prog07 prog08 prog09 prog10 prog11

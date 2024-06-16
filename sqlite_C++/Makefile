@@ -5,3 +5,6 @@ prog01 : example_1.cpp
 
 #prog02 : standared-templarte-library-functor.cpp
 #	g++ -o prog02 standared-templarte-library-functor.cpp -std=c++14
+
+clean:
+	rm prog01
