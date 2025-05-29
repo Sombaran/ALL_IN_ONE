@@ -1,0 +1,9 @@
+@startuml 1.header last-updated 18/05/2025
+class Car {
+  -make: string
+  -model: string
+  -year: int
+  +start()
+  +stop()
+} 
+@enduml

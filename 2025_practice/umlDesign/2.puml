@@ -1,0 +1,19 @@
+@startuml 2.puml
+Class01   <|-- Class02
+abstract class <<myAbstractClass>> {
+    +start()
+    +stop()
+}
+interface myInterface1 {
+    +start()
+    +stop()
+}
+
+interface myInterface2 {
+    +start()
+    +stop()
+}
+
+myAbstractClass <|-- myInterface1
+myAbstractClass <|-- myInterface2
+@enduml
