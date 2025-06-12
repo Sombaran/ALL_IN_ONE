@@ -96,7 +96,7 @@ struct singlyList
 
         if (position == 1) {
             singlyList* temp = head;
-            head = head -> mNext;
+            head = temp -> mNext;
             temp -> mNext = nullptr;
             delete temp;
         }

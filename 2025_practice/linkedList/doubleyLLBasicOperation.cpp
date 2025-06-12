@@ -37,6 +37,20 @@ struct doublyList {
         std::cout << std::endl;
     }
 
+    constexpr size_t lengthOfList(doublyList* &head) {
+        size_t counter {};
+        if (head == nullptr) {
+            return (counter);
+        }
+        doublyList* temp = head;
+        while(temp != nullptr) {
+            //std::cout << temp -> mData << "->";
+            ++counter;
+            temp = temp -> mNext;
+        }
+        return (counter);
+    }
+
     void insertAtHead(doublyList* &tail, doublyList* &head, const int& d) {
         if (nullptr != head) {
             doublyList* temp =  new doublyList(d);
@@ -66,7 +80,54 @@ struct doublyList {
     }
 
     void insertAtPosition(doublyList* & tail, doublyList* &head, const int& position, const int& d) {
-        
+        if (tail == nullptr or head ==  nullptr) {
+            return;
+        }
+        if (position == 1) {
+            insertAtHead(tail, head, d);
+        }
+        doublyList * temp = head;
+        int counter {1};
+
+        while(counter < (position-1)) {
+            temp =  temp -> mNext;
+            ++counter;
+        }
+
+        doublyList* nodeToInsert =  new doublyList(d);
+        nodeToInsert -> mNext =  temp -> mNext;
+        temp -> mNext = nodeToInsert;
+        temp -> mNext ->mPrev =  nodeToInsert;
+        nodeToInsert -> mPrev = temp;
+    }
+
+    void deleteNode(doublyList* & head, const int& position) {
+        if (position > lengthOfList(head)) {
+            std::cerr << "Invalid position \n";
+        }
+
+        if (position == 1) {
+            doublyList* temp = head;
+            temp -> mNext -> mPrev = nullptr;
+            head = temp -> mNext;
+            temp -> mNext = nullptr;
+            delete temp;
+        }
+        else {
+            doublyList* current =  head;
+            doublyList* previous = nullptr;
+            int counter {1};
+
+            while(counter < position) {
+                previous =  current;
+                current =  current -> mNext;
+                ++counter;
+            }
+            current -> mPrev = nullptr;
+            previous -> mNext =  current -> mNext;
+            current -> mNext = nullptr;
+            delete current;
+        }
     }
 };
 
@@ -83,6 +144,8 @@ int main() {
     obj1 -> insertAtTail(tail, head, 32);
     obj1 -> printNode(head);
     obj1 -> insertAtPosition(tail, head,2, 22);
+    obj1 -> printNode(head);
+    obj1 -> deleteNode(head,2);
     obj1 -> printNode(head);
     delete head;
     delete tail;
