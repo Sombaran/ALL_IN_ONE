@@ -1,0 +1,13 @@
+@startuml playWithClasses
+abstract class Vehicle {
+    #string getEngineType()
+    #(static)+int getTyreName()
+}
+class SportsVehicle {
+    +string getEngineType()
+    +(static)+int getTyreName()
+}
+Vehicle --|> SportsVehicle
+
+@enduml
+
