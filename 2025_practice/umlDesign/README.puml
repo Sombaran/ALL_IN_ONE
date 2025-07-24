@@ -1,0 +1,15 @@
+@startuml
+
+Class01 "1" *-- "many" Class02 : note "Composition associations show relationships\nwhere the sub-object exists \nonly as long as the container class exists.\nThe classes have a common lifecycle.\nFor example, a pocket on the front of a shirt\ncannot exist if we destroy the shirt."
+
+Class03 "3"o-- Class04 : note "When we want to convey\nthat two classes are associated,\nbut not as close as in direct association.\nThe child class can exist independent\nof the parent element"
+
+Class05 "5"--> Class06 : note: "Strong dependency\nDirected association shows a\nstrong relationship between classes.\nThe classes must communicate.\nWe represent a direct association\nwith an arrow pointing to our\nobject class. For example,\na bowl might contain fruit"
+
+Class07 "7" ..> Class08 : note: "Weaker form of dependency"
+
+Class09 "9" --|> Class10 : note: "Specialization of a class in a hierarchy"
+
+Class11 "11" ..|> Class12 : note: "Realization of an interface by a class "
+
+@enduml
