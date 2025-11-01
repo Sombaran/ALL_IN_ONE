@@ -14,7 +14,10 @@ void printOdd(int start, int end) {
     while (i<100)
     {
         std::unique_lock<std::mutex> locker(mu);
-        cond.wait(locker,[&](){ return (i%2 == 1); });
+        while (not (i%2 == 1 )) {
+            cond.wait(locker);
+        }
+        //cond.wait(locker,[&](){ return (i%2 == 1); });
         //std::cout << "From Even: " << i << std::endl;
         std::cout << i << " ";
         ++i;
@@ -29,7 +32,10 @@ void printEvn(int start, int end) {
     while (i<100)
     {
         std::unique_lock<std::mutex> locker(mu);
-        cond.wait(locker,[&](){ return (i%2 == 0); });
+        while (not (i%2 ==0 )) {
+            cond.wait(locker);
+        }
+        //cond.wait(locker,[&](){ return (i%2 == 0); });
         //std::cout << "From Even: " << count << std::endl;
         std::cout << i << " ";
         ++i;
@@ -40,10 +46,6 @@ void printEvn(int start, int end) {
 }
 
 
-constexpr std::string f1(std::string s1, std::string s2){
-    return (s1+s2);
-}
-
 int main() {
 
 	int start = 1;
@@ -53,13 +55,8 @@ int main() {
 
 
 	if (odd.joinable() and evn.joinable()) {
-	    odd.join();
-	    evn.join();
+        odd.join();
+        evn.join();
 	}
-	
-	constexpr const char* s1 = "helloworld";
-    std::cout << s1 << std::endl;
-    
-    std::cout << f1("som", " gupta") << std::endl;
 	return(0);
 }
