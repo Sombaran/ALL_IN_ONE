@@ -1,0 +1,26 @@
+#!/bin/sh
+
+#Bug #20858:Implement workaroud solution to reset Z-Wave module when the Zwave device #ttyACM0 is disconnected from the Linux.
+while [ 1 ]
+do
+	if [ `ls /dev/ttyACM0 2> /dev/null | wc -l` -eq 0 ];then
+		logger -p user.crit "[ZW]:Reseting Z-WAVE Module"
+		#Stops zipgateway
+		/etc/init.d/zipgateway stop
+		#Stops z-wave custom application
+		/etc/init.d/zw_service stop
+		#makes gpio 68 as active low for reset z-wave module
+		gpio.sh 68 out 0
+		#makes gpio 68 as active low for reset z-wave module
+		gpio.sh 68 out 1
+		#delay for Hardware initialisation
+		sleep 2s
+		#Starts zipgateway
+		/etc/init.d/zipgateway start
+		sleep 5s
+		#Starts z-wave custom application
+		/etc/init.d/zw_service start
+		logger -p user.crit "[ZW]:Reseting Z-WAVE Module done!"
+	fi
+	sleep 10s;
+done

@@ -1,0 +1,4 @@
+#!/bin/sh
+
+kill -SIGUSR1 $(ps | grep 'hw-control' | grep -v 'grep'| awk '{print $1}')
+

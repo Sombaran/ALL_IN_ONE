@@ -1,0 +1,200 @@
+diff -r -u a/plugins/policy.c b/plugins/policy.c
+--- a/plugins/policy.c	2015-09-28 17:46:53.000000000 +0530
++++ b/plugins/policy.c	2018-07-06 14:21:10.000000000 +0530
+@@ -50,7 +50,7 @@
+ #define SINK_RETRY_TIMEOUT SOURCE_RETRY_TIMEOUT
+ #define CT_RETRY_TIMEOUT 1
+ #define TG_RETRY_TIMEOUT CT_RETRY_TIMEOUT
+-#define SOURCE_RETRIES 1
++#define SOURCE_RETRIES 0
+ #define SINK_RETRIES SOURCE_RETRIES
+ #define CT_RETRIES 1
+ #define TG_RETRIES CT_RETRIES
+diff -r -u a/profiles/audio/avctp.c b/profiles/audio/avctp.c
+--- a/profiles/audio/avctp.c	2015-03-31 19:11:57.000000000 +0530
++++ b/profiles/audio/avctp.c	2018-06-07 17:55:50.000000000 +0530
+@@ -29,6 +29,7 @@
+ 
+ #include <stdlib.h>
+ #include <stdint.h>
++#include <sys/msg.h>
+ #include <stdbool.h>
+ #include <errno.h>
+ #include <unistd.h>
+@@ -38,6 +39,9 @@
+ #include <sys/stat.h>
+ #include <fcntl.h>
+ #include <netinet/in.h>
++#include <sys/socket.h>
++
++#include <string.h>
+ 
+ #include <glib.h>
+ 
+@@ -73,6 +77,8 @@
+ #define AVCTP_PACKET_CONTINUE	2
+ #define AVCTP_PACKET_END	3
+ 
++#define SHIFU_BT_PORT     4274
++
+ #if __BYTE_ORDER == __LITTLE_ENDIAN
+ 
+ struct avctp_header {
+@@ -308,6 +314,43 @@
+ 	return write(fd, &event, sizeof(event));
+ }
+ 
++static int va_to_btman(const char *va_to_btman_cmd)
++{
++    struct sockaddr_in address;
++    int sock = 0, valread;
++    struct sockaddr_in serv_addr;
++    char buffer[1024] = {0};
++    if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0)
++    {
++        DBG("\n Socket creation error \n");
++        return -1;
++    }
++  
++    memset(&serv_addr, '0', sizeof(serv_addr));
++  
++    serv_addr.sin_family = AF_INET;
++    serv_addr.sin_port = htons(SHIFU_BT_PORT);
++      
++    // Convert IPv4 and IPv6 addresses from text to binary form
++    if(inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr)<=0) 
++    {
++        DBG("\nInvalid address/ Address not supported \n");
++        return -1;
++    }
++  
++    if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
++    {
++        DBG("\nConnection Failed \n");
++        return -1;
++    }
++    send(sock , va_to_btman_cmd , strlen(va_to_btman_cmd) , 0);
++    DBG("Hello message sent\n");
++    valread = read( sock , buffer, 1024);
++    DBG("%s\n",buffer );
++    close(sock);
++    return 0;
++}
++
+ static void send_key(int fd, uint16_t key, int pressed)
+ {
+ 	if (fd < 0)
+@@ -399,6 +442,7 @@
+ 			continue;
+ 
+ 		DBG("AV/C: %s %s", key_map[i].name, status);
++		if(status=="released") va_to_btman(key_map[i].name);
+ 
+ 		key_quirks = session->key_quirks[key_map[i].avc];
+ 
+diff -r -u a/src/main.c b/src/main.c
+--- a/src/main.c	2015-12-28 07:43:20.000000000 +0530
++++ b/src/main.c	2018-10-09 17:27:47.000000000 +0530
+@@ -344,7 +344,7 @@
+ 
+ 	/* Default HCId settings */
+ 	memset(&main_opts, 0, sizeof(main_opts));
+-	main_opts.name = g_strdup_printf("BlueZ %s", VERSION);
++	main_opts.name = g_strdup_printf("t.hub-BT");
+ 	main_opts.class = 0x000000;
+ 	main_opts.pairto = DEFAULT_PAIRABLE_TIMEOUT;
+ 	main_opts.discovto = DEFAULT_DISCOVERABLE_TIMEOUT;
+diff -u -r a/src/adapter.c b/src/adapter.c
+--- a/src/adapter.c	2015-12-28 07:43:20.000000000 +0530
++++ b/src/adapter.c	2018-10-30 15:40:52.678465162 +0530
+@@ -5677,7 +5677,9 @@
+ 		const char *path = device_get_path(device);
+ 
+ 		DBG("Removing temporary device %s", path);
+-		btd_adapter_remove_device(adapter, device);
++		//Redmine # 20273 Start: Removing Auto Forget after temperory pairing process.
++		//btd_adapter_remove_device(adapter, device);
++		//Redmine # 20273 Stop
+ 	}
+ }
+ 
+diff -u -r a/src/dbus-common.c b/src/dbus-common.c
+--- a/src/dbus-common.c	2015-06-15 15:03:25.000000000 +0530
++++ b/src/dbus-common.c	2018-11-09 11:31:50.386826009 +0530
+@@ -146,6 +146,10 @@
+ 
+ const char *class_to_icon(uint32_t class)
+ {
++	// Redmine 19936 Start: Adding Shifu BT class to identify the icon name as 'hub'
++	if((class & 0xffffff) == 0x0c0424)
++		return "hub";
++	// Redmine 19936 Stop
+ 	switch ((class & 0x1f00) >> 8) {
+ 	case 0x01:
+ 		return "computer";
+diff -u -r a/profiles/audio/player.c b/profiles/audio/player.c
+--- a/profiles/audio/player.c	2015-10-30 09:00:13.000000000 +0530
++++ b/profiles/audio/player.c	2018-11-22 15:38:02.526345259 +0530
+@@ -1184,7 +1184,9 @@
+ 					media_player_signals,
+ 					media_player_properties, mp, NULL)) {
+ 		error("D-Bus failed to register %s path", mp->path);
+-		media_player_destroy(mp);
++		// Redmine 20316 Start: Mediaplayer is destroying eventhough BT connection is established
++		// media_player_destroy(mp);
++		// Redmine 20316 Stop
+ 		return NULL;
+ 	}
+ 
+diff -u -r a/profiles/audio/avdtp.c b/profiles/audio/avdtp.c
+--- a/profiles/audio/avdtp.c	2015-09-04 06:49:36.000000000 +0530
++++ b/profiles/audio/avdtp.c	2019-06-24 16:21:28.000000000 +0530
+@@ -1072,7 +1072,9 @@
+	struct avdtp *session = data;
+
+	DBG("%p", session);
+-
++	// Redmine: 21607: Start: Pointer Declaration for the DBusMessage
++	DBusMessage *msg;
++
+	g_slist_free_full(session->streams, stream_free);
+
+	if (session->io) {
+@@ -1098,6 +1100,10 @@
+	g_free(session->buf);
+
+	btd_device_unref(session->device);
++	// Redmine: 21607: Start: Calling Disconnection request function post device got unreferenced
++    device_request_disconnect(session->device, msg);
++    DBG("disconnecting device ");
++    // Redmine: 21607: End
+	g_free(session);
+ }
+
+diff -u -r a/src/device.c b/src/device.c
+--- a/src/device.c	2015-12-28 07:43:20.000000000 +0530
++++ b/src/device.c	2019-06-24 16:19:46.000000000 +0530
+@@ -77,8 +77,8 @@
+ #include "eir.h"
+
+ #define IO_CAPABILITY_NOINPUTNOOUTPUT	0x03
+-
+-#define DISCONNECT_TIMER	2
++// Redmine: 21607: Start: DISCONNECT_TIMER is changed to 1
++#define DISCONNECT_TIMER	1
+ #define DISCOVERY_TIMER		1
+
+ #ifndef MIN
+diff -u -r a/profiles/audio/source.c b/profiles/audio/source.c
+--- a/profiles/audio/source.c	2015-09-04 06:49:36.000000000 +0530
++++ b/profiles/audio/source.c	2019-07-17 16:45:16.002547673 +0530
+@@ -378,7 +378,8 @@
+ 	struct source *source = btd_service_get_user_data(service);
+ 
+ 	if (source->stream)
+-		return FALSE;
++		DBG("Ignoring return for source->stream");
++		// return FALSE;
+ 
+ 	if (!source->session)
+ 		source->session = avdtp_ref(session);

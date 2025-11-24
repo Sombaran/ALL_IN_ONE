@@ -1,0 +1,43 @@
+#!/bin/sh
+
+lfile=`echo $1 | grep -o '[^/]*$'`
+
+case $# in
+    1)
+        while [ 1 ]
+        do
+            if [ `ls /tmp/$lfile.lock  2> /dev/null | wc -l` -eq 0 ]; then
+
+                touch /tmp/$lfile.lock
+
+                cat $1
+
+                rm /tmp/$lfile.lock
+
+                break
+            else
+                sleep 1
+            fi
+        done
+        ;;
+    2)
+        while [ 1 ]
+        do
+            if [ `ls /tmp/$lfile.lock  2> /dev/null | wc -l` -eq 0 ]; then
+
+                touch /tmp/$lfile.lock
+
+                echo $2 > $1
+
+                rm /tmp/$lfile.lock
+
+                break
+            else
+                sleep 1
+            fi
+        done
+        ;;
+    *)
+        printf "Usage:\n\tTo Read Value:\n\t\tfread-write-protect [File_Path]\n\n\tTo Write Value:\n\t\tfread-write-protect [File_Path] [Value]\n"
+        ;;
+esac

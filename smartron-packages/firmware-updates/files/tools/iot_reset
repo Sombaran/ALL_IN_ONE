@@ -1,0 +1,27 @@
+#!/bin/sh                                                                                                                                                                 
+
+uci set shifu.conf.ZB_IOT_RESET=1
+uci commit shifu
+
+/etc/init.d/zb_service stop 2>/dev/null
+
+/etc/init.d/zb_service start && sleep 5 2>/dev/null
+
+ZB_RESET=$(uci get shifu.conf.ZB_IOT_RESET)
+if [ $ZB_RESET = "0" ]; then
+	logger -p user.debug "IOT_Reset:zibee reset performed"
+else
+	logger -p user.err "IOT_Reset:zibee reset faild"
+fi
+
+/etc/init.d/zw_reset_service stop 2>/dev/null
+/etc/init.d/zipgateway stop 2>/dev/null
+
+zwave_tool reset
+if [ "$?" = "0" ]; then
+        logger -p user.debug "IOT_Reset:zwave reset done"
+else
+        logger -p user.err "IOT_Reset:zwave reset faild"
+fi
+
+exit 0

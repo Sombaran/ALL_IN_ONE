@@ -1,0 +1,31 @@
+Release note identifier ([fw-env], date:28-02-2018 , version 0.1)
+-----------------------------------------------------------
+
+Features and changes (new features, defects corrected, caveats etc): 
+- This package gives access to firmware environment variables for c programs.
+- It has three API's. ie.,remove_char_from_string, get_fw_env, set_fw_env. Included in header file.
+- Should not to pass NULL value to functions
+
+
+Outstanding issues/ features pending (unresolved defects, workarounds, installation issues etc): 
+(Provide Redmine IDs)
+- NA
+
+Installation guide:
+- Enable utilities-> uboot-envtools
+- Enable smartron-packages-> fw-env package in make menuconfig and compile.
+
+System Requirements:
+- NA
+
+Troubleshooting /logs:
+- NA
+
+Other Resources and Links:
+Test - for test follow the appilcation fw-env-app2
+	 - open a openwrt terminal from SSH
+	 - run below example command.
+	 - if the .so is working, then it will prints the value THOMETESTf7c23031
+	 
+	 eg; test-env DeviceID THOMETESTf7c23031 
+

@@ -1,0 +1,128 @@
+Release note ([firmware updates], date: 23-05-2018 , version #1.4)
+Features and Changes:
+---------------------
+[16354][Platform][MCU]:Long press the Action button for 20 sec the MCU raises an interrupt and run the setting for wifi as defined in the hw-control.
+				   STM32F030_Userdddd_v0.17.bin → STM32F030_Userdddd_v0.18.bin
+[16259][LED][Platform]:Modifying the NVM variable ALARM_TIMEOUT 60 -> 600 as per UX suggestion
+[16007][Platform][MCU]:Setup mode pattern changed as per the Ux-team latest video
+				   STM32F030_Userdddd_v0.16.bin → STM32F030_Userdddd_v0.17.bin
+[15714][LED][Platform]:fix for Upgrade MCU Bootloader from v01 to v02 for Release 1.4
+[15514][Platform][Audio]:Observed noise rarely when system rebooting
+[15782][FOTA][Audio]:NV variables needed for volume tuning
+15713][Platform][Audio]:Upgrading DSP module firmware from 6.156.2.22 to 6.156.2.23
+[15633][platform][FOTA]:NVM Variables reset at disabling of Keep Settings option in LUCI
+14481/[Platform]:Curl is not working in shifu base SDK traced the issue. It was working in less firewall environment.
+
+Outstanding issues/ features pending (unresolved defects, workarounds, installation issues etc):  
+------------------------------------------------------------------------------------------------
+Feature #15709 Integration of Zigbee flashing tools and scripts in SDK
+Feature #15710 NVM Variables finalization for DVT release 1.4
+Feature #15700 Integration of Zwave flashing tools and scripts in SDK
+
+
+
+Release note ([firmware updates], date: 08-03-2018 , version #1.3):
+Features and Changes:
+----------------------------
+[14981][FOTA][LUCI]:Missing of Firmware update LED(Tentative), added few statements to stop services of led, hw-control, va, ma at time of flashing
+14666/[Platform][Track]:modified NVM-Variables primary_session_default_volume 1.0 -> 2.0
+[Platform][Track]: Modified HMCONTROL NV variable for HM
+[Platform][Track]: add new nvm variable for HMCONTROLTIMEOUT 5
+[Platform][Track] NVM-Variables modification for future releases. modified nvm variables secondary_session_default_volume 1.0 -> 1.5, disc_timeout 25 -> 50, MCU-Version 12 -> 14
+14572/[Platform][FOTA]:peripheral update script issue. optimized peripheral_updater,mcu_upgrade and dsp_upgrade scripts and modified status conf parameter from boot_stats.conf file to upgrade_Stats nvm-variable. modified services init files according to new updater script. changed boot audio file location to firmware-updates package. nvm variable reset upgrade_Stats statement in sysupgrade file.
+14521/[Platform][NVM-Variables]Led QUERY_RESPONSE_TIMEOUT issue
+14520/[Platform][modification]:Enabling Luci material theme in the build as default and Removed Led off functionality in startup scripts
+
+Outstanding issues/ features pending (unresolved defects, workarounds, installation issues etc):  
+------------------------------------------------------------------------------------------------
+Bug #14481:[Platform]Curl is not working in shifu base SDK
+
+
+
+Release note ([firmware updates], date: 23-04-2018 , version #1.2):
+Features and Changes:
+---------------------
+modified NVM-Variable QUERY_RESPONSE_TIMEOUT,  
+        QUERY_RESPONSE_TIMEOUT    600
+Enabling Luci material theme in the build as default and Removed Led off functionality in startup scripts
+Manual Version modification in build of shifu-SDK BUILD ID:TRQ44INDDURD-1.2
+Upgraded LED Patterns and opcodes as per Ux-Team suggestion, modified mcu firmware version to 14
+fix for Curl is not working in shifu base SDK. ca-certificates and curl upgraded to ca-certificates 20170717 and curl 7.52.1 (In-Progress not closed)
+modified lsb_release tool to get build info and version
+added env variable DMCheckStack and modified build id info
+added env variable for log control
+ 
+Outstanding issues/ features pending (unresolved defects, workarounds, installation issues etc):  
+------------------------------------------------------------------------------------------------
+Bug #14481:[Platform]Curl is not working in shifu base SDK
+
+
+
+Release note ([firmware updates], date: 30-03-2018 , version #1.1):
+
+Features and Changes:
+---------------------
+modified uboot-env.conf for updating few variables mentioned below.
+updated:
+    va_uri    /v2/hub/voice/extract
+    Newly add:
+    MACorePort    33333
+    VOLUME_TIMEOUT    1
+    MIC_MUTE_TIMEOUT    3
+    ERROR_TIMEOUT    3
+    ALARM_TIMEOUT    1
+    MUSIC_TIMEOUT    8
+    DEVICE_CONNECTED_TIMEOUT    2
+    DEVICE_DISCOVERY_TIMEOUT    1
+    QUERY_RESPONSE_TIMEOUT    15
+    SETUP_MODE_TIMEOUT    30
+    BT_CONNECTED_TIMEOUT    2
+    BT_DISCOVERY_TIMEOUT    1
+    ANY_PATTERN_TIMEOUT    30
+    ROUTER_TIMEOUT    4
+    OFFLINE_TIMEOUT    5
+    
+2. NVM Factory reset Integration with wps/reset button.
+
+Outstanding issues/ features pending (unresolved defects, workarounds, installation issues etc):  
+------------------------------------------------------------------------------------------------
+Bug #14481:[Platform]Curl is not working in shifu base SDK
+ 
+ 
+ 
+Release note ([firmware updates], date: 16-03-2018 , version #1.0):
+Features and Changes:
+---------------------------------
+integrated peripherals updater startup script
+integrated dsp upgrade tool
+integrated mcu upgrade tool
+integrated dsp, mcu, zigbee firmware directories to hold respective firmwares
+integrated SDK version information
+integrated banner as shifu-thub
+integrated lsb_release to display product release information
+integrated wav files directory to hold firmware update related .wav files
+Updates MCU, DSP firmware after system reboots
+After peripherals update LED boot-up animation starts and turns-off at the start of voice assistant
+integrated uboot-env handling script in peripherals_updater and uboot-env.conf file.
+ 
+Outstanding issues/ features pending (unresolved defects, workarounds, installation issues etc):  
+------------------------------------------------------------------------------------------------
+Bug #14481:[Platform]Curl is not working in shifu base SDK
+Feature #14510:[Platform][Track] Manual Version modification in build of shifu-SDK
+
+Installation guide:
+Enable smartron-packages-> firmware-updates package in make menuconfig and compile.
+ 
+
+System Requirements:
+Mandatory back-up power.
+ 
+Troubleshooting /logs:
+command to logs :
+logread  | grep FP: (or)   cat /overlay/thublogread.txt  | grep FP:
+
+ 
+Other Resources and Links:
+#check sheet-Ver.2-TCL
+Test plan - https://docs.google.com/spreadsheets/d/1cf5eJdoy7RFdEUOo5SfAg6jqU3vuQrmohSirOOssAE8/edit?usp=sharing
+

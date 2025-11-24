@@ -1,0 +1,9 @@
+// PSKEY_ANA_FREQ
+&01fe = 6590
+
+// Host transport
+// BCSP
+&01F9 = 0002
+
+// Bit rate for 8811, 921600
+&01ea = 000e 1000

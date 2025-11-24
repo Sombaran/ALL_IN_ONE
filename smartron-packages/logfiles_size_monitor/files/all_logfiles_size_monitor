@@ -1,0 +1,21 @@
+#!/bin/sh
+#====================================================================#
+# Copyright (c) 2018 Smartron India Pvt. Ltd. All rights reserved.
+# Version:2.0
+# Last modified: jayaram.matta@smartron.com, 13/05/2019
+#====================================================================#
+while [ 1 ]
+do
+        sleep 15
+
+        applog_filesize=`ls -l /overlay/shifu_apps.log | awk '{print $5}'`
+        # Check shifu_apps.log file size is greater than 20 MB or not
+        if [ $applog_filesize -ge 20971520 ]; then
+               logrotate -f --log shifu_apps.log /etc/logrotate.d/syslog-ng.log
+         fi
+        kernellog_filesize=`ls -l /overlay/kernel.log | awk '{print $5}'`
+        # Check kernel.log file size is greater than 20 MB or not
+        if [ $kernellog_filesize -ge 20971520 ]; then
+               logrotate -f --log kernel.log /etc/logrotate.d/syslog-ng.log
+         fi
+done

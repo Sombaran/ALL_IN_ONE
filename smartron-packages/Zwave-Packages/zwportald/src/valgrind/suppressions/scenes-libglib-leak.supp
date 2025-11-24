@@ -1,0 +1,20 @@
+{
+	<scenes-gthread-gprivate_set-malloc>
+	Memcheck:Leak
+	fun:malloc
+	fun:g_private_get_impl
+	fun:g_private_set
+	fun:g_thread_proxy
+	fun:start_thread
+}
+{
+	<scenes-gthread-gmain_loop_run-malloc>
+	Memcheck:Leak
+	fun:malloc
+	fun:g_malloc
+	fun:g_main_context_iterate.isra.24
+	fun:g_main_loop_run
+	fun:g_thread_proxy
+	fun:start_thread
+}
+

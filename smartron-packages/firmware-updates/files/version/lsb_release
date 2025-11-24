@@ -1,0 +1,72 @@
+#!/bin/sh
+
+#***********************************************************************************************************************************************************#
+# FILENAME:		lsb_release
+# 
+# DESCRIPTION:     This is a tool/script to display the version and product release information. 
+#				COMMAND:
+#						lsb_release [option]
+#
+#						[option]
+#						  -a	Displays entire information about release 
+#						  -b	Displays Build ID
+#						  -h	Help
+#						  -v	Displays Build Number
+#
+# AUTHOR :  janardhanachari.kell@smartron.com, 04/04/2018
+# 
+# VERSION:  0.2
+# 
+# Copyright (C) 2018 Smartron India Private Limited - All Rights Reserved
+#*********************************************************************************************************************************************************#
+
+rel=$(cat /etc/openwrt_release | grep "RELEASE" | awk -F "=" '{print $2}'| awk -F "'" '{print $2}')
+rev=$(cat /etc/openwrt_release | grep "REVISION" | awk -F "=" '{print $2}'| awk -F "'" '{print $2}')
+release="$rel.$rev"
+dist_id=$(cat /etc/openwrt_release | grep "ID" | awk -F "=" '{print $2}'| awk -F "'" '{print $2}')
+desc="$(cat /etc/openwrt_release | grep "DESCRIPTION" | awk -F "=" '{print $2}'| awk -F "'" '{print $2}') $rel"
+code=$(cat /etc/openwrt_release | grep "CODENAME" | awk -F "=" '{print $2}'| awk -F "'" '{print $2}')
+tag="$(cat /etc/openwrt_release | grep "BUILD" | awk -F "=" '{print $2}'| awk -F "'" '{print $2}')"
+
+all()
+{
+	echo "Distributor ID	:$dist_id"
+	echo "Description	:$desc"
+	echo "Release		:$release"
+	echo "Codename	:$code"
+	echo "Build ID	:$tag"
+}
+
+build()
+{
+	echo $tag
+}
+
+version()
+{
+	echo $tag | awk -F "-" '{print $2}'
+}
+
+help()
+{
+	printf "COMMAND:\n\tlsb_release [option]\n\n\t[option]\n\t  -a\tDisplays entire information about release \n\t  -b\tDisplays Build ID\n\t  -h\tHelp\n\t  -v\tDisplays Build Number\n" 
+}
+
+case $1 in
+	-h)	
+		help;
+		;;
+	-a)
+		all;
+		;;
+	-b)                                                                                                                                                                  
+          build;                                                                                                                                                         
+          ;;
+	-v)
+		version;
+		;;
+	*)	
+		help;
+		;;
+esac
+

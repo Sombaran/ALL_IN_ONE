@@ -1,0 +1,68 @@
+#!/bin/sh /etc/rc.common
+
+START=63
+
+BT_ADDR="00:02:5B:00:A5:A5"
+
+bt_up(){
+  hciconfig hci0 up
+
+  count=5
+  while [ $count -gt 0 ]
+  do
+    if hciconfig hci0 lestates >/dev/null; then
+      break;
+    fi
+    let count=$count-1
+    sleep 1
+  done
+
+  if [ $count -eq 0 ];then
+    echo "Failed to enable hci0" >> /tmp/log/bccmd
+  fi
+}
+
+update_bt_mac() {
+    #ETH1_ADDR=`ifconfig |grep ath1 |awk '{print $5}'`
+    BT_ADDR=`fw_printenv  bt_mac | awk -F '=' '{print $2}'`
+    cfg_bt_addr=`echo "$BT_ADDR" | awk -F ':' '{print "00"$4" "$5$6" ""00"$3" "$1$2}'`
+    echo "&0001 = " $cfg_bt_addr > /etc/bluetooth/csr8x11-mac.psr
+}
+
+update_bt_name() {
+    ssidmac1=$(cat /sys/class/net/eth0/address | cut -d ':' -f 5)
+    ssidmac2=$(cat /sys/class/net/eth0/address | cut -d ':' -f 6)
+    sed -i "s/Name = t.hub-BT.*/Name = t.hub-BT-$ssidmac1$ssidmac2/g" /etc/bluetooth/main.conf
+}
+
+# gpio 61 - CSR8811A12 EN pin
+# gpio 48 - CSR8811A12 RST pin
+bccmd_init_csr8x11() {
+  update_bt_mac
+  #update_bt_name
+  #killall hciattach
+  gpio.sh 61 out 0
+  gpio.sh 61 out 1
+  gpio.sh 48 out 0
+  gpio.sh 48 out 1
+  #hciattach /dev/ttyQHS0 bcsp 115200 noflow
+  sleep 1
+  bt_up
+  sleep 1
+  bccmd -t hci -d hci0 psload /etc/bluetooth/csr8x11-a12-bt4.2-patch.psr
+  bccmd -t hci -d hci0 psload /etc/bluetooth/csr8x11-coex.psr
+  bccmd -t hci -d hci0 psload /etc/bluetooth/csr8x11-mac.psr
+  bccmd -t hci -d hci0 psload /etc/bluetooth/csr8x11-final.psr
+  sleep 1
+  bccmd -t hci -d hci0 warmreset
+  #/etc/init.d/bluetoothd restart
+  #bccmd -t hci -d hci0 warmreset
+  #killall hciattach
+  #hciattach /dev/ttyQHS0 bcsp 921600
+  bt_up
+}
+
+start() {
+  bccmd_init_csr8x11
+}
+

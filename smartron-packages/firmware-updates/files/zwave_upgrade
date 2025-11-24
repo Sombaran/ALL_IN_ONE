@@ -1,0 +1,93 @@
+#!/bin/sh
+
+#***********************************************************************************************************************************************************#
+# FILENAME:		zwave_upgrade
+#
+# DESCRIPTION:     This is a tool/script to upgrade zwave firmware. This will check the mcu firmware files in /etc/fw/zwave directory.
+#			    it will trigger from peripheral_updater init process if, firmware files presents in /etc/fw/zwave directory.
+#
+# AUTHOR :  janardhanachari.kella@smartron.com, 16/05/2018
+#
+# VERSION:  0.1
+#
+# Copyright (C) 2018 Smartron India Private Limited - All Rights Reserved
+#*********************************************************************************************************************************************************#
+
+## log function to invoke user notice logs#
+log() {
+	echo "FP:$@"		#Enable, if you want console logs
+}
+
+check_version()
+{
+        #check if empty
+        if [ "$1" == "" ] || [ "$2" == "" ]; then
+                check_version_result=0;
+        fi
+        #check if number
+        if ! [ "$1" -eq "$1" ] 2> /dev/null || ! [ "$2" -eq "$2" ] 2> /dev/null; then
+                check_version_result=0;
+        fi
+}
+
+do_upgrade()
+{
+        info "Start to upgrade zwave firmware..."
+        zwave_programmer -f $1
+        if [ $? != 0 ]; then
+                err "zwave firmware upgrade failed."
+                exit 1;
+        fi
+}
+
+if [ `ls /etc/fw/zwave 2>/dev/null | wc -l`  = 0 ]; then
+        log "Can't find any zwave update file"
+        return 0
+fi
+
+# read the fw version from current hw.
+/etc/init.d/zw_reset_service stop
+/etc/init.d/zipgateway stop
+/etc/init.d/zw_service stop
+hw_v=$(zwave_tool -V | grep "Ver="| awk -F "=" '{print $2}'| awk -F " " '{print $2}')
+hw_v1=`echo $hw_v | awk -F "." '{print $1}'`
+hw_v2=`echo $hw_v | awk -F "." '{print $2}'`
+
+log "current zwave firmware version:$hw_v1.$hw_v2"
+
+check_version $hw_v1 $hw_v2;
+if [ "$check_version_result" == "0" ]; then
+        log "fw version of zwave fw check fail"
+        exit 1;
+fi
+
+# make sure the directory path of zigbee fw and bootloader is the same, and there's only one bin file
+# the format of mcu fw file name must be "*STM32F030_Userdddd_v0.xx.bin", because mcu verion only has 1 byte,
+# only the minor verion "xx" is effective, this script will search the minor verion number "xx" in file name.
+zwavefw_dir=/etc/fw/zwave/
+
+zwavefw_file=`ls "$zwavefw_dir"*.hex| grep 5101 | head -n 1`
+fw_v=`echo $zwavefw_file | awk -F "zwave-fw-5101-" '{printf $2}' | awk -F ".hex" '{print $1}'`
+fw_v1=`echo $fw_v | awk -F "." '{printf $1}'`
+fw_v2=`echo $fw_v | awk -F "." '{printf $2}'`
+log "new zwave firmware version:$fw_v1.$fw_v2"
+
+check_version $fw_v1 $fw_v2;
+if [ "$check_version_result" == "0" ]; then
+	   log "fw version of zwave dir check fail"
+	   exit 1;
+fi
+
+# compare the version number
+if [ "$hw_v1" -lt "$fw_v1" -a "$hw_v1" -ne "$fw_v1" ]; then
+	   do_upgrade $zwavefw_file ;
+	   exit 0;
+elif [ "$hw_v2" -lt "$fw_v2" -a "$hw_v2" -ne "$fw_v2" ]; then
+	   do_upgrade $zwavefw_file ;
+	   exit 0;
+fi
+
+log "No need to upgrade zwave firmware."
+
+
+exit 0;

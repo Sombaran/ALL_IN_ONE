@@ -1,0 +1,50 @@
+#!/bin/sh /etc/rc.common
+#=====================================================================================#
+# Copyright (c) 2018 Smartron India Pvt. Ltd. All rights reserved.
+# Version:0.3
+# Last modified: nagendra@smartron.com, priyanka.polumatla@smartron.com, 03/04/2019
+#=====================================================================================#
+
+. /tmp/updated
+
+file=/root/va_data/alexa/AlexaClientSDKConfig.json
+device_id=$(fw_printenv | grep DEVICE_ID | awk -F "=" '{print $2}')
+def_file1=/rom/root/va_data/alexa/AlexaClientSDKConfig.json
+def_file2=/rom/rom/root/va_data/alexa/AlexaClientSDKConfig.json
+filesize=$(stat -c%s "$file")
+
+START=86
+
+USE_PROCD=1
+
+start_service() {
+	while [ "$UPDATED" != "1" ];do
+		sleep 1;
+	done
+##Bug #21562 : Work around solution
+	if [ ! -e $file -o ! -s $file -o $filesize -le 10  ]; then
+	   logger -p user.crit "ALEXA: AlexaClientSDKConfig.json does not have default content"
+	   if [ -e $def_file1 ]; then
+		cp $def_file1 $file
+	   else
+		cp $def_file2 $file
+	   fi		
+	fi
+#### End of Bug #21562
+	sed -i 's/"deviceSerialNumber":.*/"deviceSerialNumber":'\"$device_id\",'/' $file
+	logger -p user.notice "[ALEXA]: AVS is starting..."
+	procd_open_instance
+	procd_set_param command /usr/bin/SampleApp "/root/va_data/alexa/AlexaClientSDKConfig.json"
+	procd_set_param respawn
+	procd_close_instance
+	logger -p user.crit "[ALEXA]: AVS service started"
+}
+
+stop_service() {
+	killall SampleApp
+	if [ "$?" = "0" ] ; then
+		logger -p user.crit "[ALEXA]: AVS service stopped"
+	else 
+		logger -p user.crit "[ALEXA]: No AVS service to stop"
+	fi
+}

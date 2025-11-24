@@ -1,0 +1,5 @@
+ACLOCAL_AMFLAGS = -I m4
+
+SUBDIRS = networks
+
+EXTRA_DIST =

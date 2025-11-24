@@ -1,0 +1,52 @@
+#!/bin/sh
+
+FILE=/etc/config/system
+
+logger -p user.info "[Timezone]: Starting configuration process "
+
+ZN=""
+
+while [ "$ZN" = "" ]
+do
+    # Fetch timezone from Ubuntu's geoip server
+    ZN=`wget -O - -q http://geoip.ubuntu.com/lookup 2> /dev/null | sed -n -e 's/.*<TimeZone>\(.*\)<\/TimeZone>.*/\1/p'`
+    if [ "$ZN" = "" ];then
+        sleep 5;
+    fi
+done
+
+source /usr/sbin/fread-write-protect /etc/zonename $ZN
+
+if [ `cat $FILE | grep zonename | wc -l` -eq 0 ]; then
+
+    sed -i "3 a \\\toption zonename '$ZN'" $FILE
+
+else
+
+    sed -i "s,.*zonename.*,\toption zonename '$ZN',g" $FILE
+
+fi
+
+TZ=`cat /etc/data/tz.dat | grep "$ZN" |awk -F "," '{print $2}'`
+
+if [ `cat $FILE | grep timezone | wc -l` -eq 0 ]; then
+
+    sed -i "3 a \\\toption timezone '$TZ'" $FILE
+
+else
+
+    sed -i "s,.*timezone.*,\toption timezone '$TZ',g" $FILE
+
+fi
+
+source /usr/sbin/fread-write-protect /etc/TZ $TZ
+
+uci set system.@system[0].zonename=$ZN
+
+uci set system.@system[0].timezone=$TZ
+
+/etc/init.d/sysntpd stop
+
+/etc/init.d/sysntpd start
+
+logger -p user.info "[Timezone]: configuration done!"

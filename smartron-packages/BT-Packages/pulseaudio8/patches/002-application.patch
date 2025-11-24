@@ -1,0 +1,145 @@
+diff -u -r pulseaudio-8.0-orig/src/modules/alsa/alsa-sink.c pulseaudio-8.0/src/modules/alsa/alsa-sink.c
+--- pulseaudio-8.0-orig/src/modules/alsa/alsa-sink.c	2015-12-31 11:58:35.000000000 +0530
++++ pulseaudio-8.0/src/modules/alsa/alsa-sink.c	2018-05-16 21:20:46.000000000 +0530
+@@ -62,7 +62,7 @@
+ 
+ #define DEFAULT_DEVICE "default"
+ 
+-#define DEFAULT_TSCHED_BUFFER_USEC (2*PA_USEC_PER_SEC)             /* 2s    -- Overall buffer size */
++#define DEFAULT_TSCHED_BUFFER_USEC (400*PA_USEC_PER_MSEC)             /* 2s    -- Overall buffer size */
+ #define DEFAULT_TSCHED_WATERMARK_USEC (20*PA_USEC_PER_MSEC)        /* 20ms  -- Fill up when only this much is left in the buffer */
+ 
+ #define TSCHED_WATERMARK_INC_STEP_USEC (10*PA_USEC_PER_MSEC)       /* 10ms  -- On underrun, increase watermark by this */
+diff -u -r pulseaudio-8.0-orig/src/modules/bluetooth/bluez5-util.c pulseaudio-8.0/src/modules/bluetooth/bluez5-util.c
+--- pulseaudio-8.0-orig/src/modules/bluetooth/bluez5-util.c	2015-09-10 10:21:41.000000000 +0530
++++ pulseaudio-8.0/src/modules/bluetooth/bluez5-util.c	2018-05-28 14:26:41.000000000 +0530
+@@ -195,7 +195,10 @@
+ 
+ void pa_bluetooth_transport_unlink(pa_bluetooth_transport *t) {
+     pa_assert(t);
+-
++    /**************** Customised for shifu **********************************/
++    pa_bluetooth_transport_set_state(t, PA_BLUETOOTH_TRANSPORT_STATE_IDLE);
++    /***************************end**********************************************/
++	
+     pa_bluetooth_transport_set_state(t, PA_BLUETOOTH_TRANSPORT_STATE_DISCONNECTED);
+     pa_hashmap_remove(t->device->discovery->transports, t->path);
+     t->device->transports[t->profile] = NULL;
+diff -u -r pulseaudio-8.0-orig/src/modules/bluetooth/module-bluez5-device.c pulseaudio-8.0/src/modules/bluetooth/module-bluez5-device.c
+--- pulseaudio-8.0-orig/src/modules/bluetooth/module-bluez5-device.c	2015-12-31 11:58:35.000000000 +0530
++++ pulseaudio-8.0/src/modules/bluetooth/module-bluez5-device.c	2018-05-28 14:27:08.000000000 +0530
+@@ -947,7 +947,7 @@
+     data.module = u->module;
+     data.card = u->card;
+     data.driver = __FILE__;
+-    data.name = pa_sprintf_malloc("bluez_source.%s", u->device->address);
++    data.name = pa_sprintf_malloc("bluez_source");
+     data.namereg_fail = false;
+     pa_proplist_sets(data.proplist, "bluetooth.protocol", pa_bluetooth_profile_to_string(u->profile));
+     pa_source_new_data_set_sample_spec(&data, &u->sample_spec);
+@@ -1104,7 +1104,7 @@
+     data.module = u->module;
+     data.card = u->card;
+     data.driver = __FILE__;
+-    data.name = pa_sprintf_malloc("bluez_sink.%s", u->device->address);
++    data.name = pa_sprintf_malloc("bluez_sink");
+     data.namereg_fail = false;
+     pa_proplist_sets(data.proplist, "bluetooth.protocol", pa_bluetooth_profile_to_string(u->profile));
+     pa_sink_new_data_set_sample_spec(&data, &u->sample_spec);
+@@ -1356,7 +1356,8 @@
+                         pollfd->revents & POLLPRI ? "POLLPRI " :"",
+                         pollfd->revents & POLLNVAL ? "POLLNVAL " :"");
+ 
+-            if (pollfd->revents & POLLHUP) {
++           /* Commented for Shifu Debugging
++           if (pollfd->revents & POLLHUP) {
+                 pollfd = NULL;
+                 teardown_stream(u);
+                 do_write = 0;
+@@ -1365,6 +1366,7 @@
+                 pa_asyncmsgq_post(pa_thread_mq_get()->outq, PA_MSGOBJECT(u->msg), BLUETOOTH_MESSAGE_STREAM_FD_HUP, NULL, 0, NULL, NULL);
+             } else
+                 goto fail;
++           */
+         }
+ 
+         if (u->source && PA_SOURCE_IS_LINKED(u->source->thread_info.state)) {
+@@ -1675,6 +1677,8 @@
+             return PA_AVAILABLE_NO;
+         case PA_BLUETOOTH_TRANSPORT_STATE_PLAYING:
+             return PA_AVAILABLE_YES;
++	case PA_BLUETOOTH_TRANSPORT_STATE_IDLE:
++	    return PA_AVAILABLE_YES;
+         default:
+             return PA_AVAILABLE_UNKNOWN;
+     }
+@@ -2046,10 +2050,16 @@
+     pa_assert(u);
+ 
+     if (t == u->transport && t->state <= PA_BLUETOOTH_TRANSPORT_STATE_DISCONNECTED)
+-        pa_assert_se(pa_card_set_profile(u->card, pa_hashmap_get(u->card->profiles, "off"), false) >= 0);
+-
++    	{
++    		pa_log_debug("%s(): setting card to off",__func__);
++	        pa_assert_se(pa_card_set_profile(u->card, pa_hashmap_get(u->card->profiles, "off"), false) >= 0);
++    	}
++    pa_log_debug("%s(): going into handle_transport_state_change",__func__);
+     if (t->device == u->device)
+-        handle_transport_state_change(u, t);
++    	{
++    		pa_log_debug("%s(): handle_transport_state_change",__func__);
++    		handle_transport_state_change(u, t);
++    	}
+ 
+     return PA_HOOK_OK;
+ }
+diff -u -r pulseaudio-8.0-orig/src/modules/module-intended-roles.c pulseaudio-8.0/src/modules/module-intended-roles.c
+--- pulseaudio-8.0-orig/src/modules/module-intended-roles.c	2015-09-10 10:21:41.000000000 +0530
++++ pulseaudio-8.0/src/modules/module-intended-roles.c	2019-01-12 15:20:51.000000000 +0530
+@@ -81,20 +81,25 @@
+         return PA_HOOK_OK;
+     }
+ 
+-    if (new_data->sink) {
++    /*if (new_data->sink) {
+         pa_log_debug("Not setting device for stream %s, because already set.", pa_strnull(pa_proplist_gets(new_data->proplist, PA_PROP_MEDIA_NAME)));
+         return PA_HOOK_OK;
+     }
++    */
+ 
+-    if (!(role = pa_proplist_gets(new_data->proplist, PA_PROP_MEDIA_ROLE))) {
+-        pa_log_debug("Not setting device for stream %s, because it lacks role.", pa_strnull(pa_proplist_gets(new_data->proplist, PA_PROP_MEDIA_NAME)));
+-        return PA_HOOK_OK;
+-    }
++    // if (!(role = pa_proplist_gets(new_data->proplist, PA_PROP_MEDIA_ROLE))) {
++    //     pa_log_debug("Not setting device for stream %s, because it lacks role.", pa_strnull(pa_proplist_gets(new_data->proplist, PA_PROP_MEDIA_NAME)));
++    //     return PA_HOOK_OK;
++    // }
+ 
+     /* Prefer the default sink over any other sink, just in case... */
+     if ((def = pa_namereg_get_default_sink(c)))
+         if (role_match(def->proplist, role) && pa_sink_input_new_data_set_sink(new_data, def, false))
+             return PA_HOOK_OK;
++        else
++            pa_log_debug("%s(): [Shifu][PA] Setting switching failure", __func__);
++    else
++        pa_log_debug("%s(): [Shifu][PA] Getting default sink failure", __func__);
+ 
+     /* @todo: favour the highest priority device, not the first one we find? */
+     PA_IDXSET_FOREACH(s, c->sinks, idx) {
+diff -u -r pulseaudio-8.0-orig/src/modules/module-loopback.c pulseaudio-8.0/src/modules/module-loopback.c
+--- pulseaudio-8.0-orig/src/modules/module-loopback.c	2016-01-18 12:53:36.000000000 +0530
++++ pulseaudio-8.0/src/modules/module-loopback.c	2018-05-16 16:05:31.000000000 +0530
+@@ -215,10 +215,9 @@
+     } else {
+         if (base_rate < new_rate + 20 && new_rate < base_rate + 20)
+           new_rate = base_rate;
+-        /* Do the adjustment in small steps; 2‰ can be considered inaudible */
+-        if (new_rate < (uint32_t) (old_rate*0.998) || new_rate > (uint32_t) (old_rate*1.002)) {
++	if (new_rate < (uint32_t) (old_rate*0.998) || new_rate > (uint32_t) (old_rate*1.002)) {
+             pa_log_info("New rate of %u Hz not within 2‰ of %u Hz, forcing smaller adjustment", new_rate, old_rate);
+-            new_rate = PA_CLAMP(new_rate, (uint32_t) (old_rate*0.998), (uint32_t) (old_rate*1.002));
++            new_rate = new_rate;
+         }
+     }
+ 

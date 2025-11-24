@@ -1,0 +1,40 @@
+BlueZ AVRCP API Description
+---------------------------
+
+Methods         void bt_avrcp_command(string mac_addr, string player_cmd)
+
+                    This Method Check for the Media Player Path from the remote 
+                    device and Passes the avrcp commands to the remote device
+
+                    Parameters that may be used to avrcp commands to the remote 
+                    device:
+                    string mac_addr     : Mac-Address of the remote device
+                    string player_cmd   : avrcp instruction to remote device 
+                                          mediaplayer
+
+                    Possible errors:    BTError: Bluetooth Adapter Not Found
+                                        BTError: Bluetooth Device Not Found
+                                        BTError: Bluetooth media not found
+                                        BTError: Bluetooth mediaplayer not Found
+                                        BTError: BT avrcp mediaplayer Error
+                                        OSError: OS Functionality Error
+                                        SystemError: Internal System issues
+                                        MemoryError: Memory issues detected
+
+
+Properties      string mac_addr [readonly]
+                
+                The Bluetooth remote device address format="XX:XX:XX:XX:XX:XX"
+
+                string player_cmd [readonly]
+
+                MediaPlayer commands to pass the avrcp instructions to remote
+                device
+
+                Possible commands:
+                "play"      - Play track
+                "pause"     - Pause track
+                "stop"      - Stop track
+                "next"      - Playing next track
+                "previous"  - Playing previous track
+                "restart"   - Restarts the present track

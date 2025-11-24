@@ -1,0 +1,17 @@
+#ifndef _GPIO_NUM_TBL_H
+#define _GPIO_NUM_TBL_H
+
+#define GPIO_AUDIO_PLAYBACK_SEL	(40)
+#define GPIO_MCU_RESET	(46)
+#define GPIO_CSR8811_RESET	(48)
+#define GPIO_CX20921_RESET	(49)
+#define GPIO_MCU_BOOT_SEL	(60)
+#define GPIO_CSR8811_ENABLE	(61)
+#define GPIO_FAN_THERMAL_DETECT	(63)
+#define GPIO_FAN_LOCK_DETECT	(64)
+#define GPIO_CX20921_INT1	(65)
+#define GPIO_SPEAKER_AMP	(67)
+#define GPIO_AUDIO_JACK_DETECTION	(68)
+#define GPIO_FAN_POWER	(69)	// low active
+
+#endif /* _GPIO_NUM_TBL_H */

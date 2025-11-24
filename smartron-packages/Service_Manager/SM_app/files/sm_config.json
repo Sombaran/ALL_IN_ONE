@@ -1,0 +1,8 @@
+{
+  "chk_network_timeout":500,
+  "notifier_timeout":500,
+  "prev_IP" : "192.168.221.1",
+  "ip_timeout":30,
+  "max_count":20,
+  "reconnection_timeout":500
+}

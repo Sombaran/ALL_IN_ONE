@@ -1,0 +1,94 @@
+Release note ([LED-MODULE], date: 14-03-2018 , version #1.1)
+-----------------------------------------------------------
+
+Features and Changes:
+---------------------
+1. Time out for setup mode is removed.
+2. Alarm pattern optimised:
+   	Bug #14145 has resolved
+   
+3. Wake word detection tone included.
+
+
+Outstanding issues/ features pending:
+-------------------------------------
+1. Patterns need to be prioritised based on UX team suggestions.
+2. Need to implement few patterns.
+
+3. Need to identify use case scenarios for few patterns.
+4. MIC MUTE and ERROR patterns behavior need to be decide.
+5. Button action task need to be decide.
+
+
+
+******************************************************************
+
+
+Release note ([LED-MODULE], date: 14-03-2018 , version #1.0)
+-----------------------------------------------------------
+
+Features and Changes:
+---------------------
+1. Implemented different types of LED patterns.
+2. Displaying of a pattern corresponding to action going on in shifu device.
+3. Storing patterns in a queue with respect to priority.
+4. Resuming of queued patterns.
+5. Default time out for each pattern. 
+6. Implemented Stub client(led-test-client) to test the led module.
+7. This version supports below led-patterns:
+	
+	Booting
+	Set up Mode
+	Firmware update
+	volume control
+	Wake-Word detection
+	Query Processing Mode
+	Query Response mode
+	Alarm
+	IOT Device discovery(dummy pattern)
+	IOT Device connected
+	Blutooth discovery
+	Blutooth connected
+	Mic-Mute Pattern
+	Music Visualizer
+
+
+Outstanding issues/ features pending:
+-------------------------------------
+1. Patterns need to be prioritised based on UX team suggestions.
+2. Need to implement few patterns.
+
+3. Need to identify use case scenarios for few patterns.
+4. MIC MUTE and ERROR patterns behavior need to be decide.
+5. Button action task need to be decide.
+
+
+Installation guide:
+-------------------
+1. Service will auto start when device booted.
+
+2. To start/stop the led-service, execute below cammands.
+start:
+/etc/init.d/led-service start
+
+stop:
+/etc/init.d/led-service stop
+
+
+System Requirements:
+--------------------
+1. shifu-led-interface.
+
+
+Troubleshooting /logs:
+----------------------
+1. Basic logger implemented.
+	command to logs : "logread -f | grep LS"  (or)   "cat /overlay/thublogread.txt"
+	            
+	           
+Other Resources and Links:
+--------------------------
+1. LED-MODULE priority sheet
+https://docs.google.com/spreadsheets/d/1uwobxZWJ9SphQ88A0hDbmJTfL_S8BkTcWqq8Q-F3ZZo/edit?usp=sharing
+
+

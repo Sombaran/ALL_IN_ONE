@@ -1,0 +1,91 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+import argparse
+import sys
+import os
+
+sys.path.append('..')
+
+try:
+    import web_socket
+except ImportError:
+    print 'Modules Missing from System, Please check before running again'
+    sys.exit()
+
+
+def welcome():
+    print "=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+"
+    print "       Web Socket Command Line Utility        "
+    print "          Copyright Smartron Pvt. Ltd.          "
+    print "=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+"
+
+"""
+usage: wscmd [-h] [-A] [-S] [-M] [-H] [--dmport DM_PORT] [--wsport WS_PORT]
+             [--version]
+
+optional arguments:
+  -h, --help        show this help message and exit
+  -A                Start all service
+  -S                Start SocketIO Service
+  -M                Start mobile agent Service
+  -H                Start Web Socket Core Services
+  --dmport DM_PORT  Device Manager Port
+  --wsport WS_PORT  Web Socket Port
+  --version         show program's version number and exit
+"""
+parser = argparse.ArgumentParser()
+
+parser.add_argument('-A', action='store_true', dest='all_service',
+                    help='Start all service')
+
+parser.add_argument('-S', action='store_true', dest='socketio',
+                    help='Start SocketIO Service')
+
+parser.add_argument('-M', action='store_true', dest='mobile_agent',
+                    help='Start mobile agent Service')
+
+parser.add_argument('-H', action='store_true', dest='ws_core',
+                    help='Start Web Socket Core Services')
+
+parser.add_argument('--dmport', default=7373, type=int, action='store', dest='DM_Port',
+                    help='Please provide Device Manager Port')
+
+parser.add_argument('--wsport', default=7001, type=int, action='store', dest='WS_Port',
+                    help='Web Socket Port')
+
+parser.add_argument('--version', action='version', version='%(prog)s 0.0.3-dev beta')
+
+results = parser.parse_args()
+
+
+def main():
+    """
+    Main function to start service
+    """
+    if results.all_service:
+        print "All service will be start"
+        print "Web Socket Core will Start at {0} port".format(results.WS_Port)
+        print "Device Manager will be connected at {0} port".format(results.DM_Port)
+        web_socket.start_service()
+    else:
+        if results.ws_core:
+            print "Web Socket Core Service is Starting with port {0}, and will connect to Device Manager at {1}".format(
+                results.WS_Port, results.DM_Port)
+        if results.socketio:
+            print "Socket IO Client Serive Starting"
+        if results.mobile_agent:
+            print "Mobile Agent Service Starting"
+
+
+if __name__ == '__main__':
+    """
+    Main function to run while this tool will be used by terminal, will check how parameter passed is less than 2 
+    if yes then show usages and exit, otherwise run actual function based on parameter
+    """
+    if len(sys.argv) < 2:
+        welcome()
+        parser.print_usage()
+        sys.exit(1)
+    else:
+        welcome()
+        main()

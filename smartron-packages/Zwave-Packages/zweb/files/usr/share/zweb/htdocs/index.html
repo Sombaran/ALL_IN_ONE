@@ -1,0 +1,22 @@
+<html>
+<head>
+    <meta http-equiv="pragma" content="no-cache" />
+    <meta http-equiv="Cache-control" content="no-cache"/>
+    <meta http-equiv='expires' content='0'/>
+    <script type="text/javascript">
+        window.onload=function(){
+            var PCTABLETPLATFORM=1;
+            var PHONEPLATFORM=2;
+            var platform;
+            var ua = navigator.userAgent;
+            // determine OS
+            platform= PCTABLETPLATFORM;
+            if (ua.match(/iPhone/i) || ua.match(/Android/i)) platform=PHONEPLATFORM;
+            var redirect_page = "../ui/" + ((platform==PHONEPLATFORM)?"phone":"pc")+"/index.html";
+            window.location.replace(redirect_page);
+        }
+    </script>
+</head>
+<body>
+</body>
+</html>

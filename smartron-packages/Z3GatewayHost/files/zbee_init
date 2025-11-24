@@ -1,0 +1,13 @@
+#!/bin/sh
+
+#logger -p user.notice "before changing directory for zbee service in separate script"
+cd /exe_dir/
+
+var=`$(ps | grep "{zbee_init}" | awk '{print $5}'| grep '{zbee_init}')`
+
+if [ "$(ps | grep "{zbee_init}" | awk '{print $5}'| grep '{zbee_init}')" != "{Z3GatewayHost}" ]
+then
+    gpio.sh 40 out 1
+#    logger -p user.notice "in if check zbee_app $var"
+    Z3GatewayHost -n 1 -p /dev/ttyHS0
+fi

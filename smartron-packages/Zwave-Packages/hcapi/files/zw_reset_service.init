@@ -1,0 +1,33 @@
+#!/bin/sh /etc/rc.common
+#====================================================================#
+# Copyright (C) 2011 OpenWrt.org
+# Copyright (c) 2018 Smartron India Pvt. Ltd. All rights reserved.
+# Version:0.3
+# Last modified: nagendra@smartron.com, 14/06/2018
+#====================================================================#
+. /tmp/updated
+START=97
+STOP=20
+USE_PROCD=1
+
+start_service() {
+	while [ "$UPDATED" != "1" ];do
+		sleep 1;
+	done
+
+	logger -p user.notice "[ZW]: Z-Wave reset service starting"
+	procd_open_instance
+	procd_set_param command zwave_reset
+	procd_close_instance
+	logger -p user.crit "[ZW]: Z-Wave reset service started"
+}
+
+stop_service() {
+
+	killall zwave_reset
+	if [ "$?" = "0" ] ; then
+		logger -p user.crit "[ZW]: Z-Wave reset service stopped"
+	else 
+		logger -p user.crit "[ZW]: No Z-Wave reset service to stop"
+	fi
+}

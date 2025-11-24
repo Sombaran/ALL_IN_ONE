@@ -1,0 +1,11 @@
+------------------------------
+Readme for bluez 5.37 package:
+------------------------------
+
+Enable the following configurations in make menuconfig:
+Utilities->bluez5-daemon
+Utilities->bluez5-examples
+Utilities->bluez5-utils
+Libraries->bluez5-libs
+
+

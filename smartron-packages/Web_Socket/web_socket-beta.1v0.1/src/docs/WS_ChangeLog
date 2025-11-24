@@ -1,0 +1,19 @@
+Module Name: Web_Socket
++++++++++++++++++++++++++
+# Changelog
+All notable changes to this project will be documented in this file.
+Format [EmployeeID][RedmineID]:[Date] <changes>
+
+## [Unreleased]
+##[1.10.0]
+
+####Added
+- [1124][19706]:[15-11-2016] S2 security Feature is added.
+####Changed
+- [1124][19688]:[23-10-2018] Control time out is changed from 7 seconds to 8 seconds
+- [1124][19688]:[23-10-2018] Remove time out is changed from 30 seconds to 65 seonds
+####removed
+- [1124][19688]:[23-10-2018] Unnecessary thread for receiving the discovered devices list is removed after sending ack.
+####fixed
+
+########################################################################################################################

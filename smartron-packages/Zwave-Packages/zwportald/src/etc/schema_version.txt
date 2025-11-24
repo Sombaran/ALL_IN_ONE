@@ -1,0 +1,2 @@
+MAJOR=6
+MINOR=7

@@ -1,0 +1,30 @@
+Module Name: Python_BT
++++++++++++++++++++++++++
+## Changelog
+All notable changes to this project will be documented in this file.
+
+#################################################################################################
+##[0.1.0] - 07-02-2018
+
+##Added
+
+    - API call for changing the Shifu BT name.
+    - API call for Switching Bluetooth power
+    - API calls for Start, Stop, List and Status of Scanning Process
+    - API call for Discoverable mode to external Bluetooth devices
+    - API calls for Bluetooth Connect, Disconnect and Unpair
+    - API calls for listing connected and paired devices
+    - API calls for AVRCP commands Play, Pause, Stop, Next, Previous, Restart
+    - Auto power on when BLuetooth operation is initiated.
+    - Connecting one device at a time
+    - Auto Discoverable for 30secs when the Shifu is powered up.
+
+##changed
+##removed
+##fixed
+
+
+
+
+
+

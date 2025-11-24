@@ -1,0 +1,33 @@
+#!/bin/sh /etc/rc.common
+#====================================================================#
+# Copyright (C) 2011 OpenWrt.org
+# Copyright (c) 2018 Smartron India Pvt. Ltd. All rights reserved.
+# Version:0.3
+# Last modified: nagendra@smartron.com, 14/06/2018
+#====================================================================#
+. /tmp/updated
+START=95
+STOP=20
+USE_PROCD=1
+
+start_service() {
+	while [ "$UPDATED" != "1" ];do
+		sleep 1;
+	done
+	killall Z3GatewayHost 2> /dev/null
+	logger -p user.notice "[ZB]: Zigbee service starting"
+        procd_open_instance
+        procd_set_param command /exe_dir/zbee_init
+	procd_set_param respawn
+        procd_close_instance
+	logger -p user.crit "[ZB]: Zigbee service started"
+}
+
+stop_service() {
+	killall Z3GatewayHost
+	if [ "$?" = "0" ] ; then
+		logger -p user.crit "[ZB]: Zigbee service stopped"
+	else 
+		logger -p user.crit "[ZB]: No Zigbee service to stop"
+	fi
+}

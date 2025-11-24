@@ -1,0 +1,66 @@
+Package Version 3.0.5
+Dated: 04-06-2019
+1. Improved the validity check code to minimize the memory allocation.
+2. Implemented firmware update with secure header in the begining of the firmware image
+and signature in the end.
+3. version and model sting is added into the security header.
+4. backward compatibility has been kept to support the firmware update from the older
+image format until the newer format is rolled-up.
+
+Package Version 3.0.4
+Dated: 28-05-2019
+1. Redmine #22143: Coding error while verifying signature
+2. Added return codes for signature failure
+3. Removing files after signature failure
+
+Package Version 3.0.3
+Dated: 27-05-2019
+1. Redmine #22100: Fixed the socket response going to default switch condition
+2. Redmine #22086: Copy using image name to /tmp location instead of using *.img
+3. Optimizations - initialising pointers to NULL, removed duplication of client FOTA_WS condition verification 
+
+Package Version 3.0.2
+Dated: 07-05-2019
+1. Fixed returned codes in check_image_validity() function
+2. Freeing buffer and context when the image validation fails
+3. Fixed the scenario where download_status is left enabled when the hub is turned off while performing check for update 
+
+Package Version 3.0.1
+Dated: 06-05-2019
+1. Redmine #21912: Added firmware signature verification with SHA-256 and RSA-1024.
+
+Package Version 3.0.0
+Dated: 03-05-2019
+1. Redmine #21753: Fota online update wherein interface with Mobile Agent is removed
+2. Introduced UDP socket communication with Websocket and Device Manager
+3. Integrated code for thub and end device firmware update
+
+Package Version 2.0.0
+Dated: 23-04-2019
+
+1. Redmine #21233: Introduced new feature - end device firmware update
+
+Package Version 1.1.0
+Dated: 24-09-2018
+
+1. Redmine #19105, #19116, #19120, #19121, #19123 and #19135.
+2. Now passing last installed (in dnld_firmware_info.json) and min app version (in shifu_version.json) details to Mobile Agent.
+
+Package Version 1.0.4
+
+1. Added "JSON_PATH" key in version.json file for modifying between fota.json and fota_dev.json
+2. URL made dynamic fetching from version.json
+3. Added "created_at" key in update.json file for fetching image uploaded timestamp.
+4. Included release date timestamp in FCM Push.
+
+Package Version 1.0.2
+
+1. Downloads from fixed URL "https://d10fcns44yeyj9.cloudfront.net/json-file/fota.json"
+2. change log url and image url are fetched from above path.
+3. Validates image and performs FCM push accordingly.
+4. Call /usr/bin/fota_upadte D for above functionality.
+5. Call /usr/bin/fota_update U for initiating upgrade process.
+6. Checksum status is made null
+7. Upgrade status is made 1
+8. Added update.json config file
+9. Added version.json config file

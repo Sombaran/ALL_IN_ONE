@@ -1,0 +1,33 @@
+#!/bin/sh /etc/rc.common
+# Copyright (C) 2007 OpenWrt.org
+
+#start after dbus (60)
+START=62
+USE_PROCD=1
+PROG=/usr/bin/bluetoothd
+
+#Redmine 19543, 22209 start: Updating BT name with last 4 charcters as capitals and appending to t.hub-BT before starting bluetooth daemon
+update_bt_name() {
+    ssidmac1=$(cat /sys/class/net/eth0/address | cut -d ':' -f 5 | tr a-z A-Z)
+    ssidmac2=$(cat /sys/class/net/eth0/address | cut -d ':' -f 6 | tr a-z A-Z)
+    sed -i "s/Name = t.hub-BT.*/Name = t.hub-BT-$ssidmac1$ssidmac2/g" /etc/bluetooth/main.conf
+}
+#Redmine 19543, 22209 end
+
+start_service() {
+    #Redmine 21495 Start: BT_MAC_SET.sh file is removed, so commenting the below lines.
+	#chmod +x /etc/bluetooth/BT_MAC_SET.sh
+	#/etc/bluetooth/BT_MAC_SET.sh
+	#Redmine 21495: End
+	update_bt_name
+	procd_open_instance
+	procd_set_param command "$PROG" -n
+	#Redmine 20343 start: Automatically restarts the daemon if it is killed 
+	procd_set_param respawn
+	#Redmine 20343 stop
+	procd_close_instance
+}
+
+stop_service() {
+	kill -9 `ps | grep bluetoothd | grep -v grep | awk '{print $1}'`
+}

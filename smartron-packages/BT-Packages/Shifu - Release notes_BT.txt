@@ -1,0 +1,110 @@
+Release note identifier ([BT], date:4/4/2018, version 1.2)
+-----------------------------------------------------------
+
+Features and changes:
+- LED pattern for Scanning and Connection Establishment
+- Voice Assistance Integration for Source AVRCP controls(Play, Pause, Previous, Next, Restart, Connect, Disconnect)
+- BT Module has a Module logger file to set the priority
+- Fixed the bugs with Discovered device list after stop discovery
+- Differentiating between BT and eros music
+- Bluetooth External speaker integrated and default connects to HFP profile
+
+Outstanding issues/ features pending:
+- TTS(Text-to-Speech) Integration for Scan, Connect and Disconnect
+- Noise cancellation while playing music from source or sink
+- Latency: Audio synchronisation with video while playing from bluetooth
+- External Speaker AVRCP integration with Gstreamer
+- Issue with A2DP killing when switching to A2DP sink profile
+- switching between internal shifu speaker and external bluetooth speaker while streaming music.
+
+Installation guide:
+- Enable the configurations in make menuconfig for Python_BT package and compile. The module will be enabled by default.
+
+System Requirements :
+-bluez Version 5.37
+-pulseaudio Version 8
+-dbus-glib Version 0.80
+-pygobject Version 2.21.5
+-dbus-python Version 0.83.0
+
+Troubleshooting /logs:
+BT logger config file is provided to enable module level logs
+
+Other Resources and Links:
+Requirements- https://goo.gl/uERcj5
+Test Plan- https://goo.gl/65fVhf
+
+
+
+Release note identifier ([BT], date:22/3/2018, version 1.1)
+-----------------------------------------------------------
+
+Features and changes:
+- AVRCP can be used by making use of available sample application(not integrated with voice assistant)
+
+Outstanding issues/ features pending:
+- Flow of communication between Bluetooth Manager and voice assistant
+- Noise cancellation while playing music from source or sink
+- Latency: Audio synchronisation with video while playing from bluetooth
+- External Speaker AVRCP integration with Gstreamer
+- Changing default cardv name assigned by pulseaudio
+- LED integration
+- Differentiating between BT and eros music
+- Issue with A2DP killing when switching to A2DP sink profile
+
+Installation guide:
+- Enable the configurations in make menuconfig for Python_BT package and compile. The module will be enabled by default.
+
+System Requirements :
+-bluez Version 5.37
+-pulseaudio Version 8
+-dbus-glib Version 0.80
+-pygobject Version 2.21.5
+-dbus-python Version 0.83.0
+
+Troubleshooting /logs:
+BT logger config file is provided to enable module level logs
+
+Other Resources and Links:
+Requirements- https://goo.gl/uERcj5
+Test Plan- https://goo.gl/65fVhf
+
+
+
+Release note identifier ([BT], date:22/2/2018 , version 1.0)
+-----------------------------------------------------------
+
+Features and changes 
+- Music streaming from phone to Shifu
+- Music streaming from Shifu to external speaker
+- API call for changing the Shifu BT name
+- API call for Switching Bluetooth power
+- API calls for Start, Stop, List and Status of Scanning Process
+- API call for Discoverable mode to external Bluetooth devices
+- API calls for Bluetooth Connect, Disconnect and Unpair
+- API calls for listing connected and paired devices
+- API calls for AVRCP commands Play, Pause, Stop, Next, Previous, Restart
+- Auto power on when BLuetooth operation is initiated
+- Connecting one device at a time
+- Auto Discoverable for 30secs when the Shifu is powered up
+
+Outstanding issues/ features pending:
+- None
+
+Installation guide:
+- Enable the configurations in make menuconfig for Python_BT package and compile. The module will be enabled by default.
+
+System Requirements :
+-bluez Version 5.37
+-pulseaudio Version 8
+-dbus-glib Version 0.80
+-pygobject Version 2.21.5
+-dbus-python Version 0.83.0
+
+Troubleshooting /logs:
+BT logger config file is provided to enable module level logs
+
+Other Resources and Links:
+Requirements- https://goo.gl/uERcj5
+Test Plan- https://goo.gl/65fVhf
+

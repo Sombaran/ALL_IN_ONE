@@ -1,0 +1,128 @@
+#!/bin/sh
+
+#***********************************************************************************************************************************************************#
+# FILENAME:		dsp_upgrade
+#
+# DESCRIPTION:     This is a tool/script to upgrade dsp firmware. This will check the dsp firmware files in /etc/fw/dsp directory.
+#			    it will trigger from peripheral_updater init process if, firmware files presents in /etc/fw/dsp directory.
+#
+# AUTHOR :  janardhanachari.kella@smartron.com, priyanka.polumatla@smartron.com 12/04/2018
+#
+# VERSION:  0.2
+#
+# Copyright (C) 2018 Smartron India Private Limited - All Rights Reserved
+#*********************************************************************************************************************************************************#
+
+## log function to invoke user notice logs#
+log() {
+	echo "FP:$@"		#Enable, if you want console logs#
+}
+
+## check_version function for verification of version file format eg; x.y.z.a#
+check_version()
+{
+	##checks for if version number is empty	#
+	if [ "$1" == "" ] || [ "$2" == "" ] || [ "$3" == "" ] || [ "$4" == "" ]; then
+		check_version_result=0;
+	fi
+	#checks if ver. no. matches format
+	if ! [ "$1" -eq "$1" ] 2> /dev/null || ! [ "$2" -eq "$2" ] 2> /dev/null || ! [ "$3" -eq "$3" ] 2> /dev/null || ! [ "$4" -eq "$4" ] 2> /dev/null
+	then
+		check_version_result=0;
+	fi
+}
+
+#function to upgrade DSP#
+do_upgrade()
+{
+	log "Start to upgrade dsp fw..."
+	## cxdish - tool for dsp upgrade, Checks for success/failure of upgrade#
+	cxdish flash $1 $2
+	if [ $? != 0 ]; then
+		log "DSP upgrade fail."
+		exit 1;
+	fi
+}
+
+if [ `ls /etc/fw/dsp 2>/dev/null | wc -l`  = 0 ]; then
+        log "Can't find any dsp update file"
+        return 0
+fi
+
+# gets dsp fw version and stores each and every decimal in a veriable to compare.#
+hw_v=`cxdish fw-version | awk -F " " '{printf $3}'`
+hw_v1=`echo $hw_v | awk -F "." '{printf $1}'`
+hw_v2=`echo $hw_v | awk -F "." '{printf $2}'`
+hw_v3=`echo $hw_v | awk -F "." '{printf $3}'`
+hw_v4=`echo $hw_v | awk -F "." '{printf $4}'`
+
+## check_version function for verification of version file format eg; x.y.z.a. #
+##we are passing 4 decimal values as arguments. if version format not match it will exit with 1 #
+check_version $hw_v1 $hw_v2 $hw_v3 $hw_v4 ;
+if [ "$check_version_result" == "0" ]; then
+	log "firmware version of dsp hw check fail"
+	exit 1;
+fi
+
+## make sure the directory path of dsp fw and bootloader is the same, and there's only one sfs and bin file#
+## the format of fw file name must be "*rdk_sensory-x.x.x.x-32m-padded.sfs", and the bootloader name must be "iflash.bin".#
+
+##path to dsp firmware and bootloader images#
+dspfw_dir=/etc/fw/dsp/
+
+##holds bootloader image#
+dspbtld_file="$dspfw_dir"iflash.bin
+
+## keeps .sfs file
+dspfw_file=`ls "$dspfw_dir"*.sfs | head -n 1`
+
+## gets version information from file and stores each and every decimal in a veriable to compare.#
+fw_v=`echo $dspfw_file|  awk -F "evk-galaxy-generic-" '{print $2}' | awk -F "-" '{print $1}'`
+fw_v1=`echo $fw_v | awk -F "." '{printf $1}'`
+fw_v2=`echo $fw_v | awk -F "." '{printf $2}'`
+fw_v3=`echo $fw_v | awk -F "." '{printf $3}'`
+fw_v4=`echo $fw_v | awk -F "." '{printf $4}'`
+log "available file, $dspfw_file with Version.$fw_v"
+
+## check_version function for verification of version file format eg; x.y.z.a. #
+##we are passing 4 decimal values as arguments. if version format not match it will exit with 1 #
+check_version $fw_v1 $fw_v2 $fw_v3 $fw_v4 ;
+if [ "$check_version_result" == "0" ]; then
+	log "firmware version of dsp dir check fail"
+	exit 1;
+fi
+
+## Temparory fix for updating any firmware version
+## we need to remove this later
+do_upgrade $dspfw_file $dspbtld_file ;
+if [ "$?" -eq "0" ]; then
+    log "Dsp firmware upgraded successfully"
+fi
+exit 0;
+# end
+
+## compares existing version and available version numbers to upgrade#
+##checks if first decimal is lessthen or not equal to available version first digit#
+
+if [ "$hw_v1" -lt "$fw_v1" -a "$hw_v1" -ne "$fw_v1" ]; then
+	## go for upgrade#
+	do_upgrade $dspfw_file $dspbtld_file ;
+	exit 0;
+	##checks if second decimal is lessthen or not equal to available version second digit#
+elif [ "$hw_v2" -lt "$fw_v2" -a "$hw_v2" -ne "$fw_v2" ]; then
+	##go for upgrade#
+	do_upgrade $dspfw_file $dspbtld_file ;
+	exit 0;
+	##checks if third decimal is lessthen or not equal to available version third digit#
+elif [ "$hw_v3" -lt "$fw_v3" -a "$hw_v3" -ne "$fw_v3" ]; then
+	##go for upgrade#
+	do_upgrade $dspfw_file $dspbtld_file ;
+	exit 0;
+	##checks if fourth decimal is lessthen or not equal to available version fourth digit#
+elif [ "$hw_v4" -lt "$fw_v4" -a "$hw_v4" -ne "$fw_v4" ]; then
+	##go for upgrade#
+	do_upgrade $dspfw_file $dspbtld_file ;
+	exit 0;
+fi
+log "No need to upgrade dsp."
+exit 0;

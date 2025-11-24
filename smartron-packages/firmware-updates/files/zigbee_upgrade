@@ -1,0 +1,100 @@
+#!/bin/sh
+
+#***********************************************************************************************************************************************************#
+# FILENAME:		zigbee_upgrade
+#
+# DESCRIPTION:     This is a tool/script to upgrade dsp firmware. This will check the dsp firmware files in /etc/fw/dsp directory.
+#			    it will trigger from peripheral_updater init process if, firmware files presents in /etc/fw/dsp directory.
+#
+# AUTHOR :		janardhanachari.kella@smartron.com, 04/07/2018
+#
+# VERSION:  		0.4
+#
+# Copyright (C) 2018 Smartron India Private Limited - All Rights Reserved
+#*********************************************************************************************************************************************************#
+
+## log function to invoke user notice logs#
+log() {
+	echo "FP:$@"		#Enable, if you want console logs
+}
+
+check_version()
+{
+        #check if empty
+        if [ "$1" == "" ] || [ "$2" == "" ] || [ "$3" == "" ]; then
+                check_version_result=0;
+        fi
+        #check if number
+        if ! [ "$1" -eq "$1" ] 2> /dev/null || ! [ "$2" -eq "$2" ] 2> /dev/null || ! [ "$3" -eq "$3" ] 2> /dev/null; then
+                check_version_result=0;
+        fi
+}
+
+do_upgrade()
+{
+        log "Start to upgrade zigbee fw..."
+        log "zigbee_programmer -f $1"
+        zigbee_programmer -f $1
+        if [ $? != 0 ]; then
+                log "zigbee fw upgrade failed."
+                exit 1;
+        else
+                rm -f $1
+        fi
+}
+
+if [ `ls /etc/fw/zigbee 2>/dev/null | wc -l`  = 0 ]; then
+        log "Can't find any zigbee update file"
+        return 0
+fi
+
+# read the fw version from current hw.
+killall Z3GatewayHost 2> /dev/null
+gpio.sh 40 out 1
+hw_v=$(Z3GatewayHost -n 1 -p /dev/ttyHS0 | head -n 2 | awk -F "[" '{print $2}'|sed 's/ .*//g' | grep . & )
+hw_v1=`echo $hw_v | awk -F "." '{print $1}'`
+hw_v2=`echo $hw_v | awk -F "." '{print $2}'`
+hw_v3=`echo $hw_v | awk -F "." '{print $3}'`
+log "current zigbee firmware version:$hw_v1.$hw_v2.$hw_v3"
+
+check_version $hw_v1 $hw_v2 $hw_v3
+if [ "$check_version_result" == "0" ]; then
+        log "fw version of zigbee fw check fail"
+        exit 1;
+fi
+
+# make sure the directory path of zigbee fw and bootloader is the same, and there's only one bin file
+# the format of mcu fw file name must be "*STM32F030_Userdddd_v0.xx.bin", because mcu verion only has 1 byte,
+# only the minor verion "xx" is effective, this script will search the minor verion number "xx" in file name.
+zigbeefw_dir=/etc/fw/zigbee/
+zigbeefw_file=`ls "$zigbeefw_dir"*.gbl | head -n 1`
+
+fw_v=`echo $zigbeefw_file | awk -F "zigbee-fw-coexistence-" '{print $2}'`
+fw_v1=`echo $fw_v | awk -F "." '{printf $1}'`
+fw_v2=`echo $fw_v | awk -F "." '{printf $2}'`
+fw_v3=`echo $fw_v | awk -F "." '{printf $3}'`
+log "new zigbee firmware version:$fw_v1.$fw_v2.$fw_v3"
+
+check_version $fw_v1 $fw_v2 $fw_v3;
+if [ "$check_version_result" == "0" ]; then
+        err "fw version of zigbee dir check fail"
+        exit 1;
+fi
+
+
+log "comparing the version of firmware "
+
+# compare the version number
+if [ "$hw_v1" -lt "$fw_v1" -a "$hw_v1" -ne "$fw_v1" ]; then
+	   do_upgrade $zigbeefw_file ;
+	   exit 0;
+elif [ "$hw_v2" -lt "$fw_v2" -a "$hw_v2" -ne "$fw_v2" ]; then
+	   do_upgrade $zigbeefw_file ;
+	   exit 0;
+elif [ "$hw_v3" -lt "$fw_v3" -a "$hw_v3" -ne "$fw_v3" ]; then
+	   do_upgrade $zigbeefw_file ;
+	   exit 0;
+fi
+
+log "No need to upgrade zigbee firmware."
+exit 0;

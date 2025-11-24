@@ -1,0 +1,14 @@
+{
+	<scenes-libzwscene-malloc>
+	Memcheck:Leak
+	fun:malloc
+	...
+	obj:*libzwscene*
+}
+{
+	<scenes-libzwscene-calloc>
+	Memcheck:Leak
+	fun:calloc
+	...
+	obj:*libzwscene*
+}

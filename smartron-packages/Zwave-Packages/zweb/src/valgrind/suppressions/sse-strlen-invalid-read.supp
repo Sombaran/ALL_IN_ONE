@@ -1,0 +1,10 @@
+{
+	<sse-strlen-invalid-read-get-user-name>
+	Memcheck:Addr4
+	fun:zws_memcache_get_user_name
+}
+{
+	<sse-strlen-invalid-read-set-user-name>
+	Memcheck:Addr4
+	fun:zws_memcache_set_user_name
+}

@@ -1,0 +1,141 @@
+Module Name: tronx_router
++++++++++++++++++++++++++
+# Changelog
+All notable changes to this project will be documented in this file.
+Format [EmployeeID][RedmineID]:[Date] <changes>
+
+## [Unreleased]
+##[1.10.0]
+
+####Added
+- [1124][20112]: [16-11-2018] switch2() function is added in router_config.py
+- [1124][20112]: [16-11-2018] switch1() function is added in router_config.py
+- [1124][20112]: [16-11-2018] switch_EBLR_to_WBLR() function is added in router_config.py
+- [1124][20112]: [16-11-2018] switch_WBLR_to_EBLR() function is added in router_config.py
+- [1124][20112]: [16-11-2018] check_configuration() function is added in router_config.py
+- [1124][20112]: [16-11-2018] /api/router/EBLR/to/WBLR/proceed API is added
+- [1124][20112]: [16-11-2018] /api/router/WBLR/to/EBLR/proceed API is added
+- [1124][20112]: [16-11-2018] /api/router/network/configuration /check API is added
+- [][20116]:[16-11-2018] Signal levels are added for /scan/aps API call
+- [1124][19936]:[31-10-2018] device identification icons are added in /api/bluetooth/devices/list API response.
+- [1124][20136]:[31-10-2018] GET /api/router/EBLR/status API is added in mobile_agent.py
+- [1124][20136]:[31-10-2018] check_eblr() function is added in router_config.py
+- [1124][20048]:[22-10-2018] led keyword is added in VA TTS ZmQ requests.
+- [1124][19734]:[24-10-2018] Allowing spaces in ssids. check_ssid() function is modified accordingly.
+####Changed
+- [1124][20112]: [16-11-2018] script in change_apcredentials function is changed in router_config.py
+- [1124][20136]:[31-10-2018] qwrap_reset() function is renamed to network_reset() in router_config.py
+- [1124][20136]:[31-10-2018] check_legacy_connection5() function is renamed to check_legacy_connection() in router_config.py
+- [1124][20136]:[31-10-2018] POST /api/router/change/credentials/set API will be  renamed to POST /api/router/EBLR/set in mobile_agent.py
+- [1124][20136]:[31-10-2018] GET /api/router/change/credentials/proceed API will be renamed to GET /api/router/EBLR/proceed in mobile_agent.py
+- [1124][20136]:[31-10-2018] POST /api/router/shifu/WBLR/connect will be renamed to POST /api/router/WBLR/proceed in mobile_agent.py
+- [1124][20136]:[31-10-2018] GET /api/router/shifu/WBLR/status will be renamed to GET /api/router/WBLR/status in mobile_agent.py
+- [1124][20136]:[31-10-2018] GET /api/router/shifu/WBLR/reset will be renamed to GET /api/router/network/reset in mobile_agent.py
+- [1124][20136]:[31-10-2018] GET /api/router/set_re will be renamed to GET /api/router/RE/proceed in mobile_agent.py
+- [1114][19694]:[24-10-2018] REPACD comment to avoid auto credentails set in mobile_agent.py
+####removed
+- [1124][20136]:[31-10-2018] set_cap() function is removed from router_config.py
+- [1124][20136]:[31-10-2018] set_sta() function is removed from router_config.py
+- [1124][20136]:[31-10-2018] shifu_init() function is removed from router_config.py
+- [1124][20136]:[31-10-2018] shifu_connect function is removed from router_config.py
+- [1124][20136]:[31-10-2018] shifu_connect_repeater function is removed from router_config.py
+- [1124][20136]:[31-10-2018] check_legacy_connection(),check_legacy_connection2() functions are removed from router_config.py
+- [1124][20136]:[31-10-2018] disable_static_ip() function is removed from router_config.py
+- [1124][20136]:[31-10-2018] shifu connect_qwrap fuction is removed from router_config.py
+- [1124][20136]:[31-10-2018] check_legacy_connection3/4() are removed from router_config.py
+- [1124][20136]:[31-10-2018] POST /api/router/shifu/Legacy/repeater/connect will be deleted from mobile_agent.py
+- [1124][20136]:[31-10-2018] POST /api/router/shifu/Legacy/QWRAP API will be deleted from mobile_agent.py
+- [1124][20136]:[31-10-2018] GET /api/router/shifu/QWRAP/status will be deleted from mobile_agent.py
+- [1124][20136]:[31-10-2018] GET /api/router/shifu/QWRAP/reset will be deleted from mobile_agent.py
+- [1124][20136]:[31-10-2018] POST /api/router/shifu/Legacy/connect will be deleted from mobile_agent.py
+- [1124][20136]:[31-10-2018] GET /api/router/shifu/Legacy/ping will be deleted from mobile_agent.py
+- [1124][20136]:[31-10-2018] POST /api/router/shifu/Legacy/EBLR/connect will be deleted from mobile_agent.py
+- [1124][20136]:[31-10-2018] GET /api/router/shifu/Legacy/status will be deleted from mobile_agent.py
+- [1124][20136]:[31-10-2018] GET /api/router/shifu/Legacy/network will be deleted from mobile_agent.py
+####fixed
+
+###############################################################################################
+
+##[0.3.0] - 01-12-2017
+
+####Added
+- RO030FF0001:[01-12-2017] __debug__ inbuilt flag is being used to decide whether it should run in debug mode or in 
+-                          normal mode.		
+- RO030FF0001:[01-12-2017] Error codes are added into the Error messages.
+- RO030FF0001:[01-12-2017] Debug statements are added on top of each function.
+- RO030FF0001:[01-12-2017] Start wifi function is recreated.
+- RO030FF0001:[27-11-2017] Added an array with all the uci command for each function all these run through the 
+-                          run_command function.
+- RO030FF0001:[27-11-2017] Added a output parameter `res` to functions getSSID function
+- RO030FF0001:[27-11-2017] Added a output parameter `res` to functions geEncryption function
+- RO030FF0001:[27-11-2017] Added a output parameter `res` to functions getMode function
+- RO030FF0001:[27-11-2017] Added a output parameter `res` to functions getNetwork function
+- RO030FF0001:[27-11-2017] Added a output parameter `res` to functions getDevice function
+- RO030FF0001:[27-11-2017] Added a output parameter `res` to functions getMacaddr function
+- RO030FF0001:[27-11-2017] Added a output parameter `res` to functions gettype function
+- RO030FF0001:[27-11-2017] Added a output parameter `res` to functions getChannel function
+- RO030FF0001:[27-11-2017] Added a output parameter `res` to functions getHwmode function
+- RO030FF0001:[27-11-2017] Added a output parameter `res` to functions getHtmode function
+- RO030FF0001:[27-11-2017] Added a function run_command to reduce the complexity
+- RO030FF0001:[27-11-2017] If cases are replaced with try-cath
+- RO030FF0001:[16-11-2017] Added a function getSSID to get the ssid of the required radio
+- RO030FF0001:[16-11-2017] Added a function getEncryption to get the Encryption of the required radio
+- RO030FF0001:[16-11-2017] Added a function getMode to get the mode of the required radio
+- RO030FF0001:[16-11-2017] Added a function getNetwork to get the network of the required radio
+- RO030FF0001:[16-11-2017] Added a function getDevice to get the device of the required radio
+- RO030FF0001:[16-11-2017] Added a function getMacaddr to get the Mac Address of the required radio
+- RO030FF0001:[16-11-2017] Added a function getTxPower to get the Transmission power of the required radio
+- RO030FF0001:[16-11-2017] Added a function gettype to get the type of the required radio
+- RO030FF0001:[16-11-2017] Added a function getChannel to get the channel of the required radio
+- RO030FF0001:[16-11-2017] Added a function getHwmode to get the Hwmode of the required radio
+- RO030FF0001:[16-11-2017] Added a function getHtmode to get the Htmode of the required radio
+- RO030FF0001:[16-11-2017] Added a function conso gives the information based on the attribute and the desired radio
+
+####changed
+- RO030FF0001:[14-02-2018] module name is changed from tronx_router to router_config.
+- RO030FF0001:[01-12-2017] Start_wifi function is renamed to init_wifi
+- RO030FF0001:[27-11-2017] Code block to get the current encryption in set_encryption function is changed by the call
+-                          of get_encryption method.					
+- RO030FF0001:[21-11-2017] Replaced os calls with subprocess calls in all the functions in the module
+- RO030FF0001:[21-11-2017] radio numer '2' is removed from all the functions as it assigned to the different purpose.
+####removed
+####fixed
+
+################################################################################################
+## [Unreleased]
+##[0.2.0] - 9/11/2017
+
+####Added
+- RO020FF0001:[09-11-2017] New variables added
+- RO020FF0003:[09-11-2017] added a function to convert a string into number
+- RO020FF0004:[09-11-2017] added a function to replace the previous ssid which is stored in an 
+-                          array with the current ssid ,once the ssid is changed.
+- RO020FF0005:[09-11-2017] added a function to convert a string into number
+- RO020FF0006:[09-11-2017] added a function to replace the previous password which is stored in an 
+-                          array with the current password ,once the password is changed.
+- RO020FF0007:[09-11-2017] convertsion of string into integer and calling a function intial_config 
+-                          to get the present configuration lilke SSID, Encryption etc
+- RO020FF0008:[09-11-2017] Adding a loop to check if the current encryption value matches with the 
+-                          desired encryption value
+- RO020FF0010:[09-11-2017] #2 new functions mysplit() and initial_config() were added to get the 
+-                          present configuration
+####changed
+- RO020FF0002:[09-11-2017] modified the enc_types.Added all the encryptions possible  on the  
+-                          Dakota for the radios to enc_types,previously only 3 encryption types are allowed
+- RO020FF0002:[09-11-2017] Attribute 'num' was removed from set_cap and set_re functions
+####removed
+####fixed
+
+#################################################################################################
+##[0.1.0] - 30-10-2017
+
+####Added
+####changed
+####removed
+####fixed
+
+
+
+
+
+

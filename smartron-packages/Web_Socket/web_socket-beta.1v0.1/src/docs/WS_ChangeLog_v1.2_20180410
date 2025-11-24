@@ -1,0 +1,147 @@
+==========
+Change Log
+==========
+
+This document records all notable changes to `Web Socket Service and SocketIO Client Service`.
+
+:Authors:
+        Hemant Jiwani <hemant.jiwani@smartron.com>,
+        Subhash Kumar <subhash.kumar@smartron.com>
+
+        Developer (Shifu-Hub Apps)
+:Version: `1.9` of 2018/09/29
+======================================================================================================================
+
+Version: 1.10
+-------------------------
+Features and changes:
+=====================
+
+1. Module name changed from Home Manager(HM) to Web Socket(WS).
+
+Outstanding issues / features pending:
+=====================================
+
+#13966	SHIFU	Feature	        
+
+Version: 1.2
+-------------------------
+Features and changes:
+=====================
+
+1. Change in communication between DM and WS message format to update thing to tronX.
+2. Update observed response from DM to tronX and local database.
+3. Add discovered devices to local database.
+4. Shifu things local database to perform following action
+    a. add thing,
+    b. remove thing,
+    c. update thing,
+    d. get things and
+    e. get things details.
+5. Update in acknowledgement to tronX socket io server to control devices.
+6. Offline API for development team to get things list and control devices.
+
+Outstanding issues / features pending:
+=====================================
+
+1. Multiple control and scene
+2. Rules
+#13966	SHIFU	Feature	        Multiple Device control support for Group and... (New)
+#13963	SHIFU	Feature	        Rules Data Sync for for CRUD operation (sqlite3 local Shifu Database)
+#13960	SHIFU	Feature	        Device Manager Error Handling (New)
+#13959	SHIFU	Feature	        Remove things functionality in Web Socket (New)
+
+Version: 1.1
+-------------------------
+
+Features and changes:
+=====================
+
+1. Improved LED Feature for discovery and connected.
+2. New things structure as according to visual design.
+3. Add discovered devices to cloud with new things Structure using single Thread.
+4. Logger formating to debug WS-DM communication.
+5. Internal improvement
+	a. Memory leake
+	b. Request and response
+6. WORKAROUND: after onboarding you needs to restart web socket service (cd /etc/init.d && ./ws_service restart) to update new token in WS.
+
+Outstanding issues / features pending:
+=====================================
+1. WORKAROUND: after onboarding service manager needs to restart web socket service.
+Redmine Ids:
+#13892 	SHIFU 	Feature 	LED feature for Web Socket (Review)
+#13847  Shifu   Feature         CMD tool for Web Socket services and tweaking control
+#14206  Shifu   Bug             Onboarding thing failed (Resolved)
+#13133	SHIFU	Bug	        #Audio Assistance : tronx response is improper if the qu... (New)
+#13847	SHIFU	Feature	        Create a cmd tool to manage WS (New)
+#14008	SHIFU	Feature	        Offline control for IOT devices (New)
+#13966	SHIFU	Feature	        Multiple Device control support for Group and... (New)
+#13964	SHIFU	Feature	        Observation Handling (For Sensor Support) (New)
+#13962	SHIFU	Feature	        Error message visualization through LED and V... (New)
+#13960	SHIFU	Feature	        Device Manager Error Handling (New)
+#13961	SHIFU	Feature	        Error push to Mobile APP (New)
+#13959	SHIFU	Feature	        Remove things functionality in Web Socket (New)
+#13958	SHIFU	Feature	        Improve control things Job Class fo... (In Progress)
+#14229	SHIFU	Bug	        Wrong value of property_value for increase brightness of Subhash to hundred percent
+#13847	SHIFU	Feature	        Create a cmd tool to manage WS
+#14008	SHIFU	Feature	        Offline control for IOT devices
+#13892	SHIFU	Feature		LED feature
+#13963	SHIFU	Feature	        Rules Data Sync for for CRUD operation (sqlite3 local Shifu Database)
+
+
+
+Version: 1.0
+-------------------------
+
+Features and changes:
+=====================
+1. Single Device Control
+2. Discovery (Devices List Can be fetched from Device Manager Changelog)
+3. Discovery timeout
+4. Multiple client Request
+5. Command through SocketIO Client
+6. Communication through message Id with Device Manager
+7. Process mapping and removal of message Id
+8. SocketIO Client thread to recieve tronX message
+9. SocketIO and Web Socket core will start as thread
+
+
+Outstanding issues / features pending:
+=====================================
+1. LED Feature (Review and Testing)
+2. Removal Device (In Progress)
+3. Local and Cloud Db Update using single Thread (In progress)
+4. Scene and Group Control (NEW)
+5. Rules Creation, Updation (NEW)
+6. Rules Execution (NEW)
+7. Observation Method (NEW)
+
+Redmine Ids:
+#13892 	SHIFU 	Feature 	LED feature for Web Socket (Review)
+#13847  Shifu   Feature     CMD tool for Web Socket services and tweaking control
+
+Installation guide:
+===================
+1. select Web Socket package in makemenuconfig to install with image, olternatively can be installed using setup.py file (located in src folder of Web Socket) using `python setup.py install` command
+
+System requirements:
+====================
+zmq and pyzmq
+python 2.7
+python packages (will be installed in package building)
+	'requests>=2.7.0',
+    'pyzmq>=16.0.0',
+	'socketIO-client==0.7.2'
+
+Troubleshooting/Logs:
+=====================
+1. Logger is Implemented with 5 levels(debug, info, warn, error, critical)
+
+Other resources and Links:
+==========================
+doc folder in Web Socket source code contains
+	1. index
+	2. Internal structure
+	3. detailed troubleshooting
+	4. BUGS (Known)

@@ -1,0 +1,11 @@
+#!/bin/sh
+#====================================================================#
+# Copyright (c) 2018 Smartron India Pvt. Ltd. All rights reserved.
+# Version:1.0
+# Last modified: jayaram.matta@smartron.com, 19/09/2018
+#====================================================================#
+echo PID$'\t'%CPU$'\t'CPU minfltps VSZ  %MEM threads fd-nr Command >> /overlay/cpu_mem_usage.txt
+while true; do
+    pidstat -urv -h | grep "^ " |awk '{printf("%s,%s,%s,%s,%s,%s,%s,%s,%s\n",""$3"  ",""$7"  ",""$8"  ",""$9"  ",""$11"  ",""$13"  ",""$14"  ",""$15"  ",""$16"  ");}' >> /overlay/cpu_mem_usage.txt
+    sleep 2
+done

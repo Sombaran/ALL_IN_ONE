@@ -1,0 +1,12 @@
+#!/bin/sh
+
+#logger -p user.notice "before changing directory for DM service in separate script"
+cd /exe_dir/
+
+var=`$(ps | grep "{DM_init}" | awk '{print $5}'| grep '{DM_init}')`
+
+if [ "$(ps | grep "{DM_init}" | awk '{print $5}'| grep '{DM_init}')" != "{Device_Manager_Gateway}" ]
+then
+#	logger -p user.notice "in if check DM_app $var"
+	Device_Manager_Gateway
+fi

@@ -1,0 +1,163 @@
+#!/bin/sh
+
+#***********************************************************************************************************************************************************#
+# FILENAME:		mcu_upgrade
+#
+# DESCRIPTION:     This is a tool/script to upgrade dsp firmware. This will check the mcu firmware files in /etc/fw/mcu directory.
+#			    it will trigger from peripheral_updater init process if, firmware files presents in /etc/fw/mcu directory.
+#
+# AUTHOR :  janardhanachari.kella@smartron.com, priyanka.polumatla@smartron.com 12/04/2018
+#
+# VERSION:  0.2
+#
+# Copyright (C) 2018 Smartron India Private Limited - All Rights Reserved
+#*********************************************************************************************************************************************************#
+
+log() {
+	echo "FP:$@"
+}
+
+#check_version function for verification of version format x
+check_version()
+{
+	##checks for if version number is empty#
+	if [ "$1" == "" ];then
+		check_version_result=0;
+	fi
+	#checks if ver. no. matches format#
+	if ! [ "$1" -eq "$1" ] 2> /dev/null
+	then
+		check_version_result=0;
+	fi
+}
+
+#function to upgrade MCU#
+do_upgrade_bl()
+{
+	info "MCU-BL Upgrading started"
+	#echo "gcontrol mcu fw write $1"
+	## gcontrol - tool for MCU upgrade. after upgrade, below condition will Checks for success/failure of upgrade#
+	gcontrol mcu fw write $1 0x08003000
+	if [ $? != 0 ]; then
+		log "MCU-BL Upgrading faild"
+		exit 1;
+	fi
+}
+
+do_verify_update_bl()
+{
+	#Check the bootloader version
+	gcontrol gpio set 60 0
+	gcontrol mcu reset
+
+	hbl_v=$(gcontrol mcu get version)
+	mcu_mode=$(gcontrol mcu get mode)
+
+	##holds firmware image#
+	mcu_bl_file=`ls "$mcufw_dir"*.bin | grep MFG | head -n 1` 2> /dev/null
+	##variable to hold ver. no. of latest image
+	bl_v=`echo $mcu_bl_file | awk -F "STM32F030" '{printf $2}' | awk -F "." '{printf $2}'`
+	if [ $mcu_mode = "01" -a $hbl_v != $bl_v -a $hbl_v -lt $bl_v ]; then
+
+			do_upgrade_bl $mcu_bl_file ;
+
+			i2cset -y 0 0x18 0x93 0xFF 0xFF 0xFF 0xFF 0xFF 0xFF 0xFF i
+			i2cget -y 0 0x18 0x93 > /dev/null
+			i2cget -y 0 0x18 0x93 > /dev/null
+
+			# status of bootloader upgrading
+			# 0: reset, 1: pass, 2: fail
+			bl_stats=$(i2cget -y 0 0x18 0x93)
+			i2cget -y 0 0x18 0x93 > /dev/null
+			i2cget -y 0 0x18 0x93 > /dev/null
+			i2cget -y 0 0x18 0x93 > /dev/null
+			i2cget -y 0 0x18 0x93 > /dev/null
+			# check the last two bytes must be 0x55, 0x55
+			n_1byte=$(i2cget -y 0 0x18 0x93)
+			nbyte=$(i2cget -y 0 0x18 0x93)
+			if [ $n_1byte == "0x55" -a $nbyte == "0x55" ];then
+				if [ $bl_stats == "0x00" ]; then
+					#Start to upgrade bootloader
+					log "Start to upgrade bootloader"
+                         i2cset -y 0 0x18 0x99
+			 sleep 1
+                         ##holds firmware image#
+					mcufw_file=`ls "$mcufw_dir"*.bin | grep Userdddd | head -n 1`
+					do_upgrade $mcufw_file ;
+				else
+					log "upgrade bootloader faild"
+				fi
+			else
+				log "MCU-BL Updating faild"
+			fi
+	else
+			log "Boot-Loader is already upto-date"
+			#changing to user mode
+			gcontrol gpio set 60 1
+			gcontrol mcu reset
+	fi
+}
+
+#function to upgrade MCU#
+do_upgrade()
+{
+	log "Start to upgrade mcu fw..."
+	#echo "gcontrol mcu fw write $1"
+	## gcontrol - tool for MCU upgrade. after upgrade, below condition will Checks for success/failure of upgrade#
+	gcontrol mcu fw write $1 0x08002000
+	if [ $? != 0 ]; then
+		log "mcu fw upgrade fail."
+		exit 1;
+	fi
+}
+
+if [ `ls /etc/fw/mcu 2>/dev/null | wc -l`  = 0 ]; then
+	log "Can't find any mcu update file"
+	return 0
+fi
+
+##path to MCU firmware image#
+mcufw_dir=/etc/fw/mcu/
+
+do_verify_update_bl
+
+## gets firmware version from mcu and stores in below variable#
+hw_v=`gcontrol mcu get version`
+
+## the value got from mcu is in hex format. so, need to convert from hex to decimal#
+hw_v=`printf "%d" 0x$hw_v`
+
+## mcu firmware file format verification will be done#
+check_version $hw_v;
+if [ "$check_version_result" == "0" ]; then
+	log "FP:fw version of mcu fw check fail"
+	exit 1;
+fi
+
+## make sure the directory path of mcu fw and bootloader is the same, and there's only one bin file#
+## the format of mcu fw file name must be "*STM32F030_Userdddd_v0.xx.bin", because mcu verion only has 1 byte,#
+## only the minor verion "xx" is effective, this script will search the minor verion number "xx" in file name.#
+
+##holds firmware image#
+mcufw_file=`ls "$mcufw_dir"*.bin | grep Userdddd | head -n 1`
+##variable to hold ver. no. of latest image
+fw_v=`echo $mcufw_file | awk -F "STM32F030" '{printf $2}' | awk -F "." '{printf $2}'`
+
+log "available file, $mcufw_file with Version.$fw_v"
+
+##checks if ver. no of latest image is in format specified#
+check_version $fw_v; 	#1 1 1 ;
+if [ "$check_version_result" == "0" ]; then
+	log "FP:fw version of mcu dir check fail"
+	exit 1;
+fi
+
+## comparision will be done for current firmware version and latest version. if current version is lessthen and not equal the go's for upgrade#
+if [ "$hw_v" -lt "$fw_v" -a "$hw_v" -ne "$fw_v" ]; then
+	do_upgrade $mcufw_file ;
+	exit 0;
+fi
+
+log "No need to upgrade mcu."
+exit 0;
+

@@ -1,0 +1,31 @@
+#!/bin/sh /etc/rc.common
+#====================================================================#
+# Copyright (C) 2011 OpenWrt.org
+# Copyright (c) 2018 Smartron India Pvt. Ltd. All rights reserved.
+# Version:0.3
+# Last modified: nagendra@smartron.com, 11/05/2018
+#====================================================================#
+
+START=83
+STOP=89
+start() {
+    mkdir -p /var
+    mkdir -p /var/networks
+    cp /etc/zwscenes.conf /var/networks/
+    ln -sf /etc/TZ /etc/timezone
+
+	
+    zipgateway_ip=`/usr/bin/gw_discovery | grep Gateways_found | awk ' {print $3}'`
+
+
+    # FIXME: The IP address of zipgateway may change.
+    echo "${zipgateway_ip}|41231|123456789012345678901234567890AA" > /var/networks/zip_server.txt
+
+    zwportald &
+}
+
+stop(){
+
+        killall zwportald
+}
+

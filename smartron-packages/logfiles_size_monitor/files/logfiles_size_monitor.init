@@ -1,0 +1,17 @@
+#!/bin/sh /etc/rc.common
+
+#====================================================================#
+# Copyright (c) 2018 Smartron India Pvt. Ltd. All rights reserved.
+# Version:2.0
+# Last modified: jayaram.matta@smartron.com, 13/05/2019
+#====================================================================#
+START=12
+USE_PROCD=1
+
+start_service() {
+	
+	logger -p user.crit "SHIFU LOG FILE SIZE USAGE MONITORING STARTED"
+        procd_open_instance
+        procd_set_param command all_logfiles_size_monitor
+        procd_close_instance
+}

@@ -1,0 +1,2 @@
+Socket service is official service for IOT database and control from user application for Smartron IOT Hub
+for more detail of this please visit `Socket service wiki <http://wiki.smartron.org/IOT/socketService>`_

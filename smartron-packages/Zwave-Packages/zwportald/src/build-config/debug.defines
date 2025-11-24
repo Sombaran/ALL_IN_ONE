@@ -1,0 +1,54 @@
+# Avro message dumps
+DEFINES+=" ZWP_DEBUG_AVI"
+
+# Connections for AVI service
+DEFINES+=" ZWP_DEBUG_AVI_CONNECTION"
+
+# All levels of AVI service
+DEFINES+=" ZWP_DEBUG_AVI_SERVICE"
+
+# AVI service - Root level
+#DEFINES+=" ZWP_DEBUG_AVI_SERVICE_ROOT"
+
+# AVI service - Network level
+#DEFINES+=" ZWP_DEBUG_AVI_SERVICE_NETWORKS"
+
+# AVI service - Node level
+#DEFINES+=" ZWP_DEBUG_AVI_SERVICE_NODES"
+
+# AVI service - Endpoint level
+#DEFINES+=" ZWP_DEBUG_AVI_SERVICE_ENDPOINTS"
+
+# AVI service - Interface level
+#DEFINES+=" ZWP_DEBUG_AVI_SERVICE_INTERFACES"
+
+# LDAP connections
+DEFINES+=" ZWP_DEBUG_LDAP"
+
+# Portal Level
+DEFINES+=" ZWP_DEBUG_PORTAL"
+
+# Network Level
+DEFINES+=" ZWP_DEBUG_NETWORK"
+
+# Descriptor Level
+DEFINES+=" ZWP_DEBUG_DESCRIPTOR"
+
+# Node state
+DEFINES+=" ZWP_DEBUG_NODE_STATE"
+
+# Interface state
+DEFINES+=" ZWP_DEBUG_INTERFACE_STATE"
+
+# File I/O
+DEFINES+=" ZWP_DEBUG_IO"
+
+# Thread Pool
+DEFINES+=" ZWP_DEBUG_THREAD_POOL"
+
+# Thread Mutex (Works in combination with other debug macros)
+#DEFINES+=" ZWP_DEBUG_THREAD_MUTEX"
+
+# Queue
+DEFINES+=" ZWP_DEBUG_QUEUE"
+

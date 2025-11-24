@@ -1,0 +1,409 @@
+#!/bin/sh /etc/rc.common
+
+#***********************************************************************************************************************************************************#
+# FILENAME:		peripheral_updater.init
+#
+# DESCRIPTION:  This is a startup script to verify and check peripheral firmware updates. This will check firmware files presence in /etc/fw/dsp /etc/fw/mcu
+#			    /etc/fw/zigbee /etc/fw/zwave directory.
+#
+# AUTHOR :      janardhanachari.kella@smartron.com, priyanka.polumatla@smartron.com 16/08/2018
+#
+# VERSION:      1.0
+#
+# Copyright (C) 2018 Smartron India Private Limited - All Rights Reserved
+#*********************************************************************************************************************************************************#
+
+# schedule there and before start of peripheral_updater usb, i2c uart have to be ready.#
+START=63
+
+DSP=0
+MCU=0
+ZWAVE=0
+ZIGBEE=0
+
+old_version=0
+
+## To use global_export function, we need to create a file /tmp/updated. which will store export environment veriables.#
+## we can use that variables by importing them into the script. eg; header . /tmp/updated#
+
+global_export () {
+  {
+    flock 0
+    . /tmp/updated
+    [ $# -eq 0 ] || export "$@"
+    export -p >/tmp/updated
+  } </tmp/updated
+}
+
+#log function to invoke user debug logs#
+log() {
+	logger -p user.debug -t "FP" "$@"
+}
+
+#err function to invoke user error logs#
+err() {
+    logger -p user.error -t "FP" "$@"
+}
+
+#check_mcu_firmware_version reads MCU firmware version
+check_mcu_firmware_version() {
+    mcu_version=$(gcontrol mcu get version)
+	if [ $mcu_version = FF -a `cxdish fw-version|awk -F " " '{print $3}'` = "to" ];then
+	    err "Entered into MCU Emergency flashing.!"
+	    gcontrol mcu fw write /rom/etc/fw/mcu/STM32F030_Userdddd_v*.bin 0x08002000
+	    mcu_version=$(gcontrol mcu get version)
+	    if [ $mcu_version = FF ]; then
+	        err "MCU Emergency flashing fail."
+	        return 1
+	    fi
+	    err "MCU Emergency flashing done!"
+    fi
+	return 0
+}
+
+#check_dsp_firmware_version reads DSP firmware version
+check_dsp_firmware_version() {
+	dsp_version=$(cxdish fw-version|awk -F " " '{print $3}')
+	if [ $dsp_version = "to" ];then
+	    check_mcu_firmware_version
+	    if [ $? = 0 ] ; then
+	        err "Entered into DSP Emergency flashing.!"
+	        cxdish flash /rom/etc/fw/dsp/evk-galaxy-generic-*.sfs /rom/etc/fw/dsp/iflash.bin
+	        dsp_version=$(cxdish fw-version|awk -F " " '{print $3}')
+	        if [ $dsp_version = "to" ];then
+	            err "DSP Emergency flashing fail."
+	            return 1
+	        fi
+	        err "DSP Emergency flashing done!"
+	    fi
+    fi
+    return 0
+}
+
+#check_zigbee_firmware_version reads DSP firmware version
+check_zigbee_firmware_version() {
+	killall Z3GatewayHost 2> /dev/null
+	gpio.sh 40 out 1
+
+	if [ `ls /dev/ttyHS0 2> /dev/null | wc -l` -eq 0 ]; then
+	    err "Zigbee port /dev/ttyHS0, missing.."
+		return 1
+	fi
+
+	zigbee_version=$(Z3GatewayHost -n 1 -p /dev/ttyHS0 | head -n 2 | awk -F "[" '{print $2}'|sed 's/ .*//g' | grep . & )
+	if [ ${#zigbee_version} = 0 ]; then
+        	err "Entered into Zigbee Emergency flashing.!"
+        	zigbee_programmer -f /rom/etc/fw/zigbee/zigbee-fw-coexistence-*.gbl
+        	killall Z3GatewayHost 2> /dev/null
+        	zigbee_version=$(Z3GatewayHost -n 1 -p /dev/ttyHS0 | head -n 2 | awk -F "[" '{print $2}'|sed 's/ .*//g' | grep . & )
+        	if [ ${#zigbee_version} = 0 ]; then
+            		err "Zigbee Emergency flashing fail."
+            		return 1
+        	fi
+        	err "Zigbee Emergency flashing done!"
+    	fi
+	return 0
+}
+
+#check_zigbee_firmware_version reads DSP firmware version
+check_zwave_firmware_version()
+{
+	if [ `ls /dev/ttyACM0 2> /dev/null | wc -l` -eq 0 ]; then
+	    err "Zwave port /dev/ttyACM0, missing.."
+		return 1
+	fi
+
+	/etc/init.d/zipgateway stop 2>/dev/null
+	/etc/init.d/zw_service stop 2>/dev/null
+
+	zwave_version=$(zwave_tool -V | grep "Ver="| awk -F "=" '{print $2}'| awk -F " " '{print $2}')
+	if [ ${#zwave_version} = 0 ]; then
+	    err "Entered into Zwave Emergency flashing.!"
+	    zwave_programmer -f /rom/etc/fw/zwave/zwave-fw-5101-*.hex
+	    if [ `ls /dev/ttyACM0 2> /dev/null | wc -l` -eq 0 ]; then
+	        err "Zwave port /dev/ttyACM0, missing.."
+		return 1
+	    fi
+	    zwave_version=$(zwave_tool -V | grep "Ver="| awk -F "=" '{print $2}'| awk -F " " '{print $2}')
+	    if [ ${#zwave_version} = 0 ]; then
+	        err "zwave Emergency flashing fail."
+            return 1
+        fi
+	fi
+	return 0
+}
+
+do_upgrade_mcu() {
+		check_mcu_firmware_version
+		log "MCU firmware version-$mcu_version"
+		old_version=$mcu_version
+		mcu_upgrade
+		if [ $? = 0 ]; then
+			check_mcu_firmware_version 2>/dev/null
+		   	if [ $old_version = $mcu_version ]; then
+                log "MCU firmware no need to upgrade."
+            else
+                log "MCU firmware upgraded to $mcu_version"
+            fi
+			MCU=1
+			return 0
+		else
+		    	err "MCU firmware upgrade failed."
+			MCU=0
+			return 1
+		fi
+}
+
+do_upgrade_dsp() {
+		check_dsp_firmware_version
+		log "DSP firmware version-$dsp_version"
+		old_version=$dsp_version
+		dsp_upgrade
+		if [ $? = 0 ]; then
+			check_dsp_firmware_version 2>/dev/null
+			if [ $old_version = $dsp_version ]; then
+                log "DSP firmware no need to upgrade."
+            else
+                log "DSP firmware upgraded to $dsp_version"
+            fi
+			DSP=1
+			return 0
+		else
+			err "DSP firmware upgrade failed."
+			DSP=0
+			return 1
+		fi
+
+}
+
+do_upgrade_zwave(){
+		check_zwave_firmware_version
+		if [ $? -ne 0 ]; then
+			ZWAVE=0
+			return 1
+		fi
+
+		log "zwave firmware version-$zwave_version"
+
+		old_version=$zwave_version
+
+		zwave_upgrade
+		if [ $? = 0 ]; then
+			check_zwave_firmware_version 2>/dev/null
+			if [ $old_version = $zwave_version ]; then
+                             log "Zwave firmware no need to upgrade."
+                        else
+                             log "Zwave firmware upgraded to $zwave_version"
+                        fi
+			ZWAVE=1
+			return 0
+		else
+			err "Zwave firmware upgrade failed."
+			ZWAVE=0
+			return 1
+		fi
+}
+
+do_upgrade_zigbee(){
+		check_zigbee_firmware_version
+		if [ $? -ne 0 ]; then
+			ZIGBEE=0
+			return 1
+		fi
+
+		log "zigbee firmware version-$zigbee_version"
+
+		old_version=$zigbee_version
+
+		zigbee_upgrade
+		if [ $? = 0 ]; then
+			check_zigbee_firmware_version 2>/dev/null
+			if [ $old_version = $zigbee_version ]; then
+			      log "Zigbee firmware no need to upgrade."
+			else
+			      log "Zigbee firmware upgraded to $zigbee_version"
+			fi
+			ZIGBEE=1
+			return 0
+		else
+			err "Zigbee firmware upgrade failed."
+			ZIGBEE=0
+			return 1
+		fi
+}
+
+start() {
+        # Network reset functionality
+        nw_reset=$(uci get shifu.conf.NETWORK_RESET_INITIATED)
+        if [ $nw_reset == 1 ]; then
+        sh /usr/bin/Network_Reset.sh
+        fi
+        
+	#below code is to set the DEVICE ID address when is not present in environment partition
+	DEVICE_ID=$(fw_printenv DEVICE_ID 2>/dev/null | awk -F "=" '{print $2}')
+	device_id=$(cat /etc/device_id.conf 2>/dev/null)
+	if [ -z $device_id ] && [ ! -z $DEVICE_ID ]; then
+		echo $DEVICE_ID > /etc/device_id.conf
+		sync
+	elif [ -z $DEVICE_ID ]; then
+		log "DEVICE_ID is Empty. Getting DEVICE_ID from file."
+		fw_setenv DEVICE_ID $device_id
+	fi
+
+	#below code is to set the bt_mac address when is not present in environment partition
+	nv_bt_mac=$(fw_printenv bt_mac 2>/dev/null | awk -F "=" '{print $2}')
+	eth0_mac=`ifconfig |grep eth0 |awk '{print $5}'`
+	mac=$( echo "$eth0_mac" | tr -d ':' ) # to remove colons
+	mac=$((0x${mac})) # Convert to Decimal
+	mac=$( expr $mac + 4 ) # Add 4 to it
+	mac=$( printf "%x\n" $mac ) #  convert to hex again
+	BT_MAC=${mac:0:2}:${mac:2:2}:${mac:4:2}:${mac:6:2}:${mac:8:2}:${mac:10:2}
+
+	if [ "$nv_bt_mac" != "$BT_MAC" ]; then
+	  log "BT mac address is not same, setting the mac address from ifconfig"
+	  fw_setenv bt_mac $BT_MAC
+	fi
+
+    #below file is used to store global variables to use in dependent files
+  	touch /tmp/updated
+	local check=$(uci get shifu.conf.FW_UPDATE_STATUS);
+
+    if [ ${#check} = 0 ]; then
+        uci set shifu.conf.FW_UPDATE_STATUS=0
+        uci commit shifu
+    fi
+
+	global_export UPDATED=$(uci get shifu.conf.FW_UPDATE_STATUS);
+
+	log "Starting Firmware update check for peripherals."
+
+	if [ $UPDATED = 0 ]; then
+	#Adding New UCI configuration parameters and Updating UCI conf params value to shifu and shifu_default configuration files
+	#Redmins :: 21489,21984
+		if [ -e /etc/shifu_uci_new ]; then
+			new_params=$(uci -c /etc show shifu_uci_new | grep "\.new\." | awk -F. '{print $3}' | awk -F= '{print $1}')
+			for item in $new_params
+			do 
+				value=$(uci -c /etc get shifu_uci_new.new.$item 2>/dev/null)
+				if [ "$value" ]; then
+				  check=$(uci show shifu | grep shifu.conf.$item)
+				  if [ ! "$check" ]; then
+					  uci set shifu.conf.$item=$value
+					  uci commit shifu
+				  fi
+				fi
+			done
+			update_params=$(uci -c /etc show shifu_uci_new | grep "\.update\." | awk -F. '{print $3}' | awk -F= '{print $1}')
+			for item in $update_params
+			do
+				value=$(uci -c /etc get shifu_uci_new.update.$item 2>/dev/null)
+				if [ "$value" ]; then
+				  uci set shifu.conf.$item=$value
+				  uci commit shifu
+				fi
+			done
+		fi
+		rm /etc/config/shifu_* 2>/dev/null
+
+		#below condition will checks, mcu and dsp file in given paths
+		if [ `ls /etc/fw/mcu/* /etc/fw/dsp/* /etc/fw/zwave/* /etc/fw/zigbee/* 2> /dev/null | wc -l` -ne 0 ]; then
+
+			#below condition will checks, zwave firmware file in given path #
+			if [ `ls /etc/fw/zwave/* 2> /dev/null | wc -l` -ne 0 ]; then
+				do_upgrade_zwave
+				if [ $? -ne 0 ]; then
+					err "ZWave Upgrade failed"
+				fi
+				rm -rf /etc/fw/zwave/*
+			else
+				log "/etc/fw/zwave/ is empty"
+			fi
+
+			#below condition will checks, zigbee firmware file in given path #
+			if [ `ls /etc/fw/zigbee/* 2> /dev/null | wc -l` -ne 0 ]; then
+				do_upgrade_zigbee
+				if [ $? -ne 0 ]; then
+					err "zigbee Upgrade failed"
+				fi
+				rm -rf /etc/fw/zigbee/* 2>/dev/null
+			else
+				log "/etc/fw/zigbee/ is empty"
+			fi
+
+			#below condition will checks, mcu firmware file in given path #
+			if [ `ls /etc/fw/mcu/* 2> /dev/null | wc -l` -ne 0 ]; then
+				do_upgrade_mcu
+				if [ $? -ne 0 ]; then
+					err "MCU Upgrade failed"
+				fi
+				rm -rf /etc/fw/mcu/*
+			else
+				log "/etc/fw/mcu/ is empty"
+			fi
+
+			#below condition will checks, dsp firmware file in given path #
+			if [ `ls /etc/fw/dsp/* 2> /dev/null | wc -l` -ne 0 ]; then
+				do_upgrade_dsp
+				if [ $? -ne 0 ]; then
+					err "DSP Upgrade failed"
+				fi
+				rm -rf /etc/fw/dsp/*
+			else
+				log "/etc/fw/dsp/ is empty"
+			fi
+
+			log "ZWAVE $ZWAVE ZIGBEE $ZIGBEE MCU $MCU DSP $DSP"
+
+			if [ $ZWAVE -a $ZIGBEE -a $MCU -a $DSP ]; then
+				log "Shifu upgrading completed successfully"
+			else
+				err "SHIFU Upgrading not successful"
+			fi
+
+			#triggers system bootup animation, (Turn off by trox agent after connecting to tronx)#
+			i2cset -y 0 0x18 0x47 0xFD 0xE8 0x00 0x00 0x00 0x00 0x78 0x00 0xff 0x00 0x00 0x00 0x50 0x20 i &
+
+			##Sets boot flag
+			uci set shifu.conf.FW_UPDATE_STATUS=1
+			uci commit shifu
+			global_export UPDATED=1
+		else
+			log "Shifu upgrading completed successfully"
+			#triggers system bootup animation, (Turn off by tronx agent after connecting to tronx)#
+			i2cset -y 0 0x18 0x47 0xFD 0xE8 0x00 0x00 0x00 0x00 0x78 0x00 0xff 0x00 0x00 0x00 0x50 0x20 i &
+
+			##Sets boot flag#
+			uci set shifu.conf.FW_UPDATE_STATUS=0
+			uci commit shifu
+			global_export UPDATED=1
+		fi
+
+		log "Firmware update check for peripherals done"
+		exit 0
+	fi
+
+	global_export UPDATED=1
+
+	check_mcu_firmware_version
+	if [ $? = 0 ]; then
+		log "MCU Firmware Version-$mcu_version"
+	fi
+
+	check_dsp_firmware_version
+	if [ $? = 0 ]; then
+		log "DSP Firmware Version-$dsp_version"
+	fi
+
+	check_zigbee_firmware_version
+	if [ $? = 0 ]; then
+		log "ZIGBEE Firmware Version-$zigbee_version"
+	fi
+
+	check_zwave_firmware_version
+	if [ $? = 0 ]; then
+		log "ZWAVE Firmware Version-$zwave_version"
+	fi
+
+	log "Firmware update check for peripherals done!"
+	exit 0
+}

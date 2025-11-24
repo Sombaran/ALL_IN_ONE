@@ -1,0 +1,27 @@
+# Avro message dumps
+#DEFINES+=" ZWS_DEBUG_CGI"
+
+# Connection to Portal daemon
+#DEFINES+=" ZWS_DEBUG_AVI_CONNECTION"
+
+# All levels of CGI service
+#DEFINES+=" ZWS_DEBUG_CGI_SERVICE"
+
+# CGI service - Root level
+#DEFINES+=" ZWS_DEBUG_CGI_SERVICE_ROOT"
+
+# CGI service - Network level
+#DEFINES+=" ZWS_DEBUG_CGI_SERVICE_NETWORKS"
+
+# CGI service - Node level
+#DEFINES+=" ZWS_DEBUG_CGI_SERVICE_NODES"
+
+# CGI service - Endpoint level
+#DEFINES+=" ZWS_DEBUG_CGI_SERVICE_ENDPOINTS"
+
+# CGI service - Interface level
+#DEFINES+=" ZWS_DEBUG_CGI_SERVICE_INTERFACES"
+
+# File I/O
+#DEFINES+=" ZWS_DEBUG_IO"
+

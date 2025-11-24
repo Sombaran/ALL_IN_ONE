@@ -1,0 +1,5 @@
+Version: 0.1
+
+1. Added SM_iface package
+2. Developed APIs for client application
+3. Listens to network status with "sm_interface" object name.

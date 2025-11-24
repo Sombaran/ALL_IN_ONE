@@ -1,0 +1,3491 @@
+{"type": "record", "name": "protocol", "namespace": "com.zwave",
+	"fields": [
+	{"name": "types", "type": [
+		{"type": "enum", "name": "ErrorCode",
+			"symbols": [
+			"SUCCESS",
+			"INTERNAL_ERROR"
+			]},
+		{"type": "fixed", "name": "IPv6Address",
+			"size": 16},
+		{"type": "fixed", "name": "PortalPeerName",
+			"size": 63},
+		{"type": "fixed", "name": "UserCodeData",
+			"size": 10},
+		{"type": "fixed", "name": "Signed4Byte",
+			"size": 4},
+		{"type": "record", "name": "VersionNumber",
+			"fields": [
+			{"name": "major", "type": "int"},
+			{"name": "minor", "type": "int"}
+			]},
+		{"type": "record", "name": "Error",
+			"fields": [
+			{"name": "code", "type": "ErrorCode"}
+			]},
+		{"type": "record", "name": "Cookies",
+			"fields": [
+			{"name": "user", "type": ["string", "null"]}
+			]},
+		{"type": "record", "name": "Void",
+			"fields": [
+			{"name": "void", "type": "null"}
+			]},
+		{"type": "record", "name": "TargetVersion",
+			"fields": [
+			{"name": "version", "type": "int"},
+			{"name": "sub_version", "type": "int"}
+			]},
+		{"type": "record", "name": "VersionReport",
+			"fields": [
+			{"name": "is_external_supported", "type": "int"},
+			{"name": "hardware_version", "type": "int"},
+			{"name": "target_version_info_array", "type": {"type": "array", "items": "TargetVersion"}}
+			]},
+		{"type": "record", "name": "Network",
+			"fields": [
+			{"name": "id", "type": "string"}
+			]},
+		{"type": "record", "name": "Node",
+			"fields": [
+			{"name": "network", "type": "Network"},
+			{"name": "id", "type": "int"}
+			]},
+		{"type": "record", "name": "Endpoint",
+			"fields": [
+			{"name": "node", "type": "Node"},
+			{"name": "id", "type": "int"}
+			]},
+		{"type": "record", "name": "Interface",
+			"fields": [
+			{"name": "endpoint", "type": "Endpoint"},
+			{"name": "id", "type": "int"}
+			]},
+		{"type": "record", "name": "RootNetworkRefresh",
+			"fields": [
+			{"name": "network_id", "type": "string"}
+			]},
+		{"type": "record", "name": "RootGatewayListGet",
+			"fields": [
+			{"name": "discovery_flag", "type": "int"}
+			]},
+		{"type": "record", "name": "RootGatewaySet",
+			"fields": [
+			{"name": "address_type", "type": "int"},
+			{"name": "unsolicited_port_number", "type": "int"},
+			{"name": "gateway_address", "type": "IPv6Address"},
+			{"name": "preshared_key", "type": ["string", "null"]}
+			]},
+		{"type": "record", "name": "NetworkNodeAdd",
+			"fields": [
+			{"name": "dsk", "type": "string"}
+			]},
+    {"type": "record", "name": "NetworkNodeAddGrantKey",
+			"fields": [
+			{"name": "granted_keys", "type": "int"},
+			{"name": "grant_csa", "type": "int"}
+      ]},
+        {"type": "record", "name": "NetworkNodeAddAccept",
+			"fields": [
+            {"name": "accept", "type": "int"},
+            {"name": "dsk", "type": "string"}
+			]},
+        {"type": "record", "name": "NetworkFailedNodeRemove",
+			"fields": [
+			{"name": "node_id", "type": "int"}
+			]},
+		{"type": "record", "name": "NetworkFailedNodeReplace",
+			"fields": [
+			{"name": "node_id", "type": "int"},
+			{"name": "dsk", "type": "string"}
+      ]},
+    {"type": "record", "name": "NetworkNodeUpdate",
+			"fields": [
+			{"name": "node_id", "type": "int"}
+			]},
+		{"type": "record", "name": "NetworkSendNIF",
+			"fields": [
+			{"name": "node_id", "type": "int"},
+			{"name": "is_broadcast", "type": "int"}
+			]},
+    {"type": "record", "name": "NetworkWhitelistDeviceInfo",
+			"fields": [
+			{"name": "dsk", "type": "string"}
+      ]},
+		{"type": "record", "name": "NetworkWhitelistAdd",
+			"fields": [
+			{"name": "dsk", "type": "string"},
+			{"name": "granted_keys", "type": "int"},
+			{"name": "name", "type": "string"},
+			{"name": "location", "type": "string"}
+      ]},
+    {"type": "record", "name": "NetworkWhitelistRemove",
+			"fields": [
+			{"name": "dsk", "type": "string"}
+      ]},
+    {"type": "record", "name": "NodeNamingNameLocationSet",
+			"fields": [
+			{"name": "name", "type": "string"},
+			{"name": "location", "type": "string"}
+			]},
+		{"type": "record", "name": "AlarmGet",
+			"fields": [
+			{"name": "alarm_type", "type": "int"},
+			{"name": "zwave_alarm_type", "type": "int"},
+			{"name": "zwave_alarm_event", "type": "int"}
+			]},
+		{"type": "record", "name": "AlarmSet",
+			"fields": [
+			{"name": "zwave_alarm_type", "type": "int"},
+			{"name": "zwave_alarm_status", "type": "int"}
+			]},
+		{"type": "record", "name": "AlarmEventSupportedGet",
+			"fields": [
+			{"name": "zwave_alarm_type", "type": "int"}
+			]},
+		{"type": "record", "name": "AssociationGet",
+			"fields": [
+			{"name": "grouping_identifier", "type": "int"}
+			]},
+		{"type": "record", "name": "AssociationSet",
+			"fields": [
+			{"name": "action", "type": "int"},
+			{"name": "grouping_identifier", "type": "int"},
+			{"name": "endpoints_list", "type": {"type": "array",
+				"items": "Endpoint"}}
+			]},
+		{"type": "record", "name": "BasicSet",
+			"fields": [
+			{"name": "value", "type": "int"}
+			]},
+		{"type": "record", "name": "CommandqueueEnableState",
+			"fields": [
+			{"name": "state", "type": "int"}
+			]},
+		{"type": "record", "name": "ConfigurationGet",
+			"fields": [
+			{"name": "parameternumber", "type": "int"}
+			]},
+		{"type": "record", "name": "ConfigurationSet",
+			"fields": [
+			{"name": "parameternumber", "type": "int"},
+			{"name": "default", "type": "int"},
+			{"name": "size", "type": "int"},
+			{"name": "configvalue_array", "type": {"type": "array", "items": "int"}}
+			]},
+		{"type": "record", "name": "DoorLockOperationSet",
+			"fields": [
+			{"name": "mode", "type": "int"}
+			]},
+		{"type": "record", "name": "DoorLockConfigurationSet",
+			"fields": [
+			{"name": "operation_type", "type": "int"},
+			{"name": "outside_door_handles_state", "type": "int"},
+			{"name": "inside_door_handles_state", "type": "int"},
+			{"name": "lock_timeout_minutes", "type": "int"},
+			{"name": "lock_timeout_seconds", "type": "int"}
+			]},
+		{"type": "record", "name": "FirmwareUpdateRequestGet",
+			"fields": [
+			{"name": "manufacturer_id", "type": "int"},
+			{"name": "firmware_id", "type": "int"},
+			{"name": "firmware_target", "type": "int"},
+			{"name": "hardware_version", "type": "int"},
+			{"name": "firmware_file_name", "type": "string"}
+			]},
+		{"type": "record", "name": "MeterGet",
+			"fields": [
+			{"name": "scale", "type": "int"}
+			]},
+		{"type": "record", "name": "SensorBinaryGet",
+			"fields": [
+			{"name": "sensor_type", "type": "int"}
+			]},
+		{"type": "record", "name": "SensorMultilevelGet",
+			"fields": [
+			{"name": "sensor_type", "type": "int"},
+			{"name": "scale", "type": "int"}
+            ]},
+        {"type": "record", "name": "SensorMultilevelScaleSupportedGet",
+			"fields": [
+			{"name": "sensor_type", "type": "int"}
+            ]},
+        {"type": "record", "name": "SwitchBinarySet",
+			"fields": [
+			{"name": "value", "type": "int"}
+			]},
+		{"type": "record", "name": "SwitchMultilevelSet",
+			"fields": [
+			{"name": "value", "type": "int"},
+			{"name": "dimming_duration", "type": "int"}
+			]},
+		{"type": "record", "name": "SwitchMultilevelLevelChangeSet",
+			"fields": [
+			{"name": "start_stop", "type": "int"},
+			{"name": "up_down", "type": "int"},
+			{"name": "ignore_start_level", "type": "int"},
+			{"name": "start_level", "type": "int"},
+			{"name": "dimming_duration", "type": "int"},
+			{"name": "inc_dec", "type": "int"},
+			{"name": "step_size", "type": "int"}
+			]},
+		{"type": "record", "name": "SwitchColorGet",
+			"fields": [
+			{"name": "mask", "type": "int"}
+			]},
+		{"type": "record", "name": "SwitchColorSet",
+			"fields": [
+			{"name": "id", "type": "int"},
+			{"name": "value", "type": "int"}
+			]},	
+		{"type": "record", "name": "SwitchColorSetList",
+			"fields": [
+			{"name": "switch_color_set_list", "type": {"type": "array",
+				"items": "SwitchColorSet"}},
+			{"name": "dur", "type": "int"}
+			]},
+		{"type": "record", "name": "SwitchColorLevelChangeGet",
+			"fields": [
+			{"name": "mask", "type": "int"}
+			]},
+		{"type": "record", "name": "SwitchColorLevelChangeSet",
+			"fields": [
+			{"name": "start_stop", "type": "int"},
+			{"name": "up_down", "type": "int"},
+			{"name": "ignore_start_level", "type": "int"},
+			{"name": "id", "type": "int"},
+			{"name": "start_level", "type": "int"},
+			{"name": "duration", "type": "int"}
+			]},				
+		{"type": "record", "name": "ThermostatFanModeSet",
+			"fields": [
+			{"name": "mode", "type": "int"},
+			{"name": "off", "type": "int"}
+			]},
+		{"type": "record", "name": "ThermostatModeSet",
+			"fields": [
+			{"name": "mode", "type": "int"}
+			]},
+		{"type": "record", "name": "ThermostatSetpointGet",
+			"fields": [
+			{"name": "setpoint_type", "type": "int"}
+			]},
+		{"type": "record", "name": "ThermostatSetpointSet",
+			"fields": [
+			{"name": "setpoint_type", "type": "int"},
+			{"name": "precision", "type": "int"},
+			{"name": "scale", "type": "int"},
+			{"name": "size", "type": "int"},
+			{"name": "value", "type": "Signed4Byte"}
+			]},
+		{"type": "record", "name": "UserCodeGet",
+			"fields": [
+			{"name": "user_identifier", "type": "int"}
+			]},
+		{"type": "record", "name": "UserCodeSet",
+			"fields": [
+			{"name": "user_identifier", "type": "int"},
+			{"name": "user_id_status", "type": "int"},
+			{"name": "user_code_length", "type": "int"},
+			{"name": "user_code", "type": "UserCodeData"}
+			]},
+		{"type": "record", "name": "BarrierOperatorSet",
+			"fields": [
+			{"name": "target_state", "type": "int"}
+			]},
+    {"type": "record", "name": "BarrierOperatorSubsystemConfigGet",
+			"fields": [
+			{"name": "type", "type": "int"}
+			]},
+		{"type": "record", "name": "BarrierOperatorSubsystemConfigSet",
+			"fields": [
+			{"name": "type", "type": "int"},
+			{"name": "state", "type": "int"}
+			]},
+		{"type": "record", "name": "WakeUpIntervalSet",
+			"fields": [
+			{"name": "node", "type": "Node"},
+			{"name": "interval_seconds", "type": "int"}
+			]},
+		{"type": "record", "name": "ZipGatewayLockSet",
+			"fields": [
+			{"name": "lock", "type": "int"},
+			{"name": "show", "type": "int"}
+			]},
+		{"type": "record", "name": "ZipGatewayModeSet",
+			"fields": [
+			{"name": "mode", "type": "int"},
+			{"name": "ipv6_address", "type": "IPv6Address"},
+			{"name": "port", "type": "int"},
+			{"name": "peer_name_length", "type": "int"},
+			{"name": "peer_name", "type": "PortalPeerName"}
+			]},
+		{"type": "record", "name": "ZipGatewayUnsolicitedDestinationSet",
+			"fields": [
+			{"name": "unsolicited_ipv6_destination", "type": "IPv6Address"},
+			{"name": "unsolicited_destination_port", "type": "int"}
+			]},
+		{"type": "record", "name": "ZipPortalConfigurationSet",
+			"fields": [
+			{"name": "lan_ipv6_addr", "type": "IPv6Address"},
+			{"name": "lan_ipv6_prefix_len", "type": "int"},
+			{"name": "portal_ipv6_prefix", "type": "IPv6Address"},
+			{"name": "portal_ipv6_prefix_len", "type": "int"},
+			{"name": "default_gw_ipv6_addr", "type": "IPv6Address"},
+			{"name": "pan_ipv6_prefix", "type": "IPv6Address"}
+			]},
+		{"type": "record", "name": "CommandNetwork",
+			"fields": [
+			{"name": "network", "type": "Network"}
+			]},
+		{"type": "record", "name": "CommandNode",
+			"fields": [
+			{"name": "node", "type": "Node"}
+			]},
+		{"type": "record", "name": "CommandEndpoint",
+			"fields": [
+			{"name": "endpoint", "type": "Endpoint"}
+			]},
+		{"type": "record", "name": "CommandInterfaceGet",
+			"fields": [
+			{"name": "interface", "type": "Interface"},
+			{"name": "passive", "type": "boolean"}
+			]},
+		{"type": "record", "name": "CommandInterfaceSet",
+			"fields": [
+			{"name": "interface", "type": "Interface"}
+			]},
+		{"type": "record", "name": "ArgumentRootNetworkRefresh",
+			"fields": [
+			{"name": "command", "type": "Void"},
+			{"name": "parameter", "type": "RootNetworkRefresh"}
+			]},
+		{"type": "record", "name": "ArgumentRootGatewayList",
+			"fields": [
+			{"name": "command", "type": "Void"},
+			{"name": "parameter", "type": "RootGatewayListGet"}
+			]},
+		{"type": "record", "name": "ArgumentRootGatewaySet",
+			"fields": [
+			{"name": "command", "type": "Void"},
+			{"name": "parameter", "type": "RootGatewaySet"}
+			]},
+		{"type": "record", "name": "ArgumentNetworkExit",
+			"fields": [
+			{"name": "command", "type": "CommandNetwork"}
+			]},
+		{"type": "record", "name": "ArgumentNetworkInfoGet",
+			"fields": [
+			{"name": "command", "type": "CommandNetwork"}
+			]},
+		{"type": "record", "name": "ArgumentNetworkNodeListGet",
+			"fields": [
+			{"name": "command", "type": "CommandNetwork"}
+			]},
+		{"type": "record", "name": "ArgumentNetworkNodeEndpointListGet",
+			"fields": [
+			{"name": "command", "type": "CommandNetwork"}
+			]},
+		{"type": "record", "name": "ArgumentNetworkOperationStateGet",
+			"fields": [
+			{"name": "command", "type": "CommandNetwork"}
+			]},
+		{"type": "record", "name": "ArgumentNetworkGatewayStatusGet",
+			"fields": [
+			{"name": "command", "type": "CommandNetwork"}
+			]},
+		{"type": "record", "name": "ArgumentNetworkSummaryGet",
+			"fields": [
+			{"name": "command", "type": "CommandNetwork"}
+			]},
+    {"type": "record", "name": "ArgumentNetworkNodePrekitDskGet",
+			"fields": [
+      {"name": "command", "type": "CommandNetwork"} 
+			]},
+		{"type": "record", "name": "ArgumentNetworkNodeAdd",
+			"fields": [
+      {"name": "command", "type": "CommandNetwork"},
+      {"name": "parameter", "type": "NetworkNodeAdd"}   
+			]},
+    {"type": "record", "name": "ArgumentNetworkNodeAddReqKeyGet",
+			"fields": [
+      {"name": "command", "type": "CommandNetwork"} 
+			]},
+    {"type": "record", "name": "ArgumentNetworkNodeAddDskGet",
+			"fields": [
+      {"name": "command", "type": "CommandNetwork"} 
+			]},
+    {"type": "record", "name": "ArgumentNetworkNodeAddGrantKeySet",
+			"fields": [
+            {"name": "command", "type": "CommandNetwork"},
+            {"name": "parameter", "type": "NetworkNodeAddGrantKey"}   
+			]},
+        {"type": "record", "name": "ArgumentNetworkNodeAddAcceptSet",
+			"fields": [
+            {"name": "command", "type": "CommandNetwork"},
+            {"name": "parameter", "type": "NetworkNodeAddAccept"}   
+			]},
+        {"type": "record", "name": "ArgumentNetworkNodeRemove",
+			"fields": [
+			{"name": "command", "type": "CommandNetwork"}
+			]},
+		{"type": "record", "name": "ArgumentNetworkFailedNodeRemove",
+			"fields": [
+			{"name": "command", "type": "CommandNetwork"},
+			{"name": "parameter", "type": "NetworkFailedNodeRemove"}
+			]},
+		{"type": "record", "name": "ArgumentNetworkFailedNodeReplace",
+			"fields": [
+			{"name": "command", "type": "CommandNetwork"},
+			{"name": "parameter", "type": "NetworkFailedNodeReplace"}
+			]},
+    {"type": "record", "name": "ArgumentNetworkNodeUpdate",
+			"fields": [
+			{"name": "command", "type": "CommandNetwork"},
+			{"name": "parameter", "type": "NetworkNodeUpdate"}
+			]},
+		{"type": "record", "name": "ArgumentNetworkSendNIF",
+			"fields": [
+			{"name": "command", "type": "CommandNetwork"},
+			{"name": "parameter", "type": "NetworkSendNIF"}
+			]},
+		{"type": "record", "name": "ArgumentNetworkUpdate",
+			"fields": [
+			{"name": "command", "type": "CommandNetwork"}
+			]},
+		{"type": "record", "name": "ArgumentNetworkInitiate",
+			"fields": [
+			{"name": "command", "type": "CommandNetwork"}
+			]},
+		{"type": "record", "name": "ArgumentNetworkInitiateLocalDskGet",
+			"fields": [
+			{"name": "command", "type": "CommandNetwork"}
+			]},
+		{"type": "record", "name": "ArgumentNetworkMigratePrimary",
+			"fields": [
+			{"name": "command", "type": "CommandNetwork"}
+			]},
+		{"type": "record", "name": "ArgumentNetworkReset",
+			"fields": [
+			{"name": "command", "type": "CommandNetwork"}
+			]},
+		{"type": "record", "name": "ArgumentNetworkOperationAbort",
+			"fields": [
+			{"name": "command", "type": "CommandNetwork"}
+			]},
+		{"type": "record", "name": "ArgumentNetworkWhitelistListGet",
+			"fields": [
+      {"name": "command", "type": "CommandNetwork"}  
+			]},
+	  {"type": "record", "name": "ArgumentNetworkWhitelistListReport",
+			"fields": [
+      {"name": "command", "type": "CommandNetwork"}
+			]},
+    {"type": "record", "name": "ArgumentNetworkWhitelistDeviceInfo",
+			"fields": [
+      {"name": "command", "type": "CommandNetwork"},
+      {"name": "parameter", "type": "NetworkWhitelistDeviceInfo"}   
+			]},
+    {"type": "record", "name": "ArgumentNetworkWhitelistAdd",
+			"fields": [
+      {"name": "command", "type": "CommandNetwork"},
+      {"name": "parameter", "type": "NetworkWhitelistAdd"}   
+			]},
+    {"type": "record", "name": "ArgumentNetworkWhitelistRemove",
+			"fields": [
+      {"name": "command", "type": "CommandNetwork"},
+      {"name": "parameter", "type": "NetworkWhitelistRemove"}   
+			]},
+    {"type": "record", "name": "ArgumentNodeCommandqueueCancel",
+			"fields": [
+			{"name": "command", "type": "CommandNode"}
+			]},
+		{"type": "record", "name": "ArgumentNodeCommandqueueEnableGet",
+			"fields": [
+			{"name": "command", "type": "CommandNode"}
+			]},
+		{"type": "record", "name": "ArgumentNodeCommandqueueEnableSet",
+			"fields": [
+			{"name": "command", "type": "CommandNode"},
+			{"name": "parameter", "type": "CommandqueueEnableState"}
+			]},
+		{"type": "record", "name": "ArgumentNodeCommandqueueGet",
+			"fields": [
+			{"name": "command", "type": "CommandNode"}
+			]},
+		{"type": "record", "name": "ArgumentNodeEndpointListGet",
+			"fields": [
+			{"name": "command", "type": "CommandNode"}
+			]},
+		{"type": "record", "name": "ArgumentEndpointInterfaceListGet",
+			"fields": [
+			{"name": "command", "type": "CommandEndpoint"}
+			]},
+		{"type": "record", "name": "ArgumentEndpointNodeNamingNameLocationSet",
+			"fields": [
+			{"name": "command", "type": "CommandEndpoint"},
+			{"name": "parameter", "type": "NodeNamingNameLocationSet"}
+			]},
+		{"type": "record", "name": "ArgumentAlarmGet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceGet"},
+			{"name": "parameter", "type": "AlarmGet"}
+			]},
+		{"type": "record", "name": "ArgumentAlarmSet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceSet"},
+			{"name": "parameter", "type": "AlarmSet"}
+			]},
+		{"type": "record", "name": "ArgumentAlarmTypeSupportedGet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceGet"}
+			]},
+		{"type": "record", "name": "ArgumentAlarmEventSupportedGet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceGet"},
+			{"name": "parameter", "type": "AlarmEventSupportedGet"}
+			]},
+		{"type": "record", "name": "ArgumentAssociationGrpInfoGet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceGet"}
+			]},
+		{"type": "record", "name": "ArgumentAssociationGet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceGet"},
+			{"name": "parameter", "type": "AssociationGet"}
+			]},
+		{"type": "record", "name": "ArgumentAssociationSet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceSet"},
+			{"name": "parameter", "type": "AssociationSet"}
+			]},
+		{"type": "record", "name": "ArgumentAssociationGroupingsGet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceGet"}
+			]},
+		{"type": "record", "name": "ArgumentAssociationSpecificGroupGet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceGet"}
+			]},
+		{"type": "record", "name": "ArgumentBasicGet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceGet"}
+			]},
+		{"type": "record", "name": "ArgumentBasicSet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceSet"},
+			{"name": "parameter", "type": "BasicSet"}
+			]},
+        {"type": "record", "name": "ArgumentBatteryGet",
+            "fields": [
+            { "name": "command", "type": "CommandInterfaceGet" }
+            ]},
+        {"type": "record", "name": "ArgumentCentralSceneGet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceGet"}
+			]},
+		{"type": "record", "name": "ArgumentCentralSceneSupportedGet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceGet"}
+			]},
+		{"type": "record", "name": "ArgumentConfigurationGet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceGet"},
+			{"name": "parameter", "type": "ConfigurationGet"}
+			]},
+		{"type": "record", "name": "ArgumentConfigurationSet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceSet"},
+			{"name": "parameter", "type": "ConfigurationSet"}
+			]},
+		{"type": "record", "name": "ArgumentDoorLockOperationGet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceGet"}
+			]},
+		{"type": "record", "name": "ArgumentDoorLockOperationSet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceSet"},
+			{"name": "parameter", "type": "DoorLockOperationSet"}
+			]},
+		{"type": "record", "name": "ArgumentDoorLockConfigurationGet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceGet"}
+			]},
+		{"type": "record", "name": "ArgumentDoorLockConfigurationSet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceSet"},
+			{"name": "parameter", "type": "DoorLockConfigurationSet"}
+			]},
+		{"type": "record", "name": "ArgumentFirmwareInfoGet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceGet"}
+			]},
+		{"type": "record", "name": "ArgumentFirmwareUpdateRequestGet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceGet"},
+			{"name": "parameter", "type": "FirmwareUpdateRequestGet"}
+			]},
+		{"type": "record", "name": "ArgumentMeterGet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceGet"},
+			{"name": "parameter", "type": "MeterGet"}
+			]},
+		{"type": "record", "name": "ArgumentMeterSupportedGet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceGet"}
+			]},
+		{"type": "record", "name": "ArgumentMeterReset",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceSet"}
+			]},
+		{"type": "record", "name": "ArgumentSensorBinaryGet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceGet"},
+			{"name": "parameter", "type": "SensorBinaryGet"}
+			]},
+		{"type": "record", "name": "ArgumentSensorBinarySupportedGet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceGet"}
+			]},
+		{"type": "record", "name": "ArgumentSensorMultilevelGet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceGet"},
+			{"name": "parameter", "type": "SensorMultilevelGet"}
+            ]},
+		{"type": "record", "name": "ArgumentSensorMultilevelSupportedGet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceGet"}
+			]},
+		{"type": "record", "name": "ArgumentSensorMultilevelScaleSupportedGet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceGet"},
+			{"name": "parameter", "type": "SensorMultilevelScaleSupportedGet"}
+			]},
+        {"type": "record", "name": "ArgumentSwitchBinaryGet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceGet"}
+			]},
+		{"type": "record", "name": "ArgumentSwitchBinarySet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceSet"},
+			{"name": "parameter", "type": "SwitchBinarySet"}
+			]},
+		{"type": "record", "name": "ArgumentSwitchMultilevelGet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceGet"}
+			]},
+		{"type": "record", "name": "ArgumentSwitchMultilevelSet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceSet"},
+			{"name": "parameter", "type": "SwitchMultilevelSet"}
+			]},
+		{"type": "record", "name": "ArgumentSwitchMultilevelLevelChangeGet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceGet"}
+			]},
+		{"type": "record", "name": "ArgumentSwitchMultilevelLevelChangeSet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceSet"},
+			{"name": "parameter", "type": "SwitchMultilevelLevelChangeSet"}
+			]},
+		{"type": "record", "name": "ArgumentSwitchMultilevelSupportedGet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceGet"}
+			]},
+		{"type": "record", "name": "ArgumentSwitchColorGet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceGet"},
+			{"name": "parameter", "type": "SwitchColorGet"}
+			]},	
+		{"type": "record", "name": "ArgumentSwitchColorSet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceSet"},
+			{"name": "parameter", "type": "SwitchColorSetList"}
+			]},	
+		{"type": "record", "name": "ArgumentSwitchColorLevelChangeGet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceGet"},
+			{"name": "parameter", "type": "SwitchColorLevelChangeGet"}
+			]},			
+		{"type": "record", "name": "ArgumentSwitchColorLevelChangeSet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceSet"},
+			{"name": "parameter", "type": "SwitchColorLevelChangeSet"}
+			]},			
+		{"type": "record", "name": "ArgumentSwitchColorSupportedGet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceGet"}
+			]},
+		{"type": "record", "name": "ArgumentThermostatFanModeGet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceGet"}
+			]},
+		{"type": "record", "name": "ArgumentThermostatFanModeSet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceSet"},
+			{"name": "parameter", "type": "ThermostatFanModeSet"}
+			]},
+		{"type": "record", "name": "ArgumentThermostatFanModeSupportedGet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceGet"}
+			]},
+		{"type": "record", "name": "ArgumentThermostatFanStateGet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceGet"}
+			]},
+		{"type": "record", "name": "ArgumentThermostatModeGet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceGet"}
+			]},
+		{"type": "record", "name": "ArgumentThermostatModeSet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceSet"},
+			{"name": "parameter", "type": "ThermostatModeSet"}
+			]},
+		{"type": "record", "name": "ArgumentThermostatModeSupportedGet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceGet"}
+			]},
+		{"type": "record", "name": "ArgumentThermostatOperatingStateGet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceGet"}
+			]},
+		{"type": "record", "name": "ArgumentThermostatSetpointGet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceGet"},
+			{"name": "parameter", "type": "ThermostatSetpointGet"}
+			]},
+		{"type": "record", "name": "ArgumentThermostatSetpointSet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceSet"},
+			{"name": "parameter", "type": "ThermostatSetpointSet"}
+			]},
+		{"type": "record", "name": "ArgumentThermostatSetpointSupportedGet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceGet"}
+			]},
+		{"type": "record", "name": "ArgumentThermostatSetpointRangeGet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceGet"},
+			{"name": "parameter", "type": "ThermostatSetpointGet"}
+			]},
+    {"type": "record", "name": "ArgumentUserCodeGet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceGet"},
+			{"name": "parameter", "type": "UserCodeGet"}
+			]},
+		{"type": "record", "name": "ArgumentUserCodeSet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceSet"},
+			{"name": "parameter", "type": "UserCodeSet"}
+			]},
+		{"type": "record", "name": "ArgumentWakeUpIntervalSet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceSet"},
+			{"name": "parameter", "type": "WakeUpIntervalSet"}
+			]},
+		{"type": "record", "name": "ArgumentUserCodeUsersNumberGet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceGet"}
+			]},
+		{"type": "record", "name": "ArgumentBarrierOperatorGet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceGet"}
+			]},
+		{"type": "record", "name": "ArgumentBarrierOperatorSet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceSet"},
+			{"name": "parameter", "type": "BarrierOperatorSet"}
+			]},
+    {"type": "record", "name": "ArgumentBarrierOperatorSubsystemConfigGet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceGet"},
+			{"name": "parameter", "type": "BarrierOperatorSubsystemConfigGet"}
+			]},
+		{"type": "record", "name": "ArgumentBarrierOperatorSubsystemConfigSet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceSet"},
+			{"name": "parameter", "type": "BarrierOperatorSubsystemConfigSet"}
+			]},
+		{"type": "record", "name": "ArgumentBarrierOperatorSubsystemSupportedGet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceGet"}
+			]},
+		{"type": "record", "name": "ArgumentZipGatewayModeGet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceGet"}
+			]},
+		{"type": "record", "name": "ArgumentWakeUpGet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceGet"}
+			]},
+		{"type": "record", "name": "ArgumentZipGatewayLockSet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceSet"},
+			{"name": "parameter", "type": "ZipGatewayLockSet"}
+			]},
+		{"type": "record", "name": "ArgumentZipGatewayModeSet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceSet"},
+			{"name": "parameter", "type": "ZipGatewayModeSet"}
+			]},
+		{"type": "record", "name": "ArgumentZipGatewayUnsolicitedDestinationGet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceGet"}
+			]},
+		{"type": "record", "name": "ArgumentZipGatewayUnsolicitedDestinationSet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceSet"},
+			{"name": "parameter", "type": "ZipGatewayUnsolicitedDestinationSet"}
+			]},
+		{"type": "record", "name": "ArgumentZipPortalConfigurationGet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceGet"}
+			]},
+		{"type": "record", "name": "ArgumentZipPortalConfigurationSet",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceSet"},
+			{"name": "parameter", "type": "ZipPortalConfigurationSet"}
+			]},
+		{"type": "record", "name": "ArgumentZipPortalConfigurationStatus",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceGet"}
+			]},
+		{"type": "record", "name": "NetworkReport",
+			"fields": [
+			{"name": "id", "type": "string"}
+			]},
+		{"type": "record", "name": "NodeReport",
+			"fields": [
+			{"name": "id", "type": "int"},
+			{"name": "property", "type": "int"},
+      {"name": "vendor_id", "type": "int"},
+			{"name": "product_id", "type": "int"},
+			{"name": "product_type", "type": "int"},
+			{"name": "category", "type": "int"},
+			{"name": "alive", "type": "int"},
+			{"name": "secure", "type": "int"},
+			{"name": "zwave_library_type", "type": "int"},
+			{"name": "zwave_protocol_version", "type": "int"},
+			{"name": "application_version", "type": "int"},
+			{"name": "FLiRS", "type": "int"},
+			{"name": "sleep_capable", "type": "int"},
+      {"name": "wake_up_interval", "type": "long"},
+      {"name": "s2_keys_valid", "type": "int"},
+      {"name": "s2_grant_key", "type": "int"},
+			{"name": "s2_dsk", "type": "string"},
+      {"name": "external_version_info", "type": "VersionReport"}
+			]},
+		{"type": "record", "name": "EndpointReport",
+			"fields": [
+			{"name": "id", "type": "int"},
+			{"name": "generic_device_class", "type": "int"},
+			{"name": "specific_device_class", "type": "int"},
+			{"name": "name", "type": "string"},
+			{"name": "location", "type": "string"},
+			{"name": "zwave_plus_version", "type": "int"},
+			{"name": "zwave_plus_role_type", "type": "int"},
+			{"name": "zwave_plus_node_type", "type": "int"},
+			{"name": "zwave_plus_installer_icon_type", "type": "int"},
+			{"name": "zwave_plus_user_icon_type", "type": "int"},
+			{"name": "aggregated_ep_cnt", "type": "int"},
+      {"name": "aggregated_ep_list", "type": {"type": "array", "items": "int"}}
+      ]},
+		{"type": "record", "name": "GatewayListType",
+			"fields": [
+			{"name": "gateway_flag", "type": "int"},
+			{"name": "unsolicited_port_number", "type": "int"},
+			{"name": "address_type", "type": "int"},
+			{"name": "gateway_address", "type": "IPv6Address"},
+			{"name": "gateway_name", "type": ["string", "null"]}
+			]},
+		{"type": "record", "name": "GatewayListReport",
+			"fields": [
+			{"name": "discovery_state", "type": "int"},
+			{"name": "received_reports", "type": "int"},
+			{"name": "total_reports", "type": "int"},
+			{"name": "gateway_list", "type": {"type": "array","items": "GatewayListType"}}
+			]},
+		{"type": "record", "name": "GatewayReport",
+			"fields": [
+			{"name": "gateway_status", "type": "int"},
+			{"name": "address_type", "type": "int"},
+			{"name": "gateway_address", "type": "IPv6Address"},
+			{"name": "gateway_name", "type": ["string", "null"]},
+			{"name": "unsolicited_port_number", "type": "int"}
+			]},
+		{"type": "record", "name": "InterfaceReport",
+			"fields": [
+			{"name": "id", "type": "int"},
+			{"name": "name", "type": "string"},
+			{"name": "version", "type": "int"},
+			{"name": "real_version", "type": "int"},
+            {"name": "secure_access", "type": "int"},
+			{"name": "unsecure_access", "type": "int"}
+			]},
+		{"type": "record", "name": "NetworkList",
+			"fields": [
+			{"name": "network_list", "type": {"type": "array",
+				"items": "NetworkReport"}}
+			]},
+		{"type": "record", "name": "NetworkInfo",
+			"fields": [
+			{"name": "utime", "type": "long"},
+			{"name": "home_id", "type": "long"},
+			{"name": "controller_node_id", "type": "int"},
+      {"name": "controller_role", "type": "int"},
+      {"name": "controller_capability", "type": "int"},
+			{"name": "controller_zwave_role", "type": "int"}
+      ]},
+		{"type": "record", "name": "NodeList",
+			"fields": [
+			{"name": "node_list", "type": {"type": "array",
+				"items": "NodeReport"}}
+			]},
+		{"type": "record", "name": "NodeEndpointList",
+			"fields": [
+			{"name": "node_endpoint_list", "type": {"type": "array",
+				"items": "Endpoint"}}
+			]},
+		{"type": "record", "name": "NetworkOperationState",
+			"fields": [
+			{"name": "current_operation", "type": "int"},
+			{"name": "current_operation_status", "type": "int"},
+			{"name": "current_operation_total_nodes", "type": "int"},
+			{"name": "current_operation_completed_nodes", "type": "int"},
+			{"name": "previous_operation", "type": "int"}
+			]},
+    {"type": "record", "name": "NetworkNodePrekitDsk",
+			"fields": [
+      {"name": "dsk", "type": "string"}
+      ]},
+		{"type": "record", "name": "NetworkNodeAddReqKey",
+			"fields": [
+			{"name": "req_keys", "type": "int"},
+			{"name": "req_csa", "type": "int"},
+			{"name": "csa_pin", "type": "string"}
+      ]},
+    {"type": "record", "name": "NetworkNodeAddDsk",
+			"fields": [
+      {"name": "pin_required", "type": "int"},
+      {"name": "dsk", "type": "string"}
+      ]},
+    {"type": "record", "name": "NetworkInitiateLocalDsk",
+			"fields": [
+      {"name": "local_dsk", "type": "string"}
+      ]},
+		{"type": "record", "name": "NetworkWhitelistListReport",
+			"fields": [
+			{"name": "whitelist_list", "type": {"type": "array", 
+				"items": "string"}}
+			]},
+    {"type": "record", "name": "NetworkWhitelistDeviceInfoResult",
+			"fields": [
+			{"name": "dsk", "type": "string"},
+			{"name": "granted_keys", "type": "int"},
+			{"name": "name", "type": "string"},
+			{"name": "loc", "type": "string"}
+			]},
+    {"type": "record", "name": "NetworkGatewayStatus",
+			"fields": [
+			{"name": "gateway_connection_status", "type": "int"}
+			]},
+		{"type": "record", "name": "NetworkSummaryInitialized",
+			"fields": [
+			{"name": "home_id", "type": "long"},
+			{"name": "controller_node_id", "type": "int"},
+			{"name": "network_id", "type": "string"},
+			{"name": "gateway_address", "type": "IPv6Address"},
+			{"name": "address_type", "type": "int"}
+			]},
+		{"type": "record", "name": "NetworkSummary",
+			"fields": [
+			{"name": "vendor_name", "type": "string"},
+			{"name": "product_name", "type": "string"},
+			{"name": "server_platform", "type": "string"},
+			{"name": "host_controller_api_version", "type": "VersionNumber"},
+			{"name": "is_initialized", "type": "int"},
+			{"name": "summary_initialized", "type": ["NetworkSummaryInitialized", "null"]}
+			]},
+		{"type": "record", "name": "ApplicationVersion",
+			"fields": [
+			{"name": "server_platform", "type": "string"},
+			{"name": "host_controller_api_version", "type": "VersionNumber"}
+			]},
+		{"type": "record", "name": "CommandqueueList",
+			"fields": [
+			{"name": "commandqueue_list", "type": {"type": "array", 
+				"items": "int"}}
+			]},
+		{"type": "record", "name": "EndpointList",
+			"fields": [
+			{"name": "endpoint_list", "type": {"type": "array",
+				"items": "EndpointReport"}}
+			]},
+		{"type": "record", "name": "InterfaceList",
+			"fields": [
+			{"name": "interface_list", "type": {"type": "array",
+				"items": "InterfaceReport"}}
+			]},
+		{"type": "record", "name": "ExtendedAlarmReport",
+			"fields": [
+			{"name": "zensor_net_source_node_id", "type": "int"},
+			{"name": "zwave_alarm_status", "type": "int"},
+			{"name": "zwave_alarm_type", "type": "int"},
+			{"name": "zwave_alarm_event", "type": "int"},
+			{"name": "event_parameter_type", "type": "int"},
+			{"name": "event_parameter_length", "type": "int"},
+			{"name": "event_parameter", "type": "bytes"}
+			]},
+		{"type": "record", "name": "AlarmReport",
+			"fields": [
+			{"name": "utime", "type": "long"},
+			{"name": "alarm_type", "type": "int"},
+			{"name": "alarm_level", "type": "int"},
+			{"name": "extended_alarm_info", "type": ["ExtendedAlarmReport", "null"]}
+			]},
+		{"type": "record", "name": "AlarmReportList",
+			"fields": [
+			{"name": "alarm_value_list", "type": {"type": "array",
+				"items": "AlarmReport"}}
+			]},
+		{"type": "record", "name": "AlarmTypeSupportedReport",
+			"fields": [
+			{"name": "utime", "type": "long"},
+			{"name": "have_vendor_type", "type": "int"},
+			{"name": "supported_types", "type": {"type": "array",
+				"items": "int"}}
+			]},
+		{"type": "record", "name": "AlarmEventSupportedReport",
+			"fields": [
+			{"name": "utime", "type": "long"},
+			{"name": "zwave_alarm_type", "type": "int"},
+			{"name": "supported_events", "type": {"type": "array",
+				"items": "int"}}
+			]},
+		{"type": "record", "name": "AssociationGrpInfoCommand",
+			"fields": [
+			{"name": "command_class_name", "type": "string"},
+			{"name": "command_name", "type": "string"}
+			]},
+		{"type": "record", "name": "AssociationGrpInfoReport",
+			"fields": [
+			{"name": "grouping_identifier", "type": "int"},
+			{"name": "profile", "type": "int"},
+			{"name": "event_code", "type": "int"},
+			{"name": "name", "type": "string"},
+			{"name": "command_list", "type": {"type": "array",
+				"items": "AssociationGrpInfoCommand"}}
+			]},
+		{"type": "record", "name": "AssociationGrpInfoReportList",
+			"fields": [
+			{"name": "dynamic_info", "type": "int"},
+			{"name": "group_count", "type": "int"},
+			{"name": "association_grp_info_list", "type": {"type": "array",
+				"items": "AssociationGrpInfoReport"}}
+			]},
+		{"type": "record", "name": "AssociationReport",
+			"fields": [
+			{"name": "utime", "type": "long"},
+			{"name": "grouping_identifier", "type": "int"},
+			{"name": "max_nodes_supported", "type": "int"},
+			{"name": "endpoints_list", "type": {"type": "array",
+				"items": "Endpoint"}}
+			]},
+		{"type": "record", "name": "AssociationReportList",
+			"fields": [
+			{"name": "association_value_list", "type": {"type": "array",
+				"items": "AssociationReport"}}
+			]},
+		{"type": "record", "name": "AssociationGroupingsReport",
+			"fields": [
+			{"name": "utime", "type": "long"},
+			{"name": "supported_groupings", "type": "int"}
+			]},
+		{"type": "record", "name": "AssociationSpecificGroupReport",
+			"fields": [
+			{"name": "utime", "type": "long"},
+			{"name": "group", "type": "int"}
+			]},
+		{"type": "record", "name": "BasicReport",
+			"fields": [
+			{"name": "utime", "type": "long"},
+			{"name": "value", "type": "int"}
+			]},
+		{"type": "record", "name": "BatteryReport",
+			"fields": [
+			{"name": "utime", "type": "long"},
+			{"name": "level", "type": "int"}
+			]},
+		{"type": "record", "name": "CentralSceneKeyAttributeList",
+			"fields": [
+			{"name": "scene_number", "type": "int"},
+			{"name": "supported_key_attributes", "type": {"type": "array", "items": "int"}}
+			]},
+		{"type": "record", "name": "CentralSceneSupportedReportList",
+			"fields": [
+            {"name": "utime", "type": "long" },
+            {"name": "scene_count", "type": "int" },
+            {"name": "same_key_attribute", "type": "int"},
+            {"name": "scene_ka_list", "type": {"type": "array",
+				"items": "CentralSceneKeyAttributeList"}}
+			]},
+        {"type": "record", "name": "CentralSceneReport",
+			"fields": [
+			{"name": "utime", "type": "long"},
+			{"name": "sequence_number", "type": "int"},
+			{"name": "key_attribute", "type": "int"},
+			{"name": "scene_number", "type": "int"}
+			]},
+        {"type": "record", "name": "ConfigurationReport",
+			"fields": [
+			{"name": "utime", "type": "long"},
+			{"name": "parameternumber", "type": "int"},
+			{"name": "size", "type": "int"},
+			{"name": "configvalue_array", "type": {"type": "array", "items": "int"}}
+			]},
+		{"type": "record", "name": "ConfigurationReportList",
+			"fields": [
+			{"name": "configuration_param_value_list", "type": {"type": "array", "items": "ConfigurationReport"}}
+			]},
+		{"type": "record", "name": "DoorLockOperationReport",
+			"fields": [
+			{"name": "utime", "type": "long"},
+			{"name": "mode", "type": "int"},
+			{"name": "outside_door_handles_mode", "type": "int"},
+			{"name": "inside_door_handles_mode", "type": "int"},
+			{"name": "door_condition", "type": "int"},
+			{"name": "lock_timeout_minutes", "type": "int"},
+			{"name": "lock_timeout_seconds", "type": "int"}
+			]},
+		{"type": "record", "name": "DoorLockConfigurationReport",
+			"fields": [
+			{"name": "utime", "type": "long"},
+			{"name": "operation_type", "type": "int"},
+			{"name": "outside_door_handles_state", "type": "int"},
+			{"name": "inside_door_handles_state", "type": "int"},
+			{"name": "lock_timeout_minutes", "type": "int"},
+			{"name": "lock_timeout_seconds", "type": "int"}
+			]},
+		{"type": "record", "name": "FirmwareInfoReport",
+			"fields": [
+			{"name": "utime", "type": "long"},
+			{"name": "manufacturer_id", "type": "int"},
+			{"name": "firmware_0_id", "type": "int"},
+			{"name": "firmware_0_checksum", "type": "int"},
+			{"name": "is_firmware_upgradable", "type": "int"},
+			{"name": "max_fragment_size", "type": "int"},
+			{"name": "hardware_version_valid", "type": "int"},
+			{"name": "hardware_version", "type": "int"},
+			{"name": "is_fixed_frgament_size", "type": "int"},
+			{"name": "firmware_n_id_list", "type": {"type": "array",
+				"items": "int"}},
+			{"name": "firmware_directory_location", "type": "string"}
+			]},
+		{"type": "record", "name": "FirmwareUpdateRequestReport",
+			"fields": [
+			{"name": "manufacturer_id", "type": "int"},
+			{"name": "firmware_target", "type": "int"},
+			{"name": "firmware_id", "type": "int"},
+			{"name": "update_request_time", "type": "long"},
+			{"name": "update_request_status_utime", "type": "long"},
+			{"name": "update_request_status", "type": "int"},
+			{"name": "update_completion_status_utime", "type": "long"},
+			{"name": "update_completion_status", "type": "int"},
+			{"name": "wait_time", "type": "int"},
+			{"name": "wait_time_is_valid", "type": "int"},
+			{"name": "target_restart_status_utime", "type": "long"},
+			{"name": "target_restart_status", "type": "int"}
+			]},
+		{"type": "record", "name": "FirmwareUpdateRequestReportList",
+			"fields": [
+			{"name": "update_status_list", "type": {"type": "array",
+				"items": "FirmwareUpdateRequestReport"}}
+			]},
+		{"type": "record", "name": "MeterReport",
+			"fields": [
+			{"name": "utime", "type": "long"},
+			{"name": "meter_type", "type": "int"},
+			{"name": "precision", "type": "int"},
+			{"name": "scale", "type": "int"},
+			{"name": "size", "type": "int"},
+			{"name": "meter_value", "type": "Signed4Byte"},
+			{"name": "rate_type", "type": "int"},
+			{"name": "delta_time", "type": "int"},
+			{"name": "previous_meter_value", "type": "Signed4Byte"}
+			]},
+		{"type": "record", "name": "MeterReportList",
+			"fields": [
+			{"name": "meter_value_list", "type": {"type": "array",
+				"items": "MeterReport"}}
+			]},
+		{"type": "record", "name": "MeterSupportedReport",
+			"fields": [
+			{"name": "utime", "type": "long"},
+			{"name": "meter_type", "type": "int"},
+			{"name": "scale_supported", "type": "int"},
+			{"name": "meter_reset", "type": "int"}
+			]},
+		{"type": "record", "name": "SensorBinarySupportedReport",
+			"fields": [
+			{"name": "utime", "type": "long"},
+			{"name": "supported_types", "type": {"type": "array", "items": "int"}}
+			]},
+		{"type": "record", "name": "SensorBinaryReport",
+			"fields": [
+			{"name": "idle_utime", "type": "long"},
+			{"name": "event_utime", "type": "long"},
+			{"name": "sensor_value", "type": "int"},
+			{"name": "sensor_type", "type": "int"}
+			]},
+		{"type": "record", "name": "SensorMultilevelScaleSupportedReport",
+			"fields": [
+			{"name": "utime", "type": "long"},
+			{"name": "sensor_type", "type": "int"},
+            {"name": "supported_scales", "type": {"type": "array", "items": "int"}}
+			]},
+        {"type": "record", "name": "SensorMultilevelSupportedReport",
+			"fields": [
+			{"name": "utime", "type": "long"},
+			{"name": "supported_types", "type": {"type": "array", "items": "int"}}
+			]},
+		{"type": "record", "name": "SensorMultilevelReport",
+			"fields": [
+			{"name": "utime", "type": "long"},
+			{"name": "sensor_type", "type": "int"},
+			{"name": "precision", "type": "int"},
+			{"name": "scale", "type": "int"},
+			{"name": "size", "type": "int"},
+			{"name": "sensor_value", "type": "Signed4Byte"}
+			]},
+		{"type": "record", "name": "SensorMultilevelReportList",
+			"fields": [
+			{"name": "sensor_value_list", "type": {"type": "array",
+				"items": "SensorMultilevelReport"}}
+			]},
+		{"type": "record", "name": "SwitchBinaryReport",
+			"fields": [
+			{"name": "utime", "type": "long"},
+			{"name": "value", "type": "int"}
+			]},
+		{"type": "record", "name": "SwitchMultilevelReport",
+			"fields": [
+			{"name": "utime", "type": "long"},
+			{"name": "value", "type": "int"}
+			]},
+		{"type": "record", "name": "SwitchMultilevelLevelChangeReport",
+			"fields": [
+			{"name": "utime", "type": "long"},
+			{"name": "start_stop", "type": "int"}
+			]},
+		{"type": "record", "name": "SwitchMultilevelSupportedReport",
+			"fields": [
+			{"name": "utime", "type": "long"},
+			{"name": "primary_switch_type", "type": "int"},
+			{"name": "secondary_switch_type", "type": "int"}
+			]},			
+		{"type": "record", "name": "SwitchColorReport",
+			"fields": [
+			{"name": "utime", "type": "long"},
+			{"name": "id", "type": "int"},
+			{"name": "cvalue", "type": "int"},
+			{"name": "tvalue", "type": "int"},
+			{"name": "dur", "type": "int"}
+			]},
+		{"type": "record", "name": "SwitchColorReportList",
+			"fields": [
+			{"name": "switch_color_value_list", "type": {"type": "array",
+				"items": "SwitchColorReport"}}
+			]},
+		{"type": "record", "name": "SwitchColorLevelChangeReport",
+			"fields": [
+			{"name": "utime", "type": "long"},
+			{"name": "id", "type": "int"},
+			{"name": "start_stop", "type": "int"}
+			]},			
+		{"type": "record", "name": "SwitchColorLevelChangeReportList",
+			"fields": [
+			{"name": "switch_color_level_change_value_list", "type": {"type": "array",
+				"items": "SwitchColorLevelChangeReport"}}
+			]},	
+		{"type": "record", "name": "SwitchColorSupportedReport",
+			"fields": [
+			{"name": "utime", "type": "long"},
+			{"name": "mask", "type": "int"}
+			]},		
+		{"type": "record", "name": "ThermostatFanModeReport",
+			"fields": [
+			{"name": "utime", "type": "long"},
+			{"name": "mode", "type": "int"},
+			{"name": "off", "type": "int"}
+			]},
+		{"type": "record", "name": "ThermostatFanModeSupportedReport",
+			"fields": [
+			{"name": "utime", "type": "long"},
+			{"name": "sup_mode_list", "type": {"type": "array", "items": "int"}}
+			]},
+		{"type": "record", "name": "ThermostatFanStateReport",
+			"fields": [
+			{"name": "utime", "type": "long"},
+			{"name": "fan_operating_state", "type": "int"}
+			]},
+		{"type": "record", "name": "ThermostatModeReport",
+			"fields": [
+			{"name": "utime", "type": "long"},
+			{"name": "mode", "type": "int"}
+			]},
+		{"type": "record", "name": "ThermostatModeSupportedReport",
+			"fields": [
+			{"name": "utime", "type": "long"},
+			{"name": "sup_mode_list", "type": {"type": "array", "items": "int"}}
+			]},
+		{"type": "record", "name": "ThermostatOperatingStateReport",
+			"fields": [
+			{"name": "utime", "type": "long"},
+			{"name": "operating_state", "type": "int"}
+			]},
+		{"type": "record", "name": "ThermostatSetpointReport",
+			"fields": [
+			{"name": "utime", "type": "long"},
+			{"name": "setpoint_type", "type": "int"},
+			{"name": "precision", "type": "int"},
+			{"name": "scale", "type": "int"},
+			{"name": "size", "type": "int"},
+			{"name": "value", "type": "Signed4Byte"}
+			]},
+		{"type": "record", "name": "ThermostatSetpointReportList",
+			"fields": [
+			{"name": "thermostat_setpoint_value_list", "type": {"type": "array",
+				"items": "ThermostatSetpointReport"}}
+			]},
+		{"type": "record", "name": "ThermostatSetpointSupportedReport",
+			"fields": [
+			{"name": "utime", "type": "long"},
+			{"name": "supported_types", "type": {"type": "array",
+				"items": "int"}}
+			]},
+		{"type": "record", "name": "ThermostatSetpointRangeReport",
+			"fields": [
+			{"name": "utime", "type": "long"},
+			{"name": "setpoint_type", "type": "int"},
+			{"name": "range_min", "type": "ThermostatSetpointReport"},
+			{"name": "range_max", "type": "ThermostatSetpointReport"}
+			]},
+    {"type": "record", "name": "ThermostatSetpointRangeReportList",
+			"fields": [
+			{"name": "thermostat_setpoint_range_list", "type": {"type": "array",
+				"items": "ThermostatSetpointRangeReport"}}
+			]},
+    {"type": "record", "name": "UserCodeReport",
+			"fields": [
+			{"name": "utime", "type": "long"},
+			{"name": "user_identifier", "type": "int"},
+			{"name": "user_id_status", "type": "int"},
+			{"name": "user_code_length", "type": "int"},
+			{"name": "user_code", "type": "UserCodeData"}
+			]},
+		{"type": "record", "name": "UserCodeReportList",
+			"fields": [
+			{"name": "user_code_list", "type": {"type": "array",
+				"items": "UserCodeReport"}}
+			]},
+		{"type": "record", "name": "UserCodeUsersNumberReport",
+			"fields": [
+			{"name": "utime", "type": "long"},
+			{"name": "supported_users", "type": "int"}
+			]},
+		{"type": "record", "name": "BarrierOperatorReport",
+			"fields": [
+			{"name": "utime", "type": "long"},
+			{"name": "state", "type": "int"}
+			]},
+    {"type": "record", "name": "BarrierOperatorSubsystemConfigReport",
+			"fields": [
+			{"name": "utime", "type": "long"},
+			{"name": "type", "type": "int"},
+			{"name": "state", "type": "int"}
+			]},
+		{"type": "record", "name": "BarrierOperatorSubsystemConfigReportList",
+			"fields": [
+			{"name": "barrier_operator_subsystem_config_value_list", "type": {"type": "array",
+				"items": "BarrierOperatorSubsystemConfigReport"}}
+			]},
+		{"type": "record", "name": "BarrierOperatorSubsystemSupportedReport",
+			"fields": [
+			{"name": "utime", "type": "long"},
+			{"name": "supported_types", "type": {"type": "array",
+				"items": "int"}}
+			]},
+		{"type": "record", "name": "WakeUpReport",
+			"fields": [
+			{"name": "utime", "type": "long"},
+			{"name": "notify", "type": "int"},
+			{"name": "current_wake_up_interval", "type": "int"},
+			{"name": "nodeid", "type": "int"},
+			{"name": "min_wake_up_interval", "type": "int"},
+			{"name": "max_wake_up_interval", "type": "int"},
+			{"name": "default_wake_up_interval", "type": "int"},
+			{"name": "wake_up_interval_step", "type": "int"},
+			{"name": "notification_utime", "type": "long"},
+			{"name": "notification_nodeid", "type": "int"}
+			]},
+		{"type": "record", "name": "ZipGatewayModeReport",
+			"fields": [
+			{"name": "utime", "type": "long"},
+			{"name": "status", "type": "int"},
+			{"name": "mode", "type": "int"},
+			{"name": "profile_present", "type": "int"},
+			{"name": "ipv6_address", "type": "IPv6Address"},
+			{"name": "port", "type": "int"},
+			{"name": "peer_name_length", "type": "int"},
+			{"name": "peer_name", "type": "PortalPeerName"}
+			]},
+		{"type": "record", "name": "ZipGatewayUnsolicitedDestinationReport",
+			"fields": [
+			{"name": "utime", "type": "long"},
+			{"name": "unsolicited_ipv6_destination", "type": "IPv6Address"},
+			{"name": "unsolicited_destination_port", "type": "int"},
+			{"name": "local_ipv6_address", "type": "IPv6Address"},
+			{"name": "local_destination_port", "type": "int"}
+			]},
+		{"type": "record", "name": "ZipPortalConfigurationReport",
+			"fields": [
+			{"name": "utime", "type": "long"},
+			{"name": "lan_ipv6_addr", "type": "IPv6Address"},
+			{"name": "lan_ipv6_prefix_len", "type": "int"},
+			{"name": "portal_ipv6_prefix", "type": "IPv6Address"},
+			{"name": "portal_ipv6_prefix_len", "type": "int"},
+			{"name": "default_gw_ipv6_addr", "type": "IPv6Address"},
+			{"name": "pan_ipv6_prefix", "type": "IPv6Address"}
+			]},
+		{"type": "record", "name": "ZipPortalConfigurationStatusReport",
+			"fields": [
+			{"name": "utime", "type": "long"},
+			{"name": "set_time", "type": "long"},
+			{"name": "status", "type": "int"}
+			]},
+		{"type": "record", "name": "CommandNetworkReport",
+			"fields": [
+			{"name": "network", "type": "Network"},
+			{"name": "utime", "type": "long"}
+			]},
+		{"type": "record", "name": "CommandInterfaceReport",
+			"fields": [
+			{"name": "interface", "type": "Interface"}
+			]},
+		{"type": "record", "name": "ResultRootGatewayListReport",
+			"fields": [
+			{"name": "command", "type": "Void"},
+			{"name": "parameter", "type": "GatewayListReport"}
+			]},
+		{"type": "record", "name": "ResultRootGatewayReport",
+			"fields": [
+			{"name": "command", "type": "Void"},
+			{"name": "parameter", "type": "GatewayReport"}
+			]},
+		{"type": "record", "name": "ResultRootNetworkListReport",
+			"fields": [
+			{"name": "command", "type": "Void"},
+			{"name": "parameter", "type": "NetworkList"}
+			]},
+		{"type": "record", "name": "ResultNetworkInfoReport",
+			"fields": [
+			{"name": "command", "type": "CommandNetworkReport"},
+			{"name": "parameter", "type": "NetworkInfo"}
+			]},
+		{"type": "record", "name": "ResultNetworkNodeListReport",
+			"fields": [
+			{"name": "command", "type": "CommandNetworkReport"},
+			{"name": "parameter", "type": "NodeList"}
+			]},
+		{"type": "record", "name": "ResultNetworkNodeEndpointListReport",
+			"fields": [
+			{"name": "command", "type": "CommandNetworkReport"},
+			{"name": "parameter", "type": "NodeEndpointList"}
+			]},
+    {"type": "record", "name": "ResultNetworkNodePrekitDskReport",
+			"fields": [
+			{"name": "command", "type": "CommandNetworkReport"},
+			{"name": "parameter", "type": "NetworkNodePrekitDsk"}
+			]},
+		{"type": "record", "name": "ResultNetworkNodeAddReqKeyReport",
+			"fields": [
+			{"name": "command", "type": "CommandNetworkReport"},
+			{"name": "parameter", "type": "NetworkNodeAddReqKey"}
+			]},
+    {"type": "record", "name": "ResultNetworkNodeAddDskReport",
+			"fields": [
+			{"name": "command", "type": "CommandNetworkReport"},
+			{"name": "parameter", "type": "NetworkNodeAddDsk"}
+			]},
+    {"type": "record", "name": "ResultNetworkInitiateLocalDskReport",
+			"fields": [
+			{"name": "command", "type": "CommandNetworkReport"},
+			{"name": "parameter", "type": "NetworkInitiateLocalDsk"}
+			]},
+    {"type": "record", "name": "ResultNetworkOperationStateReport",
+			"fields": [
+			{"name": "command", "type": "CommandNetworkReport"},
+			{"name": "parameter", "type": "NetworkOperationState"}
+			]},
+		{"type": "record", "name": "ResultNetworkWhitelistListReport",
+			"fields": [
+			{"name": "command", "type": "CommandNetworkReport"},
+			{"name": "parameter", "type": "NetworkWhitelistListReport"}
+			]},
+ 		{"type": "record", "name": "ResultNetworkWhitelistDeviceInfo",
+			"fields": [
+			{"name": "command", "type": "CommandNetworkReport"},
+			{"name": "parameter", "type": "NetworkWhitelistDeviceInfoResult"}
+			]},
+    {"type": "record", "name": "ResultNetworkGatewayStatusReport",
+			"fields": [
+			{"name": "command", "type": "CommandNetworkReport"},
+			{"name": "parameter", "type": "NetworkGatewayStatus"}
+			]},
+		{"type": "record", "name": "ResultNetworkSummaryReport",
+			"fields": [
+			{"name": "command", "type": "CommandNetworkReport"},
+			{"name": "parameter", "type": "NetworkSummary"}
+			]},
+		{"type": "record", "name": "ResultNetworkVersionReport",
+			"fields": [
+			{"name": "command", "type": "CommandNetworkReport"},
+			{"name": "parameter", "type": "ApplicationVersion"}
+			]},
+		{"type": "record", "name": "ResultNodeCommandqueueEnableReport",
+			"fields": [
+			{"name": "command", "type": "CommandNode"},
+			{"name": "parameter", "type": "CommandqueueEnableState"}
+			]},
+		{"type": "record", "name": "ResultNodeCommandqueueReport",
+			"fields": [
+			{"name": "command", "type": "CommandNode"},
+			{"name": "parameter", "type": "CommandqueueList"}
+			]},
+		{"type": "record", "name": "ResultNodeEndpointListReport",
+			"fields": [
+			{"name": "command", "type": "CommandNode"},
+			{"name": "parameter", "type": "EndpointList"}
+			]},
+		{"type": "record", "name": "ResultEndpointInterfaceListReport",
+			"fields": [
+			{"name": "command", "type": "CommandEndpoint"},
+			{"name": "parameter", "type": "InterfaceList"}
+			]},
+		{"type": "record", "name": "ResultAlarmReport",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceReport"},
+			{"name": "parameter", "type": "AlarmReportList"}
+			]},
+		{"type": "record", "name": "ResultAlarmTypeSupportedReport",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceReport"},
+			{"name": "parameter", "type": "AlarmTypeSupportedReport"}
+			]},
+		{"type": "record", "name": "ResultAlarmEventSupportedReport",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceReport"},
+			{"name": "parameter", "type": "AlarmEventSupportedReport"}
+			]},
+		{"type": "record", "name": "ResultAssociationGrpInfoReport",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceReport"},
+			{"name": "parameter", "type": "AssociationGrpInfoReportList"}
+			]},
+		{"type": "record", "name": "ResultAssociationReport",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceReport"},
+			{"name": "parameter", "type": "AssociationReportList"}
+			]},
+		{"type": "record", "name": "ResultAssociationGroupingsReport",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceReport"},
+			{"name": "parameter", "type": "AssociationGroupingsReport"}
+			]},
+		{"type": "record", "name": "ResultAssociationSpecificGroupReport",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceReport"},
+			{"name": "parameter", "type": "AssociationSpecificGroupReport"}
+			]},
+		{"type": "record", "name": "ResultBasicReport",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceReport"},
+			{"name": "parameter", "type": "BasicReport"}
+			]},
+		{"type": "record", "name": "ResultBatteryReport",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceReport"},
+			{"name": "parameter", "type": "BatteryReport"}
+			]},
+		{"type": "record", "name": "ResultCentralSceneSupportedReport",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceReport"},
+			{"name": "parameter", "type": "CentralSceneSupportedReportList"}
+			]},
+		{"type": "record", "name": "ResultCentralSceneReport",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceReport"},
+			{"name": "parameter", "type": "CentralSceneReport"}
+			]},
+        {"type": "record", "name": "ResultConfigurationReport",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceReport"},
+			{"name": "parameter", "type": "ConfigurationReportList"}
+			]},
+		{"type": "record", "name": "ResultDoorLockOperationReport",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceReport"},
+			{"name": "parameter", "type": "DoorLockOperationReport"}
+			]},
+		{"type": "record", "name": "ResultDoorLockConfigurationReport",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceReport"},
+			{"name": "parameter", "type": "DoorLockConfigurationReport"}
+			]},
+		{"type": "record", "name": "ResultFirmwareInfoReport",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceReport"},
+			{"name": "parameter", "type": "FirmwareInfoReport"}
+			]},
+		{"type": "record", "name": "ResultFirmwareUpdateRequestReport",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceReport"},
+			{"name": "parameter", "type": "FirmwareUpdateRequestReportList"}
+			]},
+		{"type": "record", "name": "ResultMeterReport",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceReport"},
+			{"name": "parameter", "type": "MeterReportList"}
+			]},
+		{"type": "record", "name": "ResultMeterSupportedReport",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceReport"},
+			{"name": "parameter", "type": "MeterSupportedReport"}
+			]},
+		{"type": "record", "name": "ResultSensorBinaryReport",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceReport"},
+			{"name": "parameter", "type": "SensorBinaryReport"}
+			]},
+		{"type": "record", "name": "ResultSensorBinarySupportedReport",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceReport"},
+			{"name": "parameter", "type": "SensorBinarySupportedReport"}
+			]},
+		{"type": "record", "name": "ResultSensorMultilevelScaleSupportedReport",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceReport"},
+			{"name": "parameter", "type": "SensorMultilevelScaleSupportedReport"}
+			]},
+        {"type": "record", "name": "ResultSensorMultilevelSupportedReport",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceReport"},
+			{"name": "parameter", "type": "SensorMultilevelSupportedReport"}
+			]},
+		{"type": "record", "name": "ResultSensorMultilevelReport",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceReport"},
+			{"name": "parameter", "type": "SensorMultilevelReportList"}
+			]},
+		{"type": "record", "name": "ResultSwitchBinaryReport",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceReport"},
+			{"name": "parameter", "type": "SwitchBinaryReport"}
+			]},
+		{"type": "record", "name": "ResultSwitchMultilevelReport",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceReport"},
+			{"name": "parameter", "type": "SwitchMultilevelReport"}
+			]},
+		{"type": "record", "name": "ResultSwitchMultilevelLevelChangeReport",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceReport"},
+			{"name": "parameter", "type": "SwitchMultilevelLevelChangeReport"}
+			]},
+		{"type": "record", "name": "ResultSwitchMultilevelSupportedReport",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceReport"},
+			{"name": "parameter", "type": "SwitchMultilevelSupportedReport"}
+			]},		
+		{"type": "record", "name": "ResultSwitchColorReport",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceReport"},
+			{"name": "parameter", "type": "SwitchColorReportList"}
+			]},			
+			
+		{"type": "record", "name": "ResultSwitchColorLevelChangeReport",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceReport"},
+			{"name": "parameter", "type": "SwitchColorLevelChangeReportList"}
+			]},
+			
+		{"type": "record", "name": "ResultSwitchColorSupportedReport",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceReport"},
+			{"name": "parameter", "type": "SwitchColorSupportedReport"}
+			]},				
+		{"type": "record", "name": "ResultThermostatFanModeReport",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceReport"},
+			{"name": "parameter", "type": "ThermostatFanModeReport"}
+			]},
+		{"type": "record", "name": "ResultThermostatFanModeSupportedReport",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceReport"},
+			{"name": "parameter", "type": "ThermostatFanModeSupportedReport"}
+			]},
+		{"type": "record", "name": "ResultThermostatFanStateReport",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceReport"},
+			{"name": "parameter", "type": "ThermostatFanStateReport"}
+			]},
+		{"type": "record", "name": "ResultThermostatModeReport",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceReport"},
+			{"name": "parameter", "type": "ThermostatModeReport"}
+			]},
+		{"type": "record", "name": "ResultThermostatModeSupportedReport",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceReport"},
+			{"name": "parameter", "type": "ThermostatModeSupportedReport"}
+			]},
+		{"type": "record", "name": "ResultThermostatOperatingStateReport",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceReport"},
+			{"name": "parameter", "type": "ThermostatOperatingStateReport"}
+			]},
+		{"type": "record", "name": "ResultThermostatSetpointReport",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceReport"},
+			{"name": "parameter", "type": "ThermostatSetpointReportList"}
+			]},
+		{"type": "record", "name": "ResultThermostatSetpointSupportedReport",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceReport"},
+			{"name": "parameter", "type": "ThermostatSetpointSupportedReport"}
+			]},
+		{"type": "record", "name": "ResultThermostatSetpointRangeReport",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceReport"},
+			{"name": "parameter", "type": "ThermostatSetpointRangeReportList"}
+			]},
+    {"type": "record", "name": "ResultUserCodeReport",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceReport"},
+			{"name": "parameter", "type": "UserCodeReportList"}
+			]},
+		{"type": "record", "name": "ResultUserCodeUsersNumberReport",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceReport"},
+			{"name": "parameter", "type": "UserCodeUsersNumberReport"}
+			]},
+		{"type": "record", "name": "ResultBarrierOperatorReport",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceReport"},
+			{"name": "parameter", "type": "BarrierOperatorReport"}
+			]},
+    {"type": "record", "name": "ResultBarrierOperatorSubsystemConfigReport",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceReport"},
+			{"name": "parameter", "type": "BarrierOperatorSubsystemConfigReportList"}
+			]},
+		{"type": "record", "name": "ResultBarrierOperatorSubsystemSupportedReport",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceReport"},
+			{"name": "parameter", "type": "BarrierOperatorSubsystemSupportedReport"}
+			]},
+		{"type": "record", "name": "ResultWakeUpReport",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceReport"},
+			{"name": "parameter", "type": "WakeUpReport"}
+			]},
+		{"type": "record", "name": "ResultZipGatewayModeReport",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceReport"},
+			{"name": "parameter", "type": "ZipGatewayModeReport"}
+			]},
+		{"type": "record", "name": "ResultZipGatewayUnsolicitedDestinationReport",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceReport"},
+			{"name": "parameter", "type": "ZipGatewayUnsolicitedDestinationReport"}
+			]},
+		{"type": "record", "name": "ResultZipPortalConfigurationReport",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceReport"},
+			{"name": "parameter", "type": "ZipPortalConfigurationReport"}
+			]},
+		{"type": "record", "name": "ResultZipPortalConfigurationStatusReport",
+			"fields": [
+			{"name": "command", "type": "CommandInterfaceReport"},
+			{"name": "parameter", "type": "ZipPortalConfigurationStatusReport"}
+			]},
+		{"type": "record", "name": "SceneReport",
+			"fields": [
+			{"name": "scened", "type": "int"},
+			{"name": "name", "type": "string"},
+			{"name": "active", "type": "int"},
+			{"name": "status", "type": "int"},
+			{"name": "sutime", "type": "long"},
+			{"name": "lkstatus", "type": "int"},
+			{"name": "lksutime", "type": "long"},
+			{"name": "letrigger", "type": "int"},
+			{"name": "letime", "type": "long"},
+			{"name": "triggers", "type": "int"}
+			]},
+		{"type": "record", "name": "ParamKeyValue",
+			"fields": [
+			{"name": "key", "type": "string"},
+			{"name": "value", "type": "string", "doc": "application has to convert string to appropriate type"}
+			]},
+		{"type": "record", "name": "SceneAction",
+			"fields": [
+			{"name": "actype", "type": "int"},
+			{"name": "status", "type": "int"},
+			{"name": "sutime", "type": "long"},
+			{"name": "lkstatus", "type": "int"},
+			{"name": "lksutime", "type": "long"},
+			{"name": "uri", "type": "string"},
+			{"name": "cmd", "type": "int"},
+			{"name": "ifd", "type": "int"},
+			{"name": "param_list", "type": {"type": "array",
+				"items": "ParamKeyValue"}}
+			]},
+		{"type": "record", "name": "SceneSchedule",
+			"fields": [
+			{"name": "sctype", "type": "int"},
+			{"name": "day", "type": "int"},
+			{"name": "hour", "type": "int"},
+			{"name": "minute", "type": "int"}
+			]},
+		{"type": "record", "name": "SceneEvent",
+			"fields": [
+			{"name": "evtype", "type": "int"},
+			{"name": "status", "type": "int"},
+			{"name": "sutime", "type": "long"},
+			{"name": "uri", "type": "string"},
+			{"name": "cmd", "type": "int"},
+			{"name": "ifd", "type": "int"},
+			{"name": "param_list", "type": {"type": "array",
+				"items": "ParamKeyValue"}}
+			]},
+		{"type": "record", "name": "SceneGetResponse",
+			"fields": [
+			{"name": "report", "type": "SceneReport"},
+			{"name": "scene_action_list", "type": {"type": "array",
+				"items": "SceneAction"}},
+			{"name": "scene_schedule_list", "type": {"type": "array",
+				"items": "SceneSchedule"}},
+			{"name": "scene_event_list", "type": {"type": "array",
+				"items": "SceneEvent"}}
+			]},
+		{"type": "record", "name": "SceneStateLog",
+			"fields": [
+			{"name": "type", "type": "int"},
+			{"name": "curr_op", "type": "int"},
+			{"name": "cur_op_scened", "type": "int"},
+			{"name": "cur_op_trigger", "type": "int"},
+			{"name": "last_op_scened", "type": "int"},
+			{"name": "last_op_time", "type": "long"},
+			{"name": "last_op_trigger", "type": "int"}
+			]},
+		{"type": "record", "name": "SecuritySceneStateLog",
+			"fields": [
+			{"name": "type", "type": "int"},
+			{"name": "counter", "type": "int"},
+			{"name": "scened", "type": "int"}
+			]},
+		{"type": "record", "name": "SceneGetStateLogResponse",
+			"fields": [
+			{"name": "scene_state_log_list", "type": {"type": "array",
+				"items": "SceneStateLog"}},
+			{"name": "security_scene_state_log_list", "type": {"type": "array",
+				"items": "SecuritySceneStateLog"}}
+			]},
+		{"type": "record", "name": "SceneListResponse",
+			"fields": [
+			{"name": "SceneList", "type": {"type": "array",
+				"items": "SceneReport"}}
+			]},
+		{"type": "record", "name": "SceneSaveAction",
+			"fields": [
+			{"name": "action", "type": "int"},
+			{"name": "uri", "type": "string"},
+			{"name": "cmd", "type": "int"},
+			{"name": "ifd", "type": "int"},
+			{"name": "param_list", "type": {"type": "array",
+				"items": "ParamKeyValue"}}
+			]},
+		{"type": "record", "name": "SceneSaveSchedule",
+			"fields": [
+			{"name": "schedule", "type": "int"},
+			{"name": "day", "type": "int"},
+			{"name": "hour", "type": "int"},
+			{"name": "minute", "type": "int"}
+			]},
+		{"type": "record", "name": "SceneSaveEvent",
+			"fields": [
+			{"name": "event", "type": "int"},
+			{"name": "uri", "type": "string"},
+			{"name": "cmd", "type": "int"},
+			{"name": "ifd", "type": "int"},
+			{"name": "param_list", "type": {"type": "array",
+				"items": "ParamKeyValue"}}
+			]},
+		{"type": "record", "name": "ParamSceneSave",
+			"fields": [
+			{"name": "scened", "type": "int"},
+			{"name": "name", "type": "string"},
+			{"name": "active", "type": "int"},
+			{"name": "scene_action_list", "type": {"type": "array",
+				"items": "SceneSaveAction"}},
+			{"name": "scene_schedule_list", "type": {"type": "array",
+				"items": "SceneSaveSchedule"}},
+			{"name": "scene_event_list", "type": {"type": "array",
+				"items": "SceneSaveEvent"}}
+			]},
+		{"type": "record", "name": "ParamSceneUpdt",
+			"fields": [
+			{"name": "scened", "type": "int"},
+			{"name": "all", "type": "int"}
+			]},
+		{"type": "record", "name": "SceneGenericResponse",
+			"fields": [
+			{"name": "desc", "type": "int"}
+			]},
+		{"type": "record", "name": "SceneGetSupResponse",
+			"fields": [
+			{"name": "max_scenes", "type": "int"},
+			{"name": "max_actions", "type": "int"},
+			{"name": "max_schedules", "type": "int"},
+			{"name": "max_events", "type": "int"},
+			{"name": "timezone", "type": "string"}
+			]},
+		{"type": "record", "name": "ParamSceneID",
+			"fields": [
+			{"name": "scened", "type": "int"}
+			]},
+		{"type": "record", "name": "ParamSceneGetStateLog",
+			"fields": [
+			{"name": "type", "type": "int"}
+			]},
+		{"type": "record", "name": "ArgumentSceneSave",
+			"fields": [
+			{"name": "command", "type": "CommandNetwork"},
+			{"name": "parameter", "type": "ParamSceneSave"}
+			]},
+		{"type": "record", "name": "ResultSceneSave",
+			"fields": [
+			{"name": "command", "type": "CommandNetworkReport"},
+			{"name": "parameter", "type": "SceneGenericResponse"}
+			]},
+		{"type": "record", "name": "ArgumentSceneList",
+			"fields": [
+			{"name": "command", "type": "CommandNetwork"}
+			]},
+		{"type": "record", "name": "ResultSceneList",
+			"fields": [
+			{"name": "command", "type": "CommandNetworkReport"},
+			{"name": "parameter", "type": "SceneListResponse"}
+			]},
+		{"type": "record", "name": "ArgumentSceneGet",
+			"fields": [
+			{"name": "command", "type": "CommandNetwork"},
+			{"name": "parameter", "type": "ParamSceneID"}
+			]},
+		{"type": "record", "name": "ResultSceneGet",
+			"fields": [
+			{"name": "command", "type": "CommandNetworkReport"},
+			{"name": "parameter", "type": "SceneGetResponse"}
+			]},
+		{"type": "record", "name": "ArgumentSceneDel",
+			"fields": [
+			{"name": "command", "type": "CommandNetwork"},
+			{"name": "parameter", "type": "ParamSceneID"}
+			]},
+		{"type": "record", "name": "ResultSceneDel",
+			"fields": [
+			{"name": "command", "type": "CommandNetworkReport"},
+			{"name": "parameter", "type": "SceneGenericResponse"}
+			]},
+		{"type": "record", "name": "ArgumentSceneExec",
+			"fields": [
+			{"name": "command", "type": "CommandNetwork"},
+			{"name": "parameter", "type": "ParamSceneID"}
+			]},
+		{"type": "record", "name": "ResultSceneExec",
+			"fields": [
+			{"name": "command", "type": "CommandNetworkReport"},
+			{"name": "parameter", "type": "SceneGenericResponse"}
+			]},
+		{"type": "record", "name": "ArgumentSceneUpdt",
+			"fields": [
+			{"name": "command", "type": "CommandNetwork"},
+			{"name": "parameter", "type": "ParamSceneUpdt"}
+			]},
+		{"type": "record", "name": "ResultSceneUpdt",
+			"fields": [
+			{"name": "command", "type": "CommandNetworkReport"},
+			{"name": "parameter", "type": "SceneGenericResponse"}
+			]},
+		{"type": "record", "name": "ArgumentSceneGetStateLog",
+			"fields": [
+			{"name": "command", "type": "CommandNetwork"},
+			{"name": "parameter", "type": "ParamSceneGetStateLog"}
+			]},
+		{"type": "record", "name": "ResultSceneGetStateLog",
+			"fields": [
+			{"name": "command", "type": "CommandNetworkReport"},
+			{"name": "parameter", "type": "SceneGetStateLogResponse"}
+			]},
+		{"type": "record", "name": "ArgumentSceneGetSup",
+			"fields": [
+			{"name": "command", "type": "CommandNetwork"}
+			]},
+		{"type": "record", "name": "ResultSceneGetSup",
+			"fields": [
+			{"name": "command", "type": "CommandNetworkReport"},
+			{"name": "parameter", "type": "SceneGetSupResponse"}
+			]},
+		{"type": "record", "name": "SecuritySceneGetSupResponse",
+		"fields": [
+		{"name": "timezone", "type": "string"},
+		{"name": "max_security_scenes", "type": "int"},
+		{"name": "max_security_arm_events", "type": "int"},
+		{"name": "max_security_disarm_events", "type": "int"},
+		{"name": "max_security_alarm_events", "type": "int"}
+		]},
+		{"type": "record", "name": "ResultSecuritySceneGetSup",
+			"fields": [
+			{"name": "command", "type": "CommandNetworkReport"},
+			{"name": "parameter", "type": "SecuritySceneGetSupResponse"}
+			]},
+		{
+               "fields" : [
+                  {
+                     "name" : "desc",
+                     "type" : "int"
+                  }
+               ],
+               "name" : "SecuritySceneGenericResponse",
+               "type" : "record"
+            },
+               {
+               "fields" : [
+                  {
+                     "name" : "event_arm",
+                     "type" : "int"
+                  },
+                  {
+                     "name" : "uri",
+                     "type" : "string"
+                  },
+                  {
+                     "name" : "cmd",
+                     "type" : "int"
+                  },
+                  {
+                     "name" : "ifd",
+                     "type" : "int"
+                  },
+                  {
+                     "name" : "param_list",
+                     "type" : {
+                        "items" : "ParamKeyValue",
+                        "type" : "array"
+                     }
+                  },
+                  {"name": "status", "type": "int"},
+				  {"name": "sutime", "type": "long"}
+               ],
+               "name" : "SecuritySceneEventArm",
+               "type" : "record"
+            },
+            {
+               "fields" : [
+                  {
+                     "name" : "event_disarm",
+                     "type" : "int"
+                  },
+                  {
+                     "name" : "uri",
+                     "type" : "string"
+                  },
+                  {
+                     "name" : "cmd",
+                     "type" : "int"
+                  },
+                  {
+                     "name" : "ifd",
+                     "type" : "int"
+                  },
+                  {
+                     "name" : "param_list",
+                     "type" : {
+                        "items" : "ParamKeyValue",
+                        "type" : "array"
+                     }
+                  },
+                  {"name": "status", "type": "int"},
+				  {"name": "sutime", "type": "long"}
+               ],
+               "name" : "SecuritySceneEventDisarm",
+               "type" : "record"
+            },
+            {
+               "fields" : [
+                  {
+                     "name" : "event_alarm",
+                     "type" : "int"
+                  },
+                  {
+                     "name" : "uri",
+                     "type" : "string"
+                  },
+                  {
+                     "name" : "cmd",
+                     "type" : "int"
+                  },
+                  {
+                     "name" : "ifd",
+                     "type" : "int"
+                  },
+                  {
+                     "name" : "param_list",
+                     "type" : {
+                        "items" : "ParamKeyValue",
+                        "type" : "array"
+                     }
+                  },
+                  {"name": "status", "type": "int"},
+				  {"name": "sutime", "type": "long"}
+               ],
+               "name" : "SecuritySceneEventAlarm",
+               "type" : "record"
+            },
+            {"type": "record", "name": "ParamSecuritySceneTrigger",
+				"fields": [
+				{"name": "type", "type": "int"},
+				{"name": "time", "type": "long"},
+				{"name": "event", "type": "SecuritySceneEventAlarm"}
+				]},
+            {
+               "fields" : [
+                  {
+                     "name" : "scened",
+                     "type" : "int"
+                  },
+                  {
+                     "name" : "name",
+                     "type" : "string"
+                  },
+                  {
+                     "name" : "active",
+                     "type" : "int"
+                  },
+                  {
+                     "name" : "is_armed",
+                     "type" : "int"
+                  },
+                  {
+                     "name" : "is_alarmed",
+                     "type" : "int"
+                  },
+                  {
+                     "name" : "scene_id_at_arm",
+                     "type" : "int"
+                  },
+                  {
+                     "name" : "scene_id_at_disarm",
+                     "type" : "int"
+                  },
+                  {
+                     "name" : "scene_id_at_alarm",
+                     "type" : "int"
+                  },
+				  {
+                     "name" : "is_notification_on",
+                     "type" : "int"
+                  },
+				   {
+                     "name" : "is_notification_by_sms_on",
+                     "type" : "int"
+                  },
+				   {
+                     "name" : "is_notification_by_email_on",
+                     "type" : "int"
+                  },
+				  {
+                     "name" : "notification_sms_number",
+                     "type" : "string"
+                  },
+				  {
+                     "name" : "notification_email",
+                     "type" : "string"
+                  },
+                  {
+                     "name" : "lt_arm",
+                     "type" : "ParamSecuritySceneTrigger"
+                  },
+                  {
+                     "name" : "lt_disarm",
+                     "type" : "ParamSecuritySceneTrigger"
+                  },
+                  {
+                     "name" : "lt_alarm_on",
+                     "type" : "ParamSecuritySceneTrigger"
+                  },
+                  {
+                     "name" : "lt_alarm_off",
+                     "type" : "ParamSecuritySceneTrigger"
+                  },
+                  {
+                     "name" : "utime",
+                     "type" : "long"
+                  }
+               ],
+               "name" : "SecuritySceneReport",
+               "type" : "record"
+            },
+            {
+               "fields" : [
+                  {
+                     "name" : "SecuritySceneList",
+                     "type" : {
+                        "items" : "SecuritySceneReport",
+                        "type" : "array"
+                     }
+                  }
+               ],
+               "name" : "SecuritySceneListResponse",
+               "type" : "record"
+            },
+            {
+               "fields" : [
+                  {
+                     "name" : "command",
+                     "type" : "CommandNetwork"
+                  }
+               ],
+               "name" : "ArgumentSecuritySceneList",
+               "type" : "record"
+            },
+            {
+               "fields" : [
+                  {
+                     "name" : "command",
+                     "type" : "CommandNetworkReport"
+                  },
+                  {
+                     "name" : "parameter",
+                     "type" : "SecuritySceneListResponse"
+                  }
+               ],
+               "name" : "ResultSecuritySceneList",
+               "type" : "record"
+            },
+            {
+               "fields" : [
+                  {
+                     "name" : "event_arm",
+                     "type" : "int"
+                  },
+                  {
+                     "name" : "uri",
+                     "type" : "string"
+                  },
+                  {
+                     "name" : "cmd",
+                     "type" : "int"
+                  },
+                  {
+                     "name" : "ifd",
+                     "type" : "int"
+                  },
+                  {
+                     "name" : "param_list",
+                     "type" : {
+                        "items" : "ParamKeyValue",
+                        "type" : "array"
+                     }
+                  }
+               ],
+               "name" : "SecuritySceneSaveEventArm",
+               "type" : "record"
+            },
+            {
+               "fields" : [
+                  {
+                     "name" : "event_disarm",
+                     "type" : "int"
+                  },
+                  {
+                     "name" : "uri",
+                     "type" : "string"
+                  },
+                  {
+                     "name" : "cmd",
+                     "type" : "int"
+                  },
+                  {
+                     "name" : "ifd",
+                     "type" : "int"
+                  },
+                  {
+                     "name" : "param_list",
+                     "type" : {
+                        "items" : "ParamKeyValue",
+                        "type" : "array"
+                     }
+                  }
+               ],
+               "name" : "SecuritySceneSaveEventDisarm",
+               "type" : "record"
+            },
+            {
+               "fields" : [
+                  {
+                     "name" : "event_alarm",
+                     "type" : "int"
+                  },
+                  {
+                     "name" : "uri",
+                     "type" : "string"
+                  },
+                  {
+                     "name" : "cmd",
+                     "type" : "int"
+                  },
+                  {
+                     "name" : "ifd",
+                     "type" : "int"
+                  },
+                  {
+                     "name" : "param_list",
+                     "type" : {
+                        "items" : "ParamKeyValue",
+                        "type" : "array"
+                     }
+                  }
+               ],
+               "name" : "SecuritySceneSaveEventAlarm",
+               "type" : "record"
+            },
+			{
+               "fields" : [
+                  {
+                     "name" : "scened",
+                     "type" : "int"
+                  },
+                  {
+                     "name" : "name",
+                     "type" : "string"
+                  },
+                  {
+                     "name" : "active",
+                     "type" : "int"
+                  },
+                  {
+                     "name" : "is_armed",
+                     "type" : "int"
+                  },
+				  {
+                     "name" : "scene_id_at_arm",
+                     "type" : "int"
+                  },
+                  {
+                     "name" : "scene_id_at_disarm",
+                     "type" : "int"
+                  },
+                  {
+                     "name" : "scene_id_at_alarm",
+                     "type" : "int"
+                  },
+				  {
+                     "name" : "is_notification_on",
+                     "type" : "int"
+                  },
+				  {
+                     "name" : "is_notification_by_sms_on",
+                     "type" : "int"
+                  },
+				  {
+                     "name" : "is_notification_by_email_on",
+                     "type" : "int"
+                  },
+				  {
+                     "name" : "notification_sms_number",
+                     "type" : "string"
+                  },
+				  {
+                     "name" : "notification_email",
+                     "type" : "string"
+                  },
+                  {
+                     "name" : "security_scene_event_list_arm",
+                     "type" : {
+                        "items" : "SecuritySceneSaveEventArm",
+                        "type" : "array"
+                     }
+                  },
+                  {
+                     "name" : "security_scene_event_list_disarm",
+                     "type" : {
+                        "items" : "SecuritySceneSaveEventDisarm",
+                        "type" : "array"
+                     }
+                  },
+                  {
+                     "name" : "security_scene_event_list_alarm",
+                     "type" : {
+                        "items" : "SecuritySceneSaveEventAlarm",
+                        "type" : "array"
+                     }
+                  }
+               ],
+               "name" : "ParamSecuritySceneSave",
+               "type" : "record"
+            },
+            {
+               "fields" : [
+                  {
+                     "name" : "command",
+                     "type" : "CommandNetwork"
+                  },
+                  {
+                     "name" : "parameter",
+                     "type" : "ParamSecuritySceneSave"
+                  }
+               ],
+               "name" : "ArgumentSecuritySceneSave",
+               "type" : "record"
+            },
+            {
+               "fields" : [
+                  {
+                     "name" : "command",
+                     "type" : "CommandNetworkReport"
+                  },
+                  {
+                     "name" : "parameter",
+                     "type" : "SecuritySceneGenericResponse"
+                  }
+               ],
+               "name" : "ResultSecuritySceneSave",
+               "type" : "record"
+            },
+            {"type": "record", "name": "SecuritySceneGetResponse",
+			"fields": [
+			{"name": "report", "type": "SecuritySceneReport"},
+			{"name": "security_scene_event_list_arm", "type": {"type": "array",
+				"items": "SecuritySceneEventArm"}},
+			{"name": "security_scene_event_list_disarm", "type": {"type": "array",
+				"items": "SecuritySceneEventDisarm"}},
+			{"name": "security_scene_event_list_alarm", "type": {"type": "array",
+				"items": "SecuritySceneEventAlarm"}}
+			]},
+			{"type": "record", "name": "ArgumentSecuritySceneGet",
+				"fields": [
+				{"name": "command", "type": "CommandNetwork"},
+				{"name": "parameter", "type": "ParamSceneID"}
+				]},
+			{"type": "record", "name": "ResultSecuritySceneGet",
+				"fields": [
+				{"name": "command", "type": "CommandNetworkReport"},
+				{"name": "parameter", "type": "SecuritySceneGetResponse"}
+				]},
+			{"type": "record", "name": "ArgumentSecuritySceneDel",
+				"fields": [
+				{"name": "command", "type": "CommandNetwork"},
+				{"name": "parameter", "type": "ParamSceneID"}
+				]},
+			{"type": "record", "name": "ResultSecuritySceneDel",
+				"fields": [
+				{"name": "command", "type": "CommandNetworkReport"},
+				{"name": "parameter", "type": "SecuritySceneGenericResponse"}
+				]},
+			{"type": "record", "name": "ParamSecuritySceneSetState",
+				"fields": [
+				{"name": "scened", "type": "int"},
+				{"name": "arm", "type": "int"},
+				{"name": "alarm", "type": "int"}
+				]},
+			{"type": "record", "name": "ArgumentSecuritySceneSetState",
+				"fields": [
+				{"name": "command", "type": "CommandNetwork"},
+				{"name": "parameter", "type": "ParamSecuritySceneSetState"}
+				]},
+			{"type": "record", "name": "ResultSecuritySceneSetState",
+				"fields": [
+				{"name": "command", "type": "CommandNetworkReport"},
+				{"name": "parameter", "type": "SecuritySceneGenericResponse"}
+				]},
+      {"type": "record", "name": "CommandIFTTTInterfaceSet",
+			"fields": [
+				{"name": "interface", "type": "Interface"}
+			  ]},
+      {"type": "record", "name": "ParamIFTTTNetworkBSensorOption",
+				"fields": [
+				{"name": "bonoff", "type": "int"},
+				{"name": "efield", "type": "int"}
+				]},
+      {"type": "record", "name": "ifttt_device",
+			  "fields": [
+			  {"name": "id", "type": "int"},
+			  {"name": "node_id", "type": "int"},
+			  {"name": "endpoint_id", "type": "int"},
+        {"name": "name", "type": "string"},
+			  {"name": "location", "type": "string"}
+      ]},
+      {"type": "record", "name": "IFTTTNetworkGenericDeviceResponse",
+				"fields": [
+          {"name": "ifttt_device_list",
+           "type": {"items": "ifttt_device", "type": "array" }}
+				]},
+      {"type": "record", "name": "ArgumentIFTTTNetworkBSensorOption",
+			  "fields": [
+        {"name": "command", "type": "CommandNetwork"},
+        {"name": "parameter", "type": "ParamIFTTTNetworkBSensorOption"}   
+			]},
+	 	 {"type": "record", "name": "ResultIFTTTNetworkGenericDeviceOption",
+			  "fields": [
+        {"name": "command", "type": "CommandNetworkReport"},
+        {"name": "parameter", "type": "IFTTTNetworkGenericDeviceResponse"}   
+			]},
+	   {"type": "record", "name": "ParamIFTTTNetworkBSwitchSet",
+				"fields": [
+				{"name": "bonoff", "type": "int"} 
+			]},
+     {"type": "record", "name": "IFTTTNetworkGenericSetResponse",
+				"fields": [
+				{"name": "utime", "type": "long"} 
+			]},
+     {"type": "record", "name": "ArgumentIFTTTInterfaceBSwitchSet",
+			  "fields": [
+        {"name": "command", "type": "CommandIFTTTInterfaceSet"},
+        {"name": "parameter", "type": "ParamIFTTTNetworkBSwitchSet"}   
+			]},
+     {"type": "record", "name": "ResultIFTTTInterfaceGenericSet",
+			  "fields": [
+        {"name": "command", "type": "CommandIFTTTInterfaceSet"},
+        {"name": "parameter", "type": "IFTTTNetworkGenericSetResponse"}   
+			]},
+	   
+     {"type": "record", "name": "ParamIFTTTNetworkTestSetup",
+				"fields": [
+				{"name": "eifttt_feature_list", "type": {"type": "array", "items": "int"}}
+		  ]},
+     {"type": "record", "name": "ifttt_device_feature",
+			  "fields": [
+			  {"name": "eifttt_feature", "type": "int"},
+			  {"name": "ifttt_device_info", "type": {"type": "array", "items": "ifttt_device"}}
+      ]},
+     {"type": "record", "name": "IFTTTNetworkTestSetupResponse",
+				"fields": [
+          {"name": "ifttt_device_list_array",
+           "type": {"items": "ifttt_device_feature", "type": "array" }}
+				]},
+     {"type": "record", "name": "ArgumentIFTTTNetworkTestSetup",
+			  "fields": [
+        {"name": "command", "type": "CommandNetwork"},
+        {"name": "parameter", "type": "ParamIFTTTNetworkTestSetup"}   
+			]},
+	   {"type": "record", "name": "ResultIFTTTNetworkTestSetup",
+			  "fields": [
+        {"name": "command", "type": "CommandNetworkReport"},
+        {"name": "parameter", "type": "IFTTTNetworkTestSetupResponse"}   
+			]},
+	   {"type": "record", "name": "ParamIFTTTNetworkDLockOption",
+				"fields": [
+				{"name": "mode", "type": "int"},
+				{"name": "efield", "type": "int"}
+				]},
+     {"type": "record", "name": "ArgumentIFTTTNetworkDLockOption",
+			  "fields": [
+        {"name": "command", "type": "CommandNetwork"},
+        {"name": "parameter", "type": "ParamIFTTTNetworkDLockOption"}   
+			]},
+	   {"type": "record", "name": "ParamIFTTTNetworkDLockSet",
+				"fields": [
+				{"name": "mode", "type": "int"} 
+			]},
+     {"type": "record", "name": "ArgumentIFTTTInterfaceDLockSet",
+			  "fields": [
+        {"name": "command", "type": "CommandIFTTTInterfaceSet"},
+        {"name": "parameter", "type": "ParamIFTTTNetworkDLockSet"}   
+			]},
+     {"type": "record", "name": "ParamIFTTTNetworkDeviceNameOption",
+				"fields": [
+				{"name": "efield", "type": "int"}
+				]},
+     {"type": "record", "name": "ParamIFTTTMSwitchDeviceNameOption",
+				"fields": [
+				{"name": "type", "type": "int"},
+        {"name": "efield", "type": "int"}
+				]},
+     {"type": "record", "name": "ArgumentIFTTTNetworkMSwitchDeviceNameOption",
+			  "fields": [
+        {"name": "command", "type": "CommandNetwork"},
+        {"name": "parameter", "type": "ParamIFTTTMSwitchDeviceNameOption"}   
+			]},
+	   {"type": "record", "name": "ParamIFTTTNetworkMSwitchSet",
+				"fields": [
+				{"name": "value", "type": "int"} 
+			]},
+     {"type": "record", "name": "ArgumentIFTTTInterfaceMSwitchSet",
+			  "fields": [
+        {"name": "command", "type": "CommandIFTTTInterfaceSet"},
+        {"name": "parameter", "type": "ParamIFTTTNetworkMSwitchSet"}   
+			]},
+	 	 {"type": "record", "name": "ParamIFTTTNetworkThrmoModeOption",
+				"fields": [
+				{"name": "mode", "type": "int"},
+				{"name": "efield", "type": "int"}
+				]},
+     {"type": "record", "name": "ArgumentIFTTTNetworkThrmoModeOption",
+			  "fields": [
+        {"name": "command", "type": "CommandNetwork"},
+        {"name": "parameter", "type": "ParamIFTTTNetworkThrmoModeOption"}   
+			]},
+	 	 {"type": "record", "name": "ParamIFTTTNetworkThrmoModeSet",
+				"fields": [
+				{"name": "mode", "type": "int"} 
+			]},
+     {"type": "record", "name": "ArgumentIFTTTInterfaceThrmoModeSet",
+			  "fields": [
+        {"name": "command", "type": "CommandIFTTTInterfaceSet"},
+        {"name": "parameter", "type": "ParamIFTTTNetworkThrmoModeSet"}   
+			]},
+	 	 
+     {"type": "record", "name": "IFTTTInterfaceName",
+			  "fields": [
+        {"name": "name", "type": "string"},
+			  {"name": "location", "type": "string"} 
+			]},
+     {"type": "record", "name": "CommandIFTTTInterfaceGet",
+			"fields": [
+				{"name": "interface", "type": "Interface"}
+      ]},
+     {"type": "record", "name": "CommandIFTTTInterfaceGetTriggerID",
+			"fields": [
+			  {"name": "triggerid", "type": "string"},
+			  {"name": "limit", "type": "int"}
+      ]}, 
+     {"type": "record", "name": "IFTTTNetworkGenericGetResponse",
+				"fields": [
+				  {"name": "ifttt_interface_name", "type": "IFTTTInterfaceName"},
+          {"name": "utime_array", "type": {"type": "array", "items": "long"}}
+			]},
+     {"type": "record", "name": "ResultIFTTTInterfaceGenericGet",
+			  "fields": [
+        {"name": "command", "type": "CommandIFTTTInterfaceGet"},
+        {"name": "parameter", "type": "IFTTTNetworkGenericGetResponse"}   
+			]},
+
+     {"type": "record", "name": "ParamIFTTTNetworkAlarmOption",
+				"fields": [
+				{"name": "category", "type": "int"},
+				{"name": "efield", "type": "int"}
+				]},
+     {"type": "record", "name": "ArgumentIFTTTNetworkAlarmOption",
+			  "fields": [
+        {"name": "command", "type": "CommandNetwork"},
+        {"name": "parameter", "type": "ParamIFTTTNetworkAlarmOption"}   
+			]},
+	   {"type": "record", "name": "ParamIFTTTNetworkAlarmGet",
+			"fields": [
+			  {"name": "triggerdata", "type": "CommandIFTTTInterfaceGetTriggerID"},
+        {"name": "itrigger", "type": "int"}
+			]},
+     {"type": "record", "name": "ArgumentIFTTTInterfaceAlarmGet",
+			  "fields": [
+        {"name": "command", "type": "CommandIFTTTInterfaceGet"},
+        {"name": "parameter", "type": "ParamIFTTTNetworkAlarmGet"}   
+			]},
+     
+     {"type": "record", "name": "ParamIFTTTNetworkMSensorOption",
+				"fields": [
+				{"name": "type", "type": "int"},
+				{"name": "efield", "type": "int"}
+				]},
+     {"type": "record", "name": "ArgumentIFTTTNetworkMSensorOption",
+			  "fields": [
+        {"name": "command", "type": "CommandNetwork"},
+        {"name": "parameter", "type": "ParamIFTTTNetworkMSensorOption"}   
+			]},
+	 
+	 	 {"type": "record", "name": "ParamIFTTTNetworkMSensorGet",
+			"fields": [
+			  {"name": "triggerdata", "type": "CommandIFTTTInterfaceGetTriggerID"},
+        {"name": "type", "type": "int"},
+			  {"name": "comparision_command", "type": "int"},
+			  {"name": "thld_value", "type": "string"},
+			  {"name": "thld_unit", "type": "int"}
+      ]},
+     {"type": "record", "name": "ArgumentIFTTTInterfaceMSensorGet",
+			  "fields": [
+        {"name": "command", "type": "CommandIFTTTInterfaceGet"},
+        {"name": "parameter", "type": "ParamIFTTTNetworkMSensorGet"}   
+			]},
+	   {"type": "record", "name": "ifttt_msensor_get_result",
+			  "fields": [
+			  {"name": "sensor_value", "type": "string"},
+			  {"name": "sensor_unit", "type": "string"},
+			  {"name": "utime", "type": "long"}
+      ]},
+     {"type": "record", "name": "IFTTTInterfaceMSensorGetResponse",
+				"fields": [	  
+          {"name": "ifttt_interface_name", "type": "IFTTTInterfaceName"},
+          {"name": "ifttt_msensor_get_result_array", 
+            "type": {"type": "array", "items": "ifttt_msensor_get_result"}}
+			]},
+     {"type": "record", "name": "ResultIFTTTInterfaceMSensorGet",
+			  "fields": [
+        {"name": "command", "type": "CommandIFTTTInterfaceGet"},
+        {"name": "parameter", "type": "IFTTTInterfaceMSensorGetResponse"}   
+			]} 
+   ]},
+
+	{"name": "messages", "type": [
+	
+		{"type": "record", "name": "root_gateway_get",
+			"fields": [
+			{"name": "request", "type": "Void"},
+			{"name": "response", "type": "ResultRootGatewayReport"}
+			]},
+		{"type": "record", "name": "root_gateway_list",
+			"fields": [
+			{"name": "request", "type": "ArgumentRootGatewayList"},
+			{"name": "response", "type": "ResultRootGatewayListReport"}
+			]},
+		{"type": "record", "name": "root_gateway_set",
+			"fields": [
+			{"name": "request", "type": "ArgumentRootGatewaySet"},
+			{"name": "response", "type": "Void"}
+			]},
+		{"type": "record", "name": "root_network_list_get",
+			"fields": [
+			{"name": "request", "type": "Void"},
+			{"name": "response", "type": "ResultRootNetworkListReport"}
+			]},
+		{"type": "record", "name": "root_network_refresh",
+			"fields": [
+			{"name": "request", "type": "ArgumentRootNetworkRefresh"},
+			{"name": "response", "type": "Void"}
+			]},
+		{"type": "record", "name": "network_exit",
+			"fields": [
+			{"name": "request", "type": "ArgumentNetworkExit"},
+			{"name": "response", "type": "Void"}
+			]},
+		{"type": "record", "name": "network_info_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentNetworkInfoGet"},
+			{"name": "response", "type": "ResultNetworkInfoReport"}
+			]},
+		{"type": "record", "name": "network_node_list_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentNetworkNodeListGet"},
+			{"name": "response", "type": "ResultNetworkNodeListReport"}
+			]},
+		{"type": "record", "name": "network_node_endpoint_list_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentNetworkNodeEndpointListGet"},
+			{"name": "response", "type": "ResultNetworkNodeEndpointListReport"}
+			]},
+		{"type": "record", "name": "network_operation_state_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentNetworkOperationStateGet"},
+			{"name": "response", "type": "ResultNetworkOperationStateReport"}
+			]},
+		{"type": "record", "name": "network_gateway_status_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentNetworkGatewayStatusGet"},
+			{"name": "response", "type": "ResultNetworkGatewayStatusReport"}
+			]},
+		{"type": "record", "name": "network_summary_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentNetworkSummaryGet"},
+			{"name": "response", "type": "ResultNetworkSummaryReport"}
+			]},
+		{"type": "record", "name": "network_version_get",
+			"fields": [
+			{"name": "request", "type": "Void"},
+			{"name": "response", "type": "ResultNetworkVersionReport"}
+			]},
+		{"type": "record", "name": "network_node_prekit_dsk_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentNetworkNodePrekitDskGet"},
+			{"name": "response", "type": "ResultNetworkNodePrekitDskReport"}
+			]},
+    {"type": "record", "name": "network_node_add",
+			"fields": [
+			{"name": "request", "type": "ArgumentNetworkNodeAdd"},
+			{"name": "response", "type": "Void"}
+			]},
+		{"type": "record", "name": "network_node_add_on_behalf",
+			"fields": [
+			{"name": "request", "type": "ArgumentNetworkNodeAdd"},
+			{"name": "response", "type": "Void"}
+			]},
+    {"type": "record", "name": "network_node_add_req_key_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentNetworkNodeAddReqKeyGet"},
+			{"name": "response", "type": "ResultNetworkNodeAddReqKeyReport"}
+			]},
+        {"type": "record", "name": "network_node_add_grant_key_set",
+			"fields": [
+			{"name": "request", "type": "ArgumentNetworkNodeAddGrantKeySet"},
+			{"name": "response", "type": "Void"}
+			]},
+        {"type": "record", "name": "network_node_add_dsk_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentNetworkNodeAddDskGet"},
+			{"name": "response", "type": "ResultNetworkNodeAddDskReport"}
+			]},
+        {"type": "record", "name": "network_node_add_accept",
+			"fields": [
+			{"name": "request", "type": "ArgumentNetworkNodeAddAcceptSet"},
+			{"name": "response", "type": "Void"}
+			]},
+        {"type": "record", "name": "network_node_remove",
+			"fields": [
+			{"name": "request", "type": "ArgumentNetworkNodeRemove"},
+			{"name": "response", "type": "Void"}
+			]},
+		{"type": "record", "name": "network_failed_node_remove",
+			"fields": [
+			{"name": "request", "type": "ArgumentNetworkFailedNodeRemove"},
+			{"name": "response", "type": "Void"}
+			]},
+		{"type": "record", "name": "network_failed_node_replace",
+			"fields": [
+			{"name": "request", "type": "ArgumentNetworkFailedNodeReplace"},
+			{"name": "response", "type": "Void"}
+			]},
+		{"type": "record", "name": "network_failed_node_replace_on_behalf",
+			"fields": [
+			{"name": "request", "type": "ArgumentNetworkFailedNodeReplace"},
+			{"name": "response", "type": "Void"}
+			]},
+    {"type": "record", "name": "network_node_update",
+			"fields": [
+			{"name": "request", "type": "ArgumentNetworkNodeUpdate"},
+			{"name": "response", "type": "Void"}
+			]},
+		{"type": "record", "name": "network_send_NIF",
+			"fields": [
+			{"name": "request", "type": "ArgumentNetworkSendNIF"},
+			{"name": "response", "type": "Void"}
+			]},
+		{"type": "record", "name": "network_update",
+			"fields": [
+			{"name": "request", "type": "ArgumentNetworkUpdate"},
+			{"name": "response", "type": "Void"}
+			]},
+		{"type": "record", "name": "network_initiate",
+			"fields": [
+			{"name": "request", "type": "ArgumentNetworkInitiate"},
+			{"name": "response", "type": "Void"}
+			]},
+		{"type": "record", "name": "network_initiate_local_dsk_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentNetworkInitiateLocalDskGet"},
+			{"name": "response", "type": "ResultNetworkInitiateLocalDskReport"}
+			]},
+		{"type": "record", "name": "network_migrate_primary",
+			"fields": [
+			{"name": "request", "type": "ArgumentNetworkMigratePrimary"},
+			{"name": "response", "type": "Void"}
+			]},
+		{"type": "record", "name": "network_reset",
+			"fields": [
+			{"name": "request", "type": "ArgumentNetworkReset"},
+			{"name": "response", "type": "Void"}
+			]},
+		{"type": "record", "name": "network_operation_abort",
+			"fields": [
+			{"name": "request", "type": "ArgumentNetworkOperationAbort"},
+			{"name": "response", "type": "Void"}
+			]},
+		{"type": "record", "name": "network_whitelist_list_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentNetworkWhitelistListGet"},
+			{"name": "response", "type": "Void"}
+			]},
+		{"type": "record", "name": "network_whitelist_list_report",
+			"fields": [
+			{"name": "request", "type": "ArgumentNetworkWhitelistListReport"},
+			{"name": "response", "type": "ResultNetworkWhitelistListReport"}
+			]},
+ 		{"type": "record", "name": "network_whitelist_device_info",
+			"fields": [
+			{"name": "request", "type": "ArgumentNetworkWhitelistDeviceInfo"},
+			{"name": "response", "type": "ResultNetworkWhitelistDeviceInfo"}
+			]},
+    {"type": "record", "name": "network_whitelist_add",
+			"fields": [
+			{"name": "request", "type": "ArgumentNetworkWhitelistAdd"},
+			{"name": "response", "type": "Void"}
+			]},
+    {"type": "record", "name": "network_whitelist_remove",
+			"fields": [
+			{"name": "request", "type": "ArgumentNetworkWhitelistRemove"},
+			{"name": "response", "type": "Void"}
+			]},
+    {"type": "record", "name": "node_commandqueue_cancel",
+			"fields": [
+			{"name": "request", "type": "ArgumentNodeCommandqueueCancel"},
+			{"name": "response", "type": "Void"}
+			]},
+		{"type": "record", "name": "node_commandqueue_enable_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentNodeCommandqueueEnableGet"},
+			{"name": "response", "type": "ResultNodeCommandqueueEnableReport"}
+			]},
+		{"type": "record", "name": "node_commandqueue_enable_set",
+			"fields": [
+			{"name": "request", "type": "ArgumentNodeCommandqueueEnableSet"},
+			{"name": "response", "type": "ResultNodeCommandqueueEnableReport"}
+			]},
+		{"type": "record", "name": "node_commandqueue_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentNodeCommandqueueGet"},
+			{"name": "response", "type": "ResultNodeCommandqueueReport"}
+			]},
+		{"type": "record", "name": "node_endpoint_list_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentNodeEndpointListGet"},
+			{"name": "response", "type": "ResultNodeEndpointListReport"}
+			]},
+		{"type": "record", "name": "endpoint_interface_list_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentEndpointInterfaceListGet"},
+			{"name": "response", "type": "ResultEndpointInterfaceListReport"}
+			]},
+		{"type": "record", "name": "endpoint_node_naming_name_location_set",
+			"fields": [
+			{"name": "request", "type": "ArgumentEndpointNodeNamingNameLocationSet"},
+			{"name": "response", "type": "Void"}
+			]},
+		{"type": "record", "name": "interface_alarm_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentAlarmGet"},
+			{"name": "response", "type": "ResultAlarmReport"}
+			]},
+		{"type": "record", "name": "interface_alarm_set",
+			"fields": [
+			{"name": "request", "type": "ArgumentAlarmSet"},
+			{"name": "response", "type": "Void"}
+			]},
+		{"type": "record", "name": "interface_alarm_type_supported_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentAlarmTypeSupportedGet"},
+			{"name": "response", "type": "ResultAlarmTypeSupportedReport"}
+			]},
+		{"type": "record", "name": "interface_alarm_event_supported_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentAlarmEventSupportedGet"},
+			{"name": "response", "type": "ResultAlarmEventSupportedReport"}
+			]},
+		{"type": "record", "name": "interface_association_grp_info_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentAssociationGrpInfoGet"},
+			{"name": "response", "type": "ResultAssociationGrpInfoReport"}
+			]},
+		{"type": "record", "name": "interface_association_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentAssociationGet"},
+			{"name": "response", "type": "ResultAssociationReport"}
+			]},
+		{"type": "record", "name": "interface_association_set",
+			"fields": [
+			{"name": "request", "type": "ArgumentAssociationSet"},
+			{"name": "response", "type": "Void"}
+			]},
+		{"type": "record", "name": "interface_association_groupings_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentAssociationGroupingsGet"},
+			{"name": "response", "type": "ResultAssociationGroupingsReport"}
+			]},
+		{"type": "record", "name": "interface_association_specific_group_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentAssociationSpecificGroupGet"},
+			{"name": "response", "type": "ResultAssociationSpecificGroupReport"}
+			]},
+		{"type": "record", "name": "interface_basic_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentBasicGet"},
+			{"name": "response", "type": "ResultBasicReport"}
+			]},
+		{"type": "record", "name": "interface_basic_set",
+			"fields": [
+			{"name": "request", "type": "ArgumentBasicSet"},
+			{"name": "response", "type": "Void"}
+			]},
+		{"type": "record", "name": "interface_battery_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentBatteryGet"},
+			{"name": "response", "type": "ResultBatteryReport"}
+			]},
+		{"type": "record", "name": "interface_central_scene_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentCentralSceneGet"},
+			{"name": "response", "type": "ResultCentralSceneReport"}
+			]},
+		{"type": "record", "name": "interface_central_scene_supported_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentCentralSceneSupportedGet"},
+			{"name": "response", "type": "ResultCentralSceneSupportedReport"}
+			]},
+        {"type": "record", "name": "interface_configuration_get", 
+			"fields": [
+			{"name": "request", "type": "ArgumentConfigurationGet"},
+			{"name": "response", "type": "ResultConfigurationReport"}
+			]},
+		{"type": "record", "name": "interface_configuration_set", 
+			"fields": [
+			{"name": "request", "type": "ArgumentConfigurationSet"},
+			{"name": "response", "type": "Void"}
+			]},
+		{"type": "record", "name": "interface_door_lock_operation_get", 
+			"fields": [
+			{"name": "request", "type": "ArgumentDoorLockOperationGet"},
+			{"name": "response", "type": "ResultDoorLockOperationReport"}
+			]},
+		{"type": "record", "name": "interface_door_lock_operation_set",
+			"fields": [
+			{"name": "request", "type": "ArgumentDoorLockOperationSet"},
+			{"name": "response", "type": "Void"}
+			]},
+		{"type": "record", "name": "interface_door_lock_configuration_get", 
+			"fields": [
+			{"name": "request", "type": "ArgumentDoorLockConfigurationGet"},
+			{"name": "response", "type": "ResultDoorLockConfigurationReport"}
+			]},
+		{"type": "record", "name": "interface_door_lock_configuration_set",
+			"fields": [
+			{"name": "request", "type": "ArgumentDoorLockConfigurationSet"},
+			{"name": "response", "type": "Void"}
+			]},
+		{"type": "record", "name": "interface_firmware_info_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentFirmwareInfoGet"},
+			{"name": "response", "type": "ResultFirmwareInfoReport"}
+			]},
+		{"type": "record", "name": "interface_firmware_update_request_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentFirmwareUpdateRequestGet"},
+			{"name": "response", "type": "ResultFirmwareUpdateRequestReport"}
+			]},
+		{"type": "record", "name": "interface_meter_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentMeterGet"},
+			{"name": "response", "type": "ResultMeterReport"}
+			]},
+		{"type": "record", "name": "interface_meter_supported_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentMeterSupportedGet"},
+			{"name": "response", "type": "ResultMeterSupportedReport"}
+			]},
+		{"type": "record", "name": "interface_meter_reset",
+			"fields": [
+			{"name": "request", "type": "ArgumentMeterReset"},
+			{"name": "response", "type": "Void"}
+			]},
+		{"type": "record", "name": "interface_sensor_binary_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentSensorBinaryGet"},
+			{"name": "response", "type": "ResultSensorBinaryReport"}
+			]},
+		{"type": "record", "name": "interface_sensor_binary_supported_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentSensorBinarySupportedGet"},
+			{"name": "response", "type": "ResultSensorBinarySupportedReport"}
+			]},
+		{"type": "record", "name": "interface_sensor_multilevel_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentSensorMultilevelGet"},
+			{"name": "response", "type": "ResultSensorMultilevelReport"}
+			]},
+		{"type": "record", "name": "interface_sensor_multilevel_supported_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentSensorMultilevelSupportedGet"},
+			{"name": "response", "type": "ResultSensorMultilevelSupportedReport"}
+			]},
+		{"type": "record", "name": "interface_sensor_multilevel_scale_supported_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentSensorMultilevelScaleSupportedGet"},
+			{"name": "response", "type": "ResultSensorMultilevelScaleSupportedReport"}
+			]},
+        {"type": "record", "name": "interface_switch_binary_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentSwitchBinaryGet"},
+			{"name": "response", "type": "ResultSwitchBinaryReport"}
+			]},
+		{"type": "record", "name": "interface_switch_binary_set",
+			"fields": [
+			{"name": "request", "type": "ArgumentSwitchBinarySet"},
+			{"name": "response", "type": "Void"}
+			]},
+		{"type": "record", "name": "interface_switch_multilevel_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentSwitchMultilevelGet"},
+			{"name": "response", "type": "ResultSwitchMultilevelReport"}
+			]},
+		{"type": "record", "name": "interface_switch_multilevel_set",
+			"fields": [
+			{"name": "request", "type": "ArgumentSwitchMultilevelSet"},
+			{"name": "response", "type": "Void"}
+			]},
+		{"type": "record", "name": "interface_switch_multilevel_level_change_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentSwitchMultilevelLevelChangeGet"},
+			{"name": "response", "type": "ResultSwitchMultilevelLevelChangeReport"}
+			]},
+		{"type": "record", "name": "interface_switch_multilevel_level_change_set",
+			"fields": [
+			{"name": "request", "type": "ArgumentSwitchMultilevelLevelChangeSet"},
+			{"name": "response", "type": "Void"}
+			]},
+		{"type": "record", "name": "interface_switch_multilevel_supported_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentSwitchMultilevelSupportedGet"},
+			{"name": "response", "type": "ResultSwitchMultilevelSupportedReport"}
+			]},			
+		{"type": "record", "name": "interface_switch_color_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentSwitchColorGet"},
+			{"name": "response", "type": "ResultSwitchColorReport"}
+			]},
+		{"type": "record", "name": "interface_switch_color_set",
+			"fields": [
+			{"name": "request", "type": "ArgumentSwitchColorSet"},
+			{"name": "response", "type": "Void"}
+			]},
+		{"type": "record", "name": "interface_switch_color_level_change_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentSwitchColorLevelChangeGet"},
+			{"name": "response", "type": "ResultSwitchColorLevelChangeReport"}
+			]},
+		{"type": "record", "name": "interface_switch_color_level_change_set",
+			"fields": [
+			{"name": "request", "type": "ArgumentSwitchColorLevelChangeSet"},
+			{"name": "response", "type": "Void"}
+			]},
+		{"type": "record", "name": "interface_switch_color_supported_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentSwitchColorSupportedGet"},
+			{"name": "response", "type": "ResultSwitchColorSupportedReport"}
+			]},			
+		{"type": "record", "name": "interface_thermostat_fan_mode_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentThermostatFanModeGet"},
+			{"name": "response", "type": "ResultThermostatFanModeReport"}
+			]},
+		{"type": "record", "name": "interface_thermostat_fan_mode_set",
+			"fields": [
+			{"name": "request", "type": "ArgumentThermostatFanModeSet"},
+			{"name": "response", "type": "Void"}
+			]},
+		{"type": "record", "name": "interface_thermostat_fan_mode_supported_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentThermostatFanModeSupportedGet"},
+			{"name": "response", "type": "ResultThermostatFanModeSupportedReport"}
+			]},
+		{"type": "record", "name": "interface_thermostat_fan_state_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentThermostatFanStateGet"},
+			{"name": "response", "type": "ResultThermostatFanStateReport"}
+			]},
+		{"type": "record", "name": "interface_thermostat_mode_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentThermostatModeGet"},
+			{"name": "response", "type": "ResultThermostatModeReport"}
+			]},
+		{"type": "record", "name": "interface_thermostat_mode_set",
+			"fields": [
+			{"name": "request", "type": "ArgumentThermostatModeSet"},
+			{"name": "response", "type": "Void"}
+			]},
+		{"type": "record", "name": "interface_thermostat_mode_supported_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentThermostatModeSupportedGet"},
+			{"name": "response", "type": "ResultThermostatModeSupportedReport"}
+			]},
+		{"type": "record", "name": "interface_thermostat_operating_state_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentThermostatOperatingStateGet"},
+			{"name": "response", "type": "ResultThermostatOperatingStateReport"}
+			]},
+		{"type": "record", "name": "interface_thermostat_setpoint_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentThermostatSetpointGet"},
+			{"name": "response", "type": "ResultThermostatSetpointReport"}
+			]},
+		{"type": "record", "name": "interface_thermostat_setpoint_set",
+			"fields": [
+			{"name": "request", "type": "ArgumentThermostatSetpointSet"},
+			{"name": "response", "type": "Void"}
+			]},
+		{"type": "record", "name": "interface_thermostat_setpoint_supported_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentThermostatSetpointSupportedGet"},
+			{"name": "response", "type": "ResultThermostatSetpointSupportedReport"}
+			]},
+		{"type": "record", "name": "interface_thermostat_setpoint_range_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentThermostatSetpointRangeGet"},
+			{"name": "response", "type": "ResultThermostatSetpointRangeReport"}
+			]},
+    {"type": "record", "name": "interface_user_code_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentUserCodeGet"},
+			{"name": "response", "type": "ResultUserCodeReport"}
+			]},
+		{"type": "record", "name": "interface_user_code_set",
+			"fields": [
+			{"name": "request", "type": "ArgumentUserCodeSet"},
+			{"name": "response", "type": "Void"}
+			]},
+		{"type": "record", "name": "interface_user_code_users_number_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentUserCodeUsersNumberGet"},
+			{"name": "response", "type": "ResultUserCodeUsersNumberReport"}
+			]},
+		{"type": "record", "name": "interface_barrier_operator_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentBarrierOperatorGet"},
+			{"name": "response", "type": "ResultBarrierOperatorReport"}
+			]},
+		{"type": "record", "name": "interface_barrier_operator_set",
+			"fields": [
+			{"name": "request", "type": "ArgumentBarrierOperatorSet"},
+			{"name": "response", "type": "Void"}
+			]},
+    {"type": "record", "name": "interface_barrier_operator_subsystem_config_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentBarrierOperatorSubsystemConfigGet"},
+			{"name": "response", "type": "ResultBarrierOperatorSubsystemConfigReport"}
+			]},
+		{"type": "record", "name": "interface_barrier_operator_subsystem_config_set",
+			"fields": [
+			{"name": "request", "type": "ArgumentBarrierOperatorSubsystemConfigSet"},
+			{"name": "response", "type": "Void"}
+			]},
+		{"type": "record", "name": "interface_barrier_operator_subsystem_supported_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentBarrierOperatorSubsystemSupportedGet"},
+			{"name": "response", "type": "ResultBarrierOperatorSubsystemSupportedReport"}
+			]},
+		{"type": "record", "name": "interface_wake_up_set",
+			"fields": [
+			{"name": "request", "type": "ArgumentWakeUpIntervalSet"},
+			{"name": "response", "type": "Void"}
+			]},
+		{"type": "record", "name": "interface_wake_up_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentWakeUpGet"},
+			{"name": "response", "type": "ResultWakeUpReport"}
+			]},
+		{"type": "record", "name": "interface_zip_gateway_lock_set",
+			"fields": [
+			{"name": "request", "type": "ArgumentZipGatewayLockSet"},
+			{"name": "response", "type": "Void"}
+			]},
+		{"type": "record", "name": "interface_zip_gateway_mode_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentZipGatewayModeGet"},
+			{"name": "response", "type": "ResultZipGatewayModeReport"}
+			]},
+		{"type": "record", "name": "interface_zip_gateway_mode_set",
+			"fields": [
+			{"name": "request", "type": "ArgumentZipGatewayModeSet"},
+			{"name": "response", "type": "Void"}
+			]},
+		{"type": "record", "name": "interface_zip_gateway_unsolicited_destination_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentZipGatewayUnsolicitedDestinationGet"},
+			{"name": "response", "type": "ResultZipGatewayUnsolicitedDestinationReport"}
+			]},
+		{"type": "record", "name": "interface_zip_gateway_unsolicited_destination_set",
+			"fields": [
+			{"name": "request", "type": "ArgumentZipGatewayUnsolicitedDestinationSet"},
+			{"name": "response", "type": "Void"}
+			]},
+		{"type": "record", "name": "interface_zip_portal_configuration_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentZipPortalConfigurationGet"},
+			{"name": "response", "type": "ResultZipPortalConfigurationReport"}
+			]},
+		{"type": "record", "name": "interface_zip_portal_configuration_set",
+			"fields": [
+			{"name": "request", "type": "ArgumentZipPortalConfigurationSet"},
+			{"name": "response", "type": "Void"}
+			]},
+		{"type": "record", "name": "interface_zip_portal_configuration_status",
+			"fields": [
+			{"name": "request", "type": "ArgumentZipPortalConfigurationStatus"},
+			{"name": "response", "type": "ResultZipPortalConfigurationStatusReport"}
+			]},
+		{"type": "record", "name": "scene_save",
+			"fields": [
+			{"name": "request", "type": "ArgumentSceneSave"},
+			{"name": "response", "type": "ResultSceneSave"}
+			]},
+		{"type": "record", "name": "scene_list",
+			"fields": [
+			{"name": "request", "type": "ArgumentSceneList"},
+			{"name": "response", "type": "ResultSceneList"}
+			]},
+		{"type": "record", "name": "scene_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentSceneGet"},
+			{"name": "response", "type": "ResultSceneGet"}
+			]},
+		{"type": "record", "name": "scene_del",
+			"fields": [
+			{"name": "request", "type": "ArgumentSceneDel"},
+			{"name": "response", "type": "ResultSceneDel"}
+			]},
+		{"type": "record", "name": "scene_exec",
+			"fields": [
+			{"name": "request", "type": "ArgumentSceneExec"},
+			{"name": "response", "type": "ResultSceneExec"}
+			]},
+		{"type": "record", "name": "scene_updt",
+			"fields": [
+			{"name": "request", "type": "ArgumentSceneUpdt"},
+			{"name": "response", "type": "ResultSceneUpdt"}
+			]},
+		{"type": "record", "name": "scene_get_state_log",
+			"fields": [
+			{"name": "request", "type": "ArgumentSceneGetStateLog"},
+			{"name": "response", "type": "ResultSceneGetStateLog"}
+			]},
+		{"type": "record", "name": "scene_get_sup",
+			"fields": [
+			{"name": "request", "type": "ArgumentSceneGetSup"},
+			{"name": "response", "type": "ResultSceneGetSup"}
+			]},
+		{
+		   "fields" : [
+			  {
+				 "name" : "request",
+				 "type" : "ArgumentSecuritySceneList"
+			  },
+			  {
+				 "name" : "response",
+				 "type" : "ResultSecuritySceneList"
+			  }
+		   ],
+		   "name" : "security_scene_list",
+		   "type" : "record"
+		},
+		{
+		   "fields" : [
+			  {
+				 "name" : "request",
+				 "type" : "ArgumentSecuritySceneSave"
+			  },
+			  {
+				 "name" : "response",
+				 "type" : "ResultSecuritySceneSave"
+			  }
+		   ],
+		   "name" : "security_scene_save",
+		   "type" : "record"
+		},
+		{"type": "record", "name": "security_scene_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentSecuritySceneGet"},
+			{"name": "response", "type": "ResultSecuritySceneGet"}
+			]},
+		{"type": "record", "name": "security_scene_del",
+			"fields": [
+			{"name": "request", "type": "ArgumentSecuritySceneDel"},
+			{"name": "response", "type": "ResultSecuritySceneDel"}
+			]},
+		{"type": "record", "name": "security_scene_set_state",
+			"fields": [
+			{"name": "request", "type": "ArgumentSecuritySceneSetState"},
+			{"name": "response", "type": "ResultSecuritySceneSetState"}
+			]},
+		{"type": "record", "name": "security_scene_get_sup",
+			"fields": [
+			{"name": "request", "type": "ArgumentSceneGetSup"},
+			{"name": "response", "type": "ResultSecuritySceneGetSup"}
+			]},
+    {"type": "record", "name": "ifttt_network_bsensor_option",
+			"fields": [
+			{"name": "request", "type": "ArgumentIFTTTNetworkBSensorOption"},
+			{"name": "response", "type": "ResultIFTTTNetworkGenericDeviceOption"}
+			]},
+	  {"type": "record", "name": "ifttt_network_bswitch_option",
+			"fields": [
+			{"name": "request", "type": "ArgumentIFTTTNetworkBSensorOption"},
+			{"name": "response", "type": "ResultIFTTTNetworkGenericDeviceOption"}
+			]},
+	 	{"type": "record", "name": "ifttt_interface_bswitch_set",
+			"fields": [
+			{"name": "request", "type": "ArgumentIFTTTInterfaceBSwitchSet"},
+			{"name": "response", "type": "ResultIFTTTInterfaceGenericSet"}
+			]},
+	 	{"type": "record", "name": "ifttt_network_test_setup",
+			"fields": [
+			{"name": "request", "type": "ArgumentIFTTTNetworkTestSetup"},
+			{"name": "response", "type": "ResultIFTTTNetworkTestSetup"}
+			]},
+	 	{"type": "record", "name": "ifttt_network_dlock_option",
+			"fields": [
+			{"name": "request", "type": "ArgumentIFTTTNetworkDLockOption"},
+			{"name": "response", "type": "ResultIFTTTNetworkGenericDeviceOption"}
+			]},
+	 	{"type": "record", "name": "ifttt_interface_dlock_set",
+			"fields": [
+			{"name": "request", "type": "ArgumentIFTTTInterfaceDLockSet"},
+			{"name": "response", "type": "ResultIFTTTInterfaceGenericSet"}
+			]},
+	 	{"type": "record", "name": "ifttt_network_mswitch_device_name_option",
+			"fields": [
+			{"name": "request", "type": "ArgumentIFTTTNetworkMSwitchDeviceNameOption"},
+			{"name": "response", "type": "ResultIFTTTNetworkGenericDeviceOption"}
+			]},
+	 	{"type": "record", "name": "ifttt_interface_mswitch_set",
+			"fields": [
+			{"name": "request", "type": "ArgumentIFTTTInterfaceMSwitchSet"},
+			{"name": "response", "type": "ResultIFTTTInterfaceGenericSet"}
+			]},
+	 	{"type": "record", "name": "ifttt_network_thrmomode_option",
+			"fields": [
+			{"name": "request", "type": "ArgumentIFTTTNetworkThrmoModeOption"},
+			{"name": "response", "type": "ResultIFTTTNetworkGenericDeviceOption"}
+			]},
+	 	{"type": "record", "name": "ifttt_interface_thrmomode_set",
+			"fields": [
+			{"name": "request", "type": "ArgumentIFTTTInterfaceThrmoModeSet"},
+			{"name": "response", "type": "ResultIFTTTInterfaceGenericSet"}
+			]}, 
+	  {"type": "record", "name": "ifttt_network_alarm_option",
+			"fields": [
+			{"name": "request", "type": "ArgumentIFTTTNetworkAlarmOption"},
+			{"name": "response", "type": "ResultIFTTTNetworkGenericDeviceOption"}
+			]},
+	 	{"type": "record", "name": "ifttt_interface_alarm_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentIFTTTInterfaceAlarmGet"},
+			{"name": "response", "type": "ResultIFTTTInterfaceGenericGet"}
+			]},
+	 	{"type": "record", "name": "ifttt_network_msensor_option",
+			"fields": [
+			{"name": "request", "type": "ArgumentIFTTTNetworkMSensorOption"},
+			{"name": "response", "type": "ResultIFTTTNetworkGenericDeviceOption"}
+			]},
+	 	{"type": "record", "name": "ifttt_interface_msensor_get",
+			"fields": [
+			{"name": "request", "type": "ArgumentIFTTTInterfaceMSensorGet"},
+			{"name": "response", "type": "ResultIFTTTInterfaceMSensorGet"}
+			]}
+   ]}
+	]}
+

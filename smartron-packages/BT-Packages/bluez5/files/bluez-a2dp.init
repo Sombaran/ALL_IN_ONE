@@ -1,0 +1,22 @@
+#!/bin/sh /etc/rc.common
+#====================================================================#
+# Copyright (C) 2011 OpenWrt.org
+# Copyright (c) 2018 Smartron India Pvt. Ltd. All rights reserved.
+# Version:0.3
+# Last modified: nagendra@smartron.com, 11/05/2018
+#====================================================================#
+
+START=81
+
+start() {
+    hciconfig hci0 down
+    hciconfig hci0 up
+    hciconfig hci0 sspmode 1
+    # Redmine 21732: Start: Enablling only "Page Scan" to ensure device will be in discovery mode only when discovery is initiated
+    hciconfig hci0 pscan
+    # Redmine 21732: End
+    # Redmine 21384: Start: Disabling Simple-agent and bt_server from Python Service because as these are not required w.r.t Alexa Implemntation
+    # python /etc/bluetooth/simple-agent &
+    # python /etc/bluetooth/bt_server.py &
+    # Redmine 21384: End
+}
