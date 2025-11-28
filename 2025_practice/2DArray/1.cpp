@@ -100,6 +100,30 @@ std::function<void()> patternAlphabet2 = [] {
     }
 };
 
+/*
+         * 
+       * * 
+     * * * 
+   * * * * 
+ * * * * * 
+
+*/
+
+std::function<void()>patternLeftHalfPattern = [] {
+    for (int i = 0; i < 5; i++) {
+        // Print leading spaces
+        for (int j = 0; j < 5 - i; j++) {
+            cout << "  ";  // Two spaces for alignment
+        }
+        // Print stars
+        for (int k = 0; k <= i; k++) {
+            cout << "* ";
+        }
+
+        cout << endl;
+    }
+};
+
 int main(int argc, char** argv)
 {
     /**
@@ -113,6 +137,6 @@ int main(int argc, char** argv)
     /**
      * @brief:Left Half Pyramid Pattern
      */
-    
+    patternLeftHalfPattern();
     return (0);
 }
