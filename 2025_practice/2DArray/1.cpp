@@ -1,3 +1,17 @@
+/**
+ * @file 1.cpp
+ * @author Sombaran Gupta
+ * @brief : 2D Array
+ * @version 0.1
+ * @date 2025-11-29
+ * @details : Techniques used
+- Traversal patterns: row-wise, column-wise, diagonal, spiral.
+- Transformations: transpose, rotate, reverse.
+- Searching: binary search in sorted matrix, hash-based lookups.
+- Dynamic Programming: submatrix sums, pathfinding.
+- Graph Traversal: treating matrix as a grid graph (neighbors up/down/left/right).
+ */
+
 #include <iostream>
 #include <functional>
 #include <vector>
