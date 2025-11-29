@@ -1,5 +1,7 @@
-#include<iostream>
-#include<functional>
+#include <iostream>
+#include <functional>
+#include <vector>
+
 using namespace std;
 
 
@@ -124,6 +126,138 @@ std::function<void()>patternLeftHalfPattern = [] {
     }
 };
 
+/**
+vector size 4
+2
+0 -> 1 2
+4
+1 -> 5 6 7 8
+1
+2 -> 9
+3
+
+*/
+
+std::function<void()> pattern2DMatrix = [] {
+    std::vector<std::vector<int>> vec = {{1, 2}, {5, 6, 7, 8}, {9},  {9, 8, 11}};
+
+    // Display the jagged array
+    std::cout << "vector size " << vec.size() << std::endl;
+    for (int i = 0; i < vec.size(); i++)
+    {
+        std::cout << vec[i].size() << std::endl;
+        std::cout << i << " -> ";
+        for (int j = 0; j < vec[i].size(); j++)
+        {
+            std::cout << vec[i][j] << " ";
+        }
+        std::cout << std::endl;
+    }
+};
+
+/***
+
+1 2 0 0
+5 6 7 8
+9 0 0 0
+9 8 11 0
+
+*/
+
+std::function<void()> pattern2DMatrix2 = [] {
+    std::vector<std::vector<int>> vec = {{1, 2}, {5, 6, 7, 8}, {9},  {9, 8, 11}};
+    for (int i=0; i<vec.size(); i++)
+    {
+        for (int j=0; j<vec.size(); j++)
+        {
+            std::cout << vec[i][j] << " ";
+        }
+        std::cout << std::endl;
+    }  
+};
+
+/**
+1 2 3 4 8 12 16 15 14 13 9 5 6 7 11 10
+*/
+
+std::function<std::vector<int>(std::vector<std::vector<int>>& )> spiralOrder 
+    = [](std::vector<std::vector<int>>& matrixReceivedFromMain) {
+    //print2DMatrix(matrixReceivedFromMain);
+    std::cout << __func__ << std::endl;
+    const int m = static_cast<int>(matrixReceivedFromMain.size());
+    /*if (m == 0) {
+        return;
+    }*/
+    const int n = static_cast<int>(matrixReceivedFromMain[0].size());
+    std::vector<int> output {};
+    output.reserve(static_cast<size_t>(m) * n);
+
+    int top = 0, bottom = m-1;
+    int left = 0, right = n-1;
+    while (top <= bottom && left <= right) {
+        // Top row: left -> right
+        for (int i = left; i <= right; i++) {
+            output.emplace_back(matrixReceivedFromMain[top][i]);
+        }
+        ++top;
+        // Right column: top -> bottom
+        for( int i = top; i <= bottom; i++) {
+            output.emplace_back(matrixReceivedFromMain[i][right]);
+        }
+        --right;
+        // Bottom row: right -> left (if still valid)
+        if (top <= bottom) {
+            for (int i = right; i >= left; i--) {
+                output.emplace_back(matrixReceivedFromMain[bottom][i]);
+            }
+            --bottom;
+        }
+        // Left column: bottom -> top (if still valid)
+        if (left <= right) {
+            for (int i = bottom; i >= top; i--) {
+                output.emplace_back(matrixReceivedFromMain[i][left]);
+            }
+            ++left;
+        }
+    }
+    return output;
+};
+
+auto print2DMatrix = [] (const std::vector<std::vector<int>>& matrixReceivedFromMain) {
+    std::cout << std::endl;
+    std::cout << __func__ << std::endl;
+    for(const std::vector<int>& row : matrixReceivedFromMain) {
+        for(const int& val : row) {
+            std::cout << val << " ";
+        }
+        std::cout << std::endl;
+    }
+};
+
+/**
+
+*/
+std::function<void(std::vector<std::vector<int>>& )> zigZagOrder 
+    = [] (std::vector<std::vector<int>>& matrixReceivedFromMain) {
+        std::cout << __func__ << std::endl;
+        const int row = static_cast<int>(matrixReceivedFromMain.size());
+    if (row == 0) {
+        return;
+    }
+    for (int i = 0; i < row; i++) {
+        if (i % 2 == 0 ) {
+            for (int j=0;j<matrixReceivedFromMain[i].size();j++) {
+                std::cout << matrixReceivedFromMain[i][j] << " ";
+            }
+        } else {
+            for (int j=matrixReceivedFromMain[i].size()-1;j>=0;j--) {
+                std::cout << matrixReceivedFromMain[i][j] << " ";
+            }
+        }
+    }
+    std::cout << std::endl;
+};
+
 int main(int argc, char** argv)
 {
     /**
@@ -138,5 +272,30 @@ int main(int argc, char** argv)
      * @brief:Left Half Pyramid Pattern
      */
     patternLeftHalfPattern();
+
+    /**
+     * @brief:2D Matrix using vector
+     */
+    pattern2DMatrix();
+    pattern2DMatrix2();    
+
+    /**
+     * @brief:Easy level matrix question
+     */
+    std::vector<std::vector<int>> matrix = {
+        { 1, 2, 3, 4 },
+        { 5, 6, 7, 8 },
+        { 9, 10, 11, 12 },
+        { 13, 14, 15, 16 }
+    };
+
+    std::vector<int> spiralOrderOutput = spiralOrder(matrix);
+    //print2DMatrix(matrix);
+    //turnImage90();
+    for (const auto& i: spiralOrderOutput) {
+        std::cout << i << " ";
+    }
+    std::cout << std::endl;
+    zigZagOrder(matrix);
     return (0);
 }
