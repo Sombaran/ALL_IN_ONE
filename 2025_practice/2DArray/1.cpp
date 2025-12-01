@@ -306,23 +306,45 @@ std::function<void(std::vector<std::vector<int>>& )> columnWiseTraversal
 
  */
 
-std::function<void(std::vector<std::vector<int>>& )> printDiagonalElements 
-    = [] (std::vector<std::vector<int>>& matrixReceivedFromMain) {
-        std::cout << __func__ << std::endl;
-        const int row = static_cast<int>(matrixReceivedFromMain.size());
+std::function<int(std::vector<std::vector<int>>& )> printDiagonalElements = [] (std::vector<std::vector<int>>& matrixReceivedFromMain) {
+    std::cout << __func__ << std::endl;
+    const int row = static_cast<int>(matrixReceivedFromMain.size());
     if (row == 0) {
-        return;
+        return 0;
     }
-    
+    int firstTraceSum = 0;
     for (int i=0;i<row;i++) {
         for (int j=0;j<row;j++) {
             if (i == j) {
+                firstTraceSum += matrixReceivedFromMain[i][j];
                 std::cout << matrixReceivedFromMain[i][j] << " ";
             }
         }
     }
-    std::cout << std::endl;
+    return firstTraceSum;
+};
 
+/**
+4 7 10 13 Second Trace: 34
+ */
+std::function<int(std::vector<std::vector<int>>& )> calculateSecondTrace = [] (std::vector<std::vector<int>>& matrixReceivedFromMain) {
+    std::cout << __func__ << std::endl;
+    const int row = static_cast<int>(matrixReceivedFromMain.size());
+    if (row == 0) {
+        return 0;
+    }
+    int secondTraceSum = 0;
+    for (int i = 0; i < matrixReceivedFromMain.size(); ++i) {
+        // For the anti-diagonal, the sum of row and column indices is (n - 1)
+        //secondTraceSum += matrix[i][matrix.size() - 1 - i];
+        for (int j = 0; j < matrixReceivedFromMain.size(); ++j) {
+            if (i + j == matrixReceivedFromMain.size() - 1) {
+                std::cout << matrixReceivedFromMain[i][j] << " ";
+                secondTraceSum += matrixReceivedFromMain[i][j];
+            }
+        }
+    }
+    return secondTraceSum;
 };
 
 int main(int argc, char** argv)
@@ -373,6 +395,9 @@ int main(int argc, char** argv)
      */
     
     columnWiseTraversal(matrix);
-    printDiagonalElements(matrix); 
+    int firstTrace = printDiagonalElements(matrix);
+    std::cout << "First Trace: " << firstTrace << std::endl;
+    int secondTrace = calculateSecondTrace(matrix);
+    std::cout << "Second Trace: " << secondTrace << std::endl;
     return (0);
 }
