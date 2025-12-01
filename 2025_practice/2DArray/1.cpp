@@ -249,7 +249,7 @@ auto print2DMatrix = [] (const std::vector<std::vector<int>>& matrixReceivedFrom
 };
 
 /**
-
+1 2 3 4 8 7 6 5 9 10 11 12 16 15 14 13
 */
 std::function<void(std::vector<std::vector<int>>& )> zigZagOrder 
     = [] (std::vector<std::vector<int>>& matrixReceivedFromMain) {
@@ -270,6 +270,59 @@ std::function<void(std::vector<std::vector<int>>& )> zigZagOrder
         }
     }
     std::cout << std::endl;
+};
+
+/**
+1 5 9 13
+2 6 10 14
+3 7 11 15
+4 8 12 16
+ */
+
+std::function<void(std::vector<std::vector<int>>& )> columnWiseTraversal 
+    = [] (std::vector<std::vector<int>>& matrixReceivedFromMain) {
+        std::cout << __func__ << std::endl;
+        const int row = static_cast<int>(matrixReceivedFromMain.size());
+    if (row == 0) {
+        return;
+    }
+    const int col = static_cast<int>(matrixReceivedFromMain[0].size());
+    /*for (int j = 0; j < col; j++) {
+        for (int i=0;i<row;i++) {
+            std::cout << matrixReceivedFromMain[i][j] << " ";
+        }
+        std::cout << std::endl;
+    }*/
+    for (int i=0;i<row;i++) {
+        for (int j = 0; j < row; j++) {
+            std::cout << matrixReceivedFromMain[j][i] << " ";
+        }
+        std::cout << std::endl;
+    }
+};
+
+
+/**
+
+ */
+
+std::function<void(std::vector<std::vector<int>>& )> printDiagonalElements 
+    = [] (std::vector<std::vector<int>>& matrixReceivedFromMain) {
+        std::cout << __func__ << std::endl;
+        const int row = static_cast<int>(matrixReceivedFromMain.size());
+    if (row == 0) {
+        return;
+    }
+    
+    for (int i=0;i<row;i++) {
+        for (int j=0;j<row;j++) {
+            if (i == j) {
+                std::cout << matrixReceivedFromMain[i][j] << " ";
+            }
+        }
+    }
+    std::cout << std::endl;
+
 };
 
 int main(int argc, char** argv)
@@ -311,5 +364,15 @@ int main(int argc, char** argv)
     }
     std::cout << std::endl;
     zigZagOrder(matrix);
+    /**
+     * @brief: Column wise traversal
+    1 5 9 13
+    2 6 10 14
+    3 7 11 15
+    4 8 12 16
+     */
+    
+    columnWiseTraversal(matrix);
+    printDiagonalElements(matrix); 
     return (0);
 }
