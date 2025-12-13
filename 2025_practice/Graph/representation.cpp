@@ -18,9 +18,9 @@ int main(int argc, char** argv)
 {
     std::vector<int> adj[N+1]; // Adjacency List representation
     auto add_edge = [&](int u, int v, bool directed = false) {
-        adj[u].push_back(v);
+        adj[u].push_back({v});
         if (!directed) {
-            adj[v].push_back(u);
+            adj[v].push_back({u});
         }
     };
     // Example edges
