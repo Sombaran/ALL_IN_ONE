@@ -10,7 +10,6 @@
 
 #include<iostream>
 #include<vector>
-#include<stack>
 
 using namespace std;
 
@@ -59,7 +58,7 @@ int main(int argc, char** argv)
     std::vector<int> res = dfsConnected(adj); 
     
     for (const auto& it : res) {
-        cout << it << " ";
+        std::cout << it << " ";
     }
     std::cout << std::endl;
     return (0);
