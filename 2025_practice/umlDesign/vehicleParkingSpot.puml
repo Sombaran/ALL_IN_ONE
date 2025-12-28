@@ -1,0 +1,94 @@
+@startuml OptimizedParkingLot
+
+enum VehicleType { 
+    CAR 
+    MOTORCYCLE
+    TRUCK 
+}
+
+abstract class Vehicle {
+    - String licenseNumber
+    - VehicleType type
+}
+class Car
+class Motorcycle
+class Truck
+Vehicle <|-- Car
+Vehicle <|-- Motorcycle
+Vehicle <|-- Truck
+
+class ParkingSpot {
+    - String spotId
+    - VehicleType supportedType
+    - boolean isOccupied
+    - Vehicle parkedVehicle
+    + boolean canFitVehicle(Vehicle)
+    + void parkVehicle(Vehicle)
+    + void freeSpot()
+    + boolean isAvailable()
+}
+
+class ParkingTicket {
+    - String ticketId
+    - ParkingSpot spot
+    - Vehicle vehicle
+    - long entryTime
+    - long exitTime
+}
+
+class Level {
+    - int levelNumber
+    - List<ParkingSpot> spots
+    + Optional<ParkingSpot> findAvailableSpot(Vehicle)
+    + void addSpot(ParkingSpot)
+    + Optional<ParkingTicket> unparkVehicle(String licenseNumber)
+    + void displayAvailability()
+}
+
+class ParkingLot {
+    - static ParkingLot instance
+    - List<Level> levels
+    - ParkingStrategy strategy
+    - FeeStrategy feeStrategy
+    + static ParkingLot getInstance()
+    + ParkingTicket parkVehicle(Vehicle)
+    + Receipt unparkVehicle(String licenseNumber)
+    + void displayAvailability()
+}
+
+interface ParkingStrategy {
+    + ParkingSpot findSpot(List<Level>, Vehicle)
+}
+class NearestFirstStrategy
+class BestFitStrategy
+ParkingStrategy <|.. NearestFirstStrategy
+ParkingStrategy <|.. BestFitStrategy
+
+interface FeeStrategy {
+    + double calculateFee(ParkingTicket)
+}
+class FlatRateFeeStrategy
+class VehicleBasedFeeStrategy
+FeeStrategy <|.. FlatRateFeeStrategy
+FeeStrategy <|.. VehicleBasedFeeStrategy
+
+class Receipt {
+    - String ticketId
+    - double fee
+    - String message
+    - ReceiptStatus status
+}
+enum ReceiptStatus { 
+    SUCCESS
+    FAILED 
+}
+
+ParkingLot --> Level
+Level --> ParkingSpot
+ParkingSpot o-- Vehicle
+Level --> ParkingTicket
+ParkingLot --> ParkingStrategy
+ParkingLot --> FeeStrategy
+ParkingLot --> Receipt
+
+@enduml
