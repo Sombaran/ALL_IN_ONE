@@ -87,6 +87,27 @@ void reverseArray(std::vector<int>& arr, int start, int end) {
     }
 }
 
+/**
+ * Dutch National Flag Algorithm
+ */
+void sortColors(std::vector<int>& arr) {
+    int low = 0, mid = 0;
+    int high = arr.size() - 1;
+
+    while (mid <= high) {
+        switch (arr[mid]) {
+            case 0:
+                std::swap(arr[low++], arr[mid++]);
+                break;
+            case 1:
+                mid++;
+                break;
+            case 2:
+                std::swap(arr[mid], arr[high--]);
+                break;
+        }
+    }
+}
 
 int missingNumber(std::vector<int>& arr) {
     int n = arr.size()+1;
@@ -130,5 +151,10 @@ int main(int argc, char** argv)
     std::vector<int> arr6 = {8, 2, 4, 5, 3, 7, 1};
     int result = missingNumber(arr6);
     cout << "Missing Number: " << result << endl;
+
+    std::vector<int> arr7 = {0,1,2,1,2,0};
+
+    sortColors(arr7);
+    printVector(arr7);
     return (0);
 }
