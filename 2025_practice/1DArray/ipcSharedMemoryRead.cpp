@@ -49,7 +49,7 @@ int main (int const argc, char **argv) {
      * */ 
     //simpleShareMemoryRead();
 
-2    #define SEM_NAME "/mysem"
+    #define SEM_NAME "/mysem"
     #define SIZE 1024
 
     // Open shared memory object
