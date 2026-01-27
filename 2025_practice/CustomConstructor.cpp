@@ -19,16 +19,39 @@ class String {
     }
 
     String (const String& obj)
-    : mLength {obj.mLength}
-    , mPointer {new int (*obj.mPointer)} {
-        std::cout << "String (const String& obj)::constructor \n";
+    : mLength {obj.mLength}     // copy value or shallow copy
+    , mPointer {new int (*obj.mPointer)} // deep copy
+    {
+        std::cout << "String (const String& obj)::constructor copy \n";
+    }
+
+    String (String&& obj)
+    : mLength (obj.mLength)
+    , mPointer (new int (*obj.mPointer))
+    {
+        obj.mLength = 0;
+        obj.mPointer = nullptr;
+        std::cout << "String (const String&& obj)::constructor move \n";
     }
 
     String& operator = (const String& obj) {
-        std::cout << "String& operator = (const String& obj)::constructor \n";
+        std::cout << "String& operator = (const String& obj)::assignment copy \n";
         if (this != &obj) {
             mLength     = obj.mLength;
             *mPointer   = *obj.mPointer; 
+        }
+        return *this;
+    }
+
+    String& operator = (String&& obj) {
+        std::cout << "String& operator = (const String&& obj)::assignment move \n";
+        if (this != &obj) {
+            delete mPointer; // free old resource
+            mLength     = obj.mLength;
+            *mPointer   = *obj.mPointer;
+            obj.mLength = 0;
+            obj.mPointer = nullptr;
+
         }
         return *this;
     }
