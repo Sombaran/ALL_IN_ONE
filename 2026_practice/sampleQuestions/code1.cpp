@@ -15,26 +15,6 @@ bool compareFilesBinary(const std::string& file1, const std::string& file2) {
                       std::istreambuf_iterator<char>(f2),
                       std::istreambuf_iterator<char>());
 }
-/*
-// Content comparison ignoring line endings
-bool compareFilesContent(const std::string& file1, const std::string& file2) {
-    std::ifstream f1(file1);
-    std::ifstream f2(file2);
-
-    if (!f1.is_open() || !f2.is_open()) {
-        std::cerr << "Error: Could not open one of the files." << std::endl;
-        return false;
-    }
-
-    std::string line1, line2;
-    while (true) {
-        bool ok1 = static_cast<bool>(std::getline(f1, line1));
-        bool ok2 = static_cast<bool>(std::getline(f2, line2));
-        if (!ok1 && !ok2) break; // both ended
-        if (line1 != line2) return false;
-    }
-    return true;
-}*/
 
 // Helper: normalize line endings and trim trailing spaces
 static inline void normalize(std::string& s) {
@@ -44,8 +24,6 @@ static inline void normalize(std::string& s) {
                          [](unsigned char ch) { return !std::isspace(ch); }).base(),
             s.end());
 }
-
-
 
 bool compareFilesContent(const std::string& file1, const std::string& file2) {
     std::ifstream f1(file1);
@@ -83,9 +61,14 @@ bool compareFilesContent(const std::string& file1, const std::string& file2) {
     }
     return identical;
 }
- 
 
-// Process points against ranges
+// Define Query struct
+struct Query {
+    unsigned long long value;
+    size_t index;
+};
+
+// Process points against ranges (not used in current main, but kept for completeness)
 void processCountRangesAndPoints(const std::vector<int>& points,
                                 const std::vector<std::pair<int, int>>& ranges) {
     for (int point : points) {
@@ -120,22 +103,43 @@ int main() {
     std::streambuf* coutBuffer = std::cout.rdbuf();   // save old buffer
     std::cout.rdbuf(outFile.rdbuf());                 // redirect to file
 
-    // Read ranges
-    std::vector<std::pair<int, int>> ranges;
-    int x, y;
-    while (extentsFile >> x >> y) {
-        ranges.emplace_back(x, y);
+    // Collect events
+    std::vector<std::pair<unsigned long long, long long>> events;
+    unsigned long long A, B;
+    while (extentsFile >> A >> B) {
+        events.emplace_back(A, +1);
+        events.emplace_back(B + 1, -1);
+    }
+    std::sort(events.begin(), events.end());
+
+    // Collect queries
+    std::vector<Query> queries;
+    unsigned long long P;
+    size_t idx = 0;
+    while (numbersFile >> P) {
+        queries.push_back({P, idx++});
+    }
+    std::vector<long long> results(queries.size());
+
+    // Sort queries by value
+    std::sort(queries.begin(), queries.end(),
+              [](const Query& a, const Query& b){ return a.value < b.value; });
+
+    // Sweep line
+    long long active = 0;
+    size_t e = 0;
+    for (const auto& q : queries) {
+        while (e < events.size() && events[e].first <= q.value) {
+            active += events[e].second;
+            ++e;
+        }
+        results[q.index] = active;
     }
 
-    // Read points
-    std::vector<int> points;
-    int p;
-    while (numbersFile >> p) {
-        points.push_back(p);
+    // Output in original order
+    for (const auto& i : results) {
+        std::cout << i << '\n';
     }
-
-    // Process (counts go to output.txt)
-    processCountRangesAndPoints(points, ranges);
 
     // Restore cout back to console
     std::cout.rdbuf(coutBuffer);
@@ -156,6 +160,7 @@ int main() {
     } else {
         std::cout << "Files differ in content." << std::endl;
     }
+
     auto end = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::seconds>(end - start);
     std::cout << "Execution time: " << duration.count() << " seconds" << std::endl;
