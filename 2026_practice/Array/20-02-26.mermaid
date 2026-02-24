@@ -1,0 +1,29 @@
+
+
+%% Assocarion between Student and Teacher
+
+
+    class Student {
+        + displayStream() std::string
+    }
+
+    class Teacher {
+        + caller() void
+    }
+
+    Student --> Teacher
+
+
+%% Composition relationship between Car and Engine
+
+    class Car {
+        +String model
+        +void drive()
+    }
+
+    class Engine {
+        +void start()
+    }
+
+    Car *-- Engine
+
