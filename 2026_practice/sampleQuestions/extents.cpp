@@ -141,8 +141,8 @@ public:
                 if(it == coordinates.begin()) {     // means there are no events before or at p, so coverage is zero.
                     std::cout << 0 << "\n";
                 } else {
-                    size_t idx = (it - coordinates.begin()) - 1;  // holda number of active ranges at that event
-                    std::cout << prefixSum[idx] << "\n";
+                    size_t idx = (it - coordinates.begin());  // holda number of active ranges at that event
+                    std::cout << prefixSum[idx-1] << "\n";
                 }
             }
         }
